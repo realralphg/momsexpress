@@ -1,117 +1,168 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
+
+    <!-- #D0CECE -->
+    <q-header class="" elevated style="background-color: white; ">
+
+        <div class="row">
+
+            <!-- <q-btn
+                flat
+                dense
+                round
+                icon="menu"
+                color="blue"
+                aria-label="Menu"
+                @click="leftDrawer"
+              /> -->
+
+
+
+
+          <Buyers :leftDrawer="leftDrawer" v-if="!(this.$router.currentRoute.value.path.split('/').includes('seller')) && this.$router.currentRoute.value.path !== '/sell' && !(this.$router.currentRoute.value.path.split('/').includes('sell'))" />
+          <SellerDashboard @toggleLeftDrawer="toggleLeftDrawer" v-if="(this.$router.currentRoute.value.path.split('/').includes('seller')) && !(this.$router.currentRoute.value.path.split('/').includes('sell')) " />
+          <SellerLanding v-show="this.$router.currentRoute.value.path == '/sell'  ||  this.$router.currentRoute.value.path == '/sell/auth' || this.$router.currentRoute.value.path.split('/').includes('sell') " />
+        </div>
+
+
+
     </q-header>
 
-    <q-drawer
+       <q-drawer
+      side="left"
+      v-model="drawerOpen"
+      :width="280"
+      class="drawer text-white bg-grey-3"
+      :breakpoint="800"
+      >
+
+        <q-list>
+        <BuyerSidebar />
+        </q-list>
+      </q-drawer>
+
+
+     <q-drawer
+      side="left"
+      v-model="leftDrawerOpen"
+      show-if-above
+      :width="280"
+      class="drawer text-white bg-secondary"
+      :breakpoint="770"
+      v-if="(this.$router.currentRoute.value.path.split('/').includes('seller')) && this.$router.currentRoute.value.path !== '/sell' ">
+
+        <q-list>
+        <EssentialLink />
+        </q-list>
+      </q-drawer>
+
+
+
+
+    <!-- <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
       bordered
     >
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <EssentialLink />
       </q-list>
-    </q-drawer>
+    </q-drawer> -->
+
+
+    <q-footer class="row items-center hide_me" style="height: 65px" v-if="!(this.$router.currentRoute.value.path.split('/').includes('seller'))">
+        <div class="col-3 text-center">
+            <q-btn icon="home" to="/" flat :ripple="false" />
+            <div class="text-caption">Home</div>
+        </div>
+        <div class="col-3 text-center">
+            <q-btn icon="format_list_bulleted" to="/allCategory" flat :ripple="false" />
+            <div class="text-caption">Categories</div>
+        </div>
+        <div class="col-3 text-center">
+            <q-btn class="" to="/cart" flat icon="shopping_cart">
+              <q-badge color="red" class="text-bold" floating transparent>
+                4
+              </q-badge>
+            </q-btn>
+            <div class="text-caption">Cart</div>
+        </div>
+        <div class="col-3 text-center" >
+            <q-btn icon="perm_identity" to="/profile" flat :ripple="false" />
+            <div class="text-caption">Profile</div>
+        </div>
+        <!-- <div class="col-3 text-center" v-show="buyerToken == '' || sellerToken !== '' ">
+            <q-btn icon="dashboard" to="/seller/dashboard" flat :ripple="false" />
+            <div class="text-caption">Dashboard</div>
+        </div> -->
+
+    </q-footer>
+
+
+
 
     <q-page-container>
       <router-view />
+        <Footer v-if="!(this.$router.currentRoute.value.path.split('/').includes('seller'))" />
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue'
-
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-];
-
 import { defineComponent, ref } from 'vue'
+import EssentialLink from 'components/EssentialLink.vue'
+import Buyers from 'components/Navbars/buyers.vue'
+import SellerDashboard from 'components/Navbars/sellerDashboard.vue'
+import SellerLanding from 'components/Navbars/sellerLanding.vue'
+import Footer from 'components/Footer.vue'
+import BuyerSidebar from '../components/BuyerSidebar.vue'
 
 export default defineComponent({
   name: 'MainLayout',
 
   components: {
-    EssentialLink
-  },
+    EssentialLink,
+    SellerDashboard,
+    Buyers,
+    SellerLanding,
+    Footer,
+    BuyerSidebar
+},
 
-  setup () {
+  data () {
     const leftDrawerOpen = ref(false)
+    const drawerOpen = ref(false)
+
 
     return {
-      essentialLinks: linksList,
+      searchClosed: ref(true),
       leftDrawerOpen,
+      drawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
-      }
+      },
+      leftDrawer () {
+        drawerOpen.value = !drawerOpen.value
+      },
+      sellerToken: localStorage.getItem('sellerToken'),
+      buyerToken: localStorage.getItem('buyerToken'),
     }
   }
 })
 </script>
+
+
+<style scoped>
+.hide_me{
+  display: none;
+}
+
+@media screen and (max-width: 771px) {
+  .hide_me{
+    display: flex;
+  }
+}
+
+</style>

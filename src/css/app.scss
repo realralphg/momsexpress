@@ -1,1 +1,8 @@
 // app global css in SCSS form
+
+
+@media screen and (max-width: 411px) {
+  .homepage_heading_font{
+    font-size: 1.2rem !important;
+  }
+}

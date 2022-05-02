@@ -1,0 +1,170 @@
+<template>
+  <!-- Dialog for Adding products  -->
+        <div class="heading text-center">
+          <p style="font-size: 1.5rem;" class="text-bold" >New Product</p>
+        </div>
+
+        <div class="form q-pt-lg q-mx-auto" style="width:80%" >
+
+          <!-- Product Name  -->
+          <div class=" q-mb-md">
+             <label for="">Name of Product *</label>
+           <q-input outlined dense="dense" v-model="product.productName" placeholder="Lorem Item1" />
+          </div>
+
+
+
+          <!-- Price -->
+            <div class=" q-mb-md" style="width:100%">
+               <label for="">Price *</label>
+               <q-input outlined dense="dense" v-model="product.price" placeholder="N2000"  />
+            </div>
+
+
+          <!-- Quantity  -->
+            <div class=" q-mb-md" >
+              <label for="">Quantity *</label>
+              <q-input v-model.number="product.quantity" dense="dense" type="number" outlined style="width: 100%" />
+            </div>
+
+          <!-- Category -->
+          <div class=" q-mb-md" style="width:100%">
+            <label for="">Category *</label>
+            <q-input v-model="product.category" dense="dense" outlined   />
+          </div>
+
+
+          <!-- Subcategory -->
+          <div class=" q-mb-md" style="width:100%">
+            <label for="">Subcategory *</label>
+            <q-input v-model="product.subcategory" dense="dense" outlined   />
+          </div>
+
+          <!--Description  -->
+          <div class=" q-mb-md" style="width:100%">
+            <label for="">Description *</label>
+            <q-input v-model="product.description" dense="dense" outlined type="textarea" />
+          </div>
+
+          <!-- Pick images  -->
+          <label for="">Upload Images *</label>
+          <q-input type="file"  v-model="product.img" dense="dense" outlined />
+          <!-- <div class="q-mb-md">
+            <q-file
+              v-model="product.img"
+              label="Pick files"
+              multiple
+              max-files="3"
+              outlined
+              dense
+            />
+          </div> -->
+
+
+          <div class=" q-mb-md" style="width:100%">
+            <label for="">Color *</label>
+            <q-input v-model="product.color" dense="dense" outlined   />
+          </div>
+
+          <div class=" q-mb-md" style="width:100%">
+            <label for="">Sizes *</label>
+            <q-input v-model="product.size" dense="dense" outlined   />
+          </div>
+
+
+          <div class="row">
+            <q-space/>
+            <q-btn style=" width:60%; background:#4949E6; color: white;" label="Upload" @click="addProduct()"  />
+            <q-space/>
+          </div>
+
+        </div>
+
+</template>
+
+<script>
+import { ref } from "vue";
+
+export default {
+  name: 'AddProduct',
+  data() {
+    return{
+      images: [ ],
+      colors: [ ],
+      product:{
+        productName: ref(""),
+        price: ref(""),
+        quantity: ref(""),
+        category: ref(""),
+        subcategory: ref(""),
+        img: null,
+        color: ref(""),
+        size: ref(""),
+        description: ref("")
+      },
+      // Categories: [
+      //   'Shoes', 'Clothings', 'Caps', 'Belts', 'Stuff'
+      // ],
+      // Subcategory: [
+      //   'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
+      // ],
+      // Colors: [
+      //   'red', 'blue', 'yellow', 'green', 'orange'
+      // ],
+      // Sizes: [
+      //   '1', '2', '3', '4', '5'
+      // ]
+    }
+  },
+  methods: {
+    addProduct(){
+        // let ref = `NA/2022/${Math.floor(Math.random() * 1000)}/${Math.floor(Math.random() * 4000.93)}`;
+        let formData = new FormData();
+        formData.append("productName", this.product.productName);
+        formData.append("price", this.product.price);
+        formData.append("quantity", this.product.quantity);
+        formData.append("category", this.product.category);
+        formData.append("subcategory", this.product.subcategory);
+        formData.append("img", this.product.img);
+        formData.append("color", this.product.color);
+        formData.append("size", this.product.size);
+        // formData.append("subcategory", this.product.subcategory);
+        console.log(formData)
+        if(this.product.productName !== "" && this.product.price !== "" && this.product.quantity !== ""){
+          this.$store.dispatch('moduleExample/addProduct', {
+            formData
+            // productName: this.product.productName,
+            // price: this.product.price,
+            // quantity: this.product.quantity,
+            // category: this.product.category,
+            // subcategory: this.product.subcategory,
+            // img: this.product.img,
+            // color: this.product.color,
+            // size: this.product.size,
+          })
+        .then(()=>{
+          // window.location.reload();
+        // this.$q.loading.hide();
+        })
+      }
+      else{
+        // this.$q.loading.hide();
+        // Notify.create({
+        //   message: 'You can\'t leave the "to", "title" and "Comments" fields empty.',
+        //   color: 'red'
+        // })
+      }
+    },
+  }
+}
+</script>
+
+<style scoped>
+
+
+  .btn{
+    border: 1px solid black;
+    border-radius: 50%;
+  }
+
+</style>
