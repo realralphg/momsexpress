@@ -1,8 +1,23 @@
 // app global css in SCSS form
 
-
 @media screen and (max-width: 411px) {
-  .homepage_heading_font{
+  .homepage_heading_font {
     font-size: 1.2rem !important;
   }
+}
+
+.q-toolbar__title {
+  overflow: visible !important;
+}
+
+.dialog .absolute-full,
+.fullscreen,
+.fixed-full {
+  display: block !important;
+  top: 70px !important;
+  padding: 1% 10% !important;
+}
+
+.dialog .q-dialog__inner--minimized {
+  padding: 0.5% 10% !important;
 }

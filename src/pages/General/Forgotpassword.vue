@@ -40,6 +40,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { ref } from 'vue'
+import { Notify } from 'quasar';
 
 export default defineComponent({
   name: 'PageIndex',
@@ -47,7 +48,7 @@ export default defineComponent({
   },
   data () {
     return {
-      email: "",
+      email: ref(""),
     }
   },
    methods: {
@@ -55,8 +56,7 @@ export default defineComponent({
         this.$store.dispatch('moduleExample/forgotPassword', {
           email: this.email,
         })
-        .then(({ status}) => {
-          console.log(status)
+        .then((success) => {
           this.$router.replace('/auth')
         })
         .catch(error => {

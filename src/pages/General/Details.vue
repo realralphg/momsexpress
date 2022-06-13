@@ -54,7 +54,8 @@
                 class="text-black">Tue, Apr 11, 12 noon </span></div>
             </div>
             <div class="q-mt-md">
-              <q-btn class="q-mt-md" text-color="primary" color="secondary" to="/cart" icon="shopping_cart" label="Add to cart"/>
+              <q-btn class="q-mt-md" text-color="primary" color="secondary"  @click="addToCart()" icon="shopping_cart" label="Add to cart"/>
+              <!-- $router.back() -->
               <!-- <q-btn class="q-mt-md q-ml-md" color="orange-8" icon="shopping_cart" label="Buy now"/> -->
             </div>
           </div>
@@ -457,6 +458,11 @@
       },
       win_height() {
         return this.$q.screen.height - 0;
+      }
+    },
+    methods:{
+      addToCart(){
+
       }
     },
     mounted() {
