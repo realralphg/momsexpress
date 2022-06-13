@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import ShopDets from "src/components/SellerProfile/ShopDets.vue";
+import ShopDets from "src/components/Seller/SellerProfile/ShopDets.vue";
 import AdditionalInfo from "src/components/Seller/SellerProfile/AdditionalInfo.vue";
 import BankDets from "src/components/Seller/SellerProfile/BankDets.vue";
 import Password from "src/components/Seller/SellerProfile/Password.vue";
