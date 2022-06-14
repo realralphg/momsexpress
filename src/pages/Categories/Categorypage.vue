@@ -62,9 +62,17 @@
       </q-card>
     </div>
 
-    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-      <div class="q-py-md row q-gutter-md" style="margin: 0 auto">
-        <q-card
+    <div class="bg-grey-2 col-lg-10 col-md-10 col-sm-12 col-xs-12">
+      <div class="q-py-md card-container" style="margin: 0 auto">
+        <div
+          class="bg-white col-lg-2 col-md-2 col-sm-3 col-xs-4 card text-left"
+          v-for="product in products"
+          :key="product.id"
+        >
+          <DetailedProductCard :product="product" />
+        </div>
+
+        <!-- <q-card
           class="my-card col-lg-2 col-md-2 col-sm-3 col-xs-6 q-my-md"
           v-for="product in products"
           :key="product.id"
@@ -109,25 +117,26 @@
                   {{ product.price + product.price }}</span
                 >
               </div>
-              <!-- <q-chip color="primary" text-color="white" size="0.8rem">
-                -50%
-              </q-chip> -->
+
             </div>
           </q-card-section>
-        </q-card>
+        </q-card> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
+import DetailedProductCard from "../../components/DetailedProductCard.vue";
+
 export default {
   name: "category.vue",
   data() {
     return {
       value: window.innerWidth >= 1024 ? true : false,
       products: [],
-      stars: 4,
+
       class_val: "shadow-1 my-card",
       filters_list: [
         {
@@ -165,7 +174,6 @@ export default {
             },
           ],
         },
-
         {
           label: "Sleeve",
           items: [
@@ -256,70 +264,51 @@ export default {
       this.products = this.$store.getters["moduleExample/getProduct"];
     },
   },
-
   mounted() {
     this.$store.dispatch("moduleExample/getProductsLocal");
     this.getProducts();
   },
+  components: { DetailedProductCard },
 };
 </script>
 
-<style scoped>
-.image {
-  height: 150px;
-  width: 100%;
+<style>
+.card-container {
+  padding: 2%;
+  display: grid;
+  gap: 8px;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(5, 1fr);
 }
+
+@media screen and (max-width: 830px) {
+  .card-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .card-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .add-btn {
+    height: 10px;
+    margin: auto 0;
+  }
+}
+
+@media screen and (max-width: 470px) {
+  .card-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .product-title {
+    font-size: 0.9rem !important;
+  }
+}
+
 .scroll {
   height: 60vh;
-}
-
-.shop_img {
-  border-radius: 8px;
-  margin: 0 auto;
-  width: 100%;
-  height: 20vh;
-  background: url("/Homepage/black-friday-elements-assortment.jpg");
-  background-size: cover;
-  background-position: center;
-  z-index: 1;
-}
-.shop_name {
-  height: 100%;
-  width: 40%;
-  border-radius: 8px 0 0 8px;
-  /* border: 2px solid #00EAAB; */
-  border-top: none;
-  opacity: 0.7;
-}
-.my-card {
-  width: 100%;
-  max-width: 18%;
-}
-
-/* @media screen and (max-width: 1025px) {
-
-    .scroll{
-      height: 15vh
-    }
-
-  } */
-
-@media screen and (max-width: 800px) {
-  .my-card {
-    max-width: 29%;
-    width: 100%;
-  }
-}
-
-@media screen and (max-width: 575px) {
-  .my-card {
-    max-width: 40%;
-  }
-}
-
-@media screen and (max-width: 410px) {
-  .my-card {
-    max-width: 80%;
-  }
 }
 </style>

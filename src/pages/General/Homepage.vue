@@ -4,7 +4,8 @@
     <!-- <Categories /> -->
     <Categories2 />
     <Recent />
-    <Doublestuff />
+    <!-- <Doublestuff /> -->
+    <Trending />
     <FeaturedShops />
     <Trending />
     <Seamless />
@@ -17,7 +18,6 @@
 
 <script>
 import { defineComponent } from "vue";
-import axios from "axios";
 import { Notify } from "quasar";
 import Hero from "components/Homepage/Hero";
 import Categories from "components/Homepage/Categories";
@@ -25,7 +25,6 @@ import Categories2 from "components/Homepage/Categories2";
 import Recent from "components/Homepage/Recent";
 import Trending from "components/Homepage/Trending";
 import Seamless from "components/Homepage/Seamless";
-import Newlayout from "src/components/Homepage/Newlayout.vue";
 import Doublestuff from "src/components/Homepage/Doublestuff.vue";
 import FeaturedShops from "src/components/Homepage/FeaturedShops.vue";
 
@@ -38,7 +37,6 @@ export default defineComponent({
     Recent,
     Trending,
     Seamless,
-    Newlayout,
     Doublestuff,
     FeaturedShops,
   },

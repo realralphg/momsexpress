@@ -1,116 +1,126 @@
 <template>
-  <div class="q-my-lg" style="padding: 0 4%">
-
-    <div class="row  justify-between q-mx-auto q-my-md q-pl-md q-py-sm" style="border-bottom: 2px solid #003348;">
-      <h5 class="text-h5 text-bold q-my-auto text-primary homepage_heading_font">Trending Products</h5>
-      <q-btn color="primary" to="/shop" class="q-pr-none" label="View all" icon-right="chevron_right" flat size="0.7rem"/>
+  <div class="master">
+    <div
+      class="row justify-between q-mx-auto q-my-md q-pl-md q-py-sm"
+      style="border-bottom: 2px solid #003348"
+    >
+      <h5
+        class="text-h5 text-bold q-my-auto text-primary homepage_heading_font"
+      >
+        Trending
+      </h5>
+      <q-btn
+        color="primary"
+        to="/shop"
+        class="q-pr-none"
+        label="View all"
+        icon-right="chevron_right"
+        flat
+        size="0.7rem"
+      />
     </div>
 
-   <div class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap" style="overflow-x: hidden;">
-          <div
-            @click="$router.push('/details')"
-            class="col-lg-2 col-md-2 col-sm-3 col-xs-4 cursor-pointer hover_border_grey text-left"
-            v-for="image in pictures" :key="image.name"
-          >
-            <q-img
-              style=""
-              class="rounded-borders img"
-              :src="image.image"
-            >
-            </q-img>
-            <div>{{ image.name }}</div>
-            <div class="text-caption text-weight-bold text-primary">Product Description</div>
-            <div>
-              <span>N2000</span
-              ><span class="q-ml-sm text-grey-6" style="text-decoration: line-through"
-                >N4000</span
-              >
-            </div>
-          </div>
-        </div>
+    <div class="q-py-md card-container">
+      <div
+        class="bg-white card text-left"
+        v-for="product in products"
+        :key="product.id"
+      >
+        <ProductCard :product="product" />
+      </div>
+    </div>
   </div>
-
-
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from "vue";
+import ProductCard from "../../components/ProductCard.vue";
 
 const images = [
   {
-    name: 'Suit',
-    image: '/Homepage/books.jpg',
+    name: "Suit",
+    image: "/books.jpg",
   },
-   {
-    name: 'Female shoe',
-    image: '/Homepage/camera.jpg',
+  {
+    name: "Female shoe",
+    image: "/camera.jpg",
   },
-   {
-    name: 'MacBook',
-    image: '/Homepage/laptop.jpg',
+  {
+    name: "MacBook",
+    image: "/laptop.jpg",
   },
-   {
-    name: 'T-shirts',
-    image: '/Homepage/shirts.jpg',
+  {
+    name: "T-shirts",
+    image: "/shirts.jpg",
   },
-   {
-    name: 'Watch',
-    image: '/Homepage/watch.jpg',
+  {
+    name: "Watch",
+    image: "/watch.jpg",
   },
-  //  {
-  //   name: 'Suit',
-  //   image: '/Homepage/suit.jpg',
-  // },
-  //  {
-  //   name: 'Wardrobe',
-  //   image: '/Homepage/wardrobe.jpg',
-  // },
-  //  {
-  //   name: 'Television',
-  //   image: '/Homepage/television.jpg',
-  // },
-  //  {
-  //   name: 'Socks',
-  //   image: '/Homepage/socks.jpg',
-  // },
-  //  {
-  //   name: 'Light',
-  //   image: '/Homepage/Lights.jpg',
-  // },
-   {
-    name: 'Speaker',
-    image: '/Homepage/speaker.jpg',
-  },
-  //  {
-  //   name: 'Pods',
-  //   image: '/Homepage/pods.jpg',
-  // },
 
-]
+  {
+    name: "Speaker",
+    image: "/speaker.jpg",
+  },
+];
 
 export default {
-  name: 'Rename',
-  components:{
-
+  name: "Trending",
+  components: { ProductCard },
+  data() {
+    return {
+      products: images,
+    };
   },
-  data(){
-    return{
-      pictures: images,
-      icon: ref(false),
-      latest_slide: 1
-    }
-  }
-
-
-}
+};
 </script>
 
-<style scoped>
+<style>
+.master {
+  padding: 0 4%;
+}
+.card-container {
+  display: grid;
+  gap: 8px;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(6, 1fr);
+  position: relative;
+  -ms-overflow-style: none; /* hiding the scrollbar for Internet Explorer, Edge */
+  scrollbar-width: none; /* hiding the scrollbar for Firefox */
+}
 
+.card-container::-webkit-scrollbar {
+  display: none; /* hiding the scrollbar for Chrome, Safari, and Opera */
+}
+@media screen and (max-width: 830px) {
+  .card-container {
+    grid-template-columns: repeat(6, 22%);
+    width: 100%;
+    white-space: nowrap;
+    position: relative;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none; /* hiding the scrollbar for Internet Explorer, Edge */
+    scrollbar-width: none; /* hiding the scrollbar for Firefox */
+  }
+}
 
-div{
+@media screen and (max-width: 700px) {
+  .card-container {
+    grid-template-columns: repeat(6, 30%);
+  }
+}
 
+@media screen and (max-width: 470px) {
+  .card-container {
+    grid-template-columns: repeat(6, 40%);
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .card-container {
+    grid-template-columns: repeat(6, 46%);
+  }
 }
 </style>
-
-

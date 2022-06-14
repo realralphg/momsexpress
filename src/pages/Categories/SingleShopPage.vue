@@ -73,7 +73,7 @@
 
       <div class="q-py-md row q-gutter-md" style="margin: 0 auto">
         <q-card
-          class="my-card col-lg-3 col-md-3 col-sm-2 col-xs-12 content-center"
+          class="my-card col-lg-5 col-md-3 col-sm-2 col-xs-12 content-center"
           v-for="n in 17"
           :key="n"
           style="cursor: pointer"
@@ -294,10 +294,10 @@ export default {
   border-top: none;
   opacity: 0.7;
 }
-.my-card {
+/* .my-card {
   width: 100%;
   max-width: 18%;
-}
+} */
 
 /* @media screen and (max-width: 1025px) {
 

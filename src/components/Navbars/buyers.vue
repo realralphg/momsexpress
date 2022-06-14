@@ -28,25 +28,6 @@
           />
         </template>
       </q-input>
-      <div class="q-pa-md search_result">
-        <q-list class="bg-white text-black text-caption">
-          <q-item clickable v-ripple class="">
-            <q-item-section>Single line item</q-item-section>
-          </q-item>
-          <q-item clickable v-ripple class="">
-            <q-item-section>Single line item</q-item-section>
-          </q-item>
-          <q-item clickable v-ripple class="">
-            <q-item-section>Single line item</q-item-section>
-          </q-item>
-          <q-item clickable v-ripple class="">
-            <q-item-section>Single line item</q-item-section>
-          </q-item>
-          <q-item clickable v-ripple class="">
-            <q-item-section>Single line item</q-item-section>
-          </q-item>
-        </q-list>
-      </div>
     </q-toolbar-title>
 
     <q-btn flat no-caps class="hide">
@@ -102,7 +83,7 @@
           v-if="!role"
           round
           color="primary"
-          :to="role === 'buyer' ? `/user` : `/auth`"
+          :to="role === 'buyer' ? `/user` : `/login`"
           :ripple="false"
           dense
           flat
@@ -131,16 +112,6 @@
       </q-tabs>
     </div>
   </q-toolbar>
-
-  <q-dialog v-model="dialog" top class="dialog">
-    <q-card class="card">
-      <q-card-section class="column text-caption q-px-xl no-wrap">
-        <div class="text-weight-bold q-mb-xs" v-for="n in 10" :key="n">
-          The Walker
-        </div>
-      </q-card-section>
-    </q-card>
-  </q-dialog>
 </template>
 
 <script>
@@ -150,7 +121,6 @@ export default {
   data() {
     return {
       search: ref(""),
-      dialog: ref(false),
       text: ref(null),
       role: localStorage.getItem("userRole"),
       userName: localStorage.getItem("buyerFullname"),
@@ -196,14 +166,6 @@ export default {
       return this.$store.state.moduleExample.cart.length;
     },
   },
-  watch: {
-    search(value) {
-      value = this.search;
-      if (value.length !== "") {
-        this.dialog = true;
-      }
-    },
-  },
 };
 </script>
 
@@ -213,18 +175,7 @@ export default {
   width: 100%;
   max-width: 55vw;
 }
-.search_result {
-  position: absolute;
-  width: 100%;
-  height: 100vh;
-  padding: 0.5% 15%;
-  top: 100%;
-  left: 0%;
-  z-index: 1;
-  border-radius: 4px;
-  background-color: rgb(0, 0, 0, 0.2);
-  display: none;
-}
+
 .link {
   text-decoration: none;
 }
@@ -264,21 +215,9 @@ export default {
     border-radius: 4px;
   }
 } */
-@media screen and (max-width: 771px) {
+@media screen and (max-width: 830px) {
   .hide {
     display: none;
-  }
-
-  .search_result {
-    position: absolute;
-    width: 100%;
-    height: 100vh;
-    padding: 0.5% 15%;
-    top: 100%;
-    left: 0%;
-    z-index: 1;
-    border-radius: 4px;
-    background-color: rgb(0, 0, 0, 0.2);
   }
 }
 

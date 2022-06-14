@@ -47,7 +47,7 @@ const routes = [
         beforeEnter: (to, from, next) => {
           let token = localStorage.getItem("buyerId");
           if (!token) {
-            next("/auth");
+            next("/login");
           } else {
             next();
           }
@@ -76,7 +76,7 @@ const routes = [
         beforeEnter: (to, from, next) => {
           let token = localStorage.getItem("buyerId");
           if (!token) {
-            next("/auth");
+            next("/login");
           } else {
             next();
           }
@@ -88,7 +88,7 @@ const routes = [
         beforeEnter: (to, from, next) => {
           let token = localStorage.getItem("buyerId");
           if (!token) {
-            next("/auth");
+            next("/login");
           } else {
             next();
           }

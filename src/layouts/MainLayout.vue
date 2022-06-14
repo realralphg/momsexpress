@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh LpR lFf">
+  <q-layout :view="value ? 'lHh LpR lFf' : 'lHh LpR lff'">
     <q-header class="" elevated style="background-color: white">
       <div class="row">
         <Buyers
@@ -25,6 +25,7 @@
       side="right"
       v-model="drawerOpen"
       :width="250"
+      :breakpoint="2200"
       class="cart-drawer text-white bg-grey-3 sidebar absolute"
       style="height: 100%"
     >
@@ -67,9 +68,12 @@
       </div>
     </q-footer>
 
-    <q-page-container>
+    <q-footer>
+      <Footer class="" />
+    </q-footer>
+
+    <q-page-container class="">
       <router-view />
-      <Footer />
     </q-page-container>
   </q-layout>
 </template>
@@ -96,6 +100,7 @@ export default defineComponent({
     const drawerOpen = ref(false);
 
     return {
+      value: window.innerWidth <= 830 ? true : false,
       searchClosed: ref(true),
       leftDrawerOpen,
       drawerOpen,
@@ -128,7 +133,7 @@ export default defineComponent({
   }
 }
 
-@media screen and (max-width: 771px) {
+@media screen and (max-width: 830px) {
   .hide_me {
     display: flex;
   }
