@@ -1,107 +1,200 @@
 <template>
-  <q-page class="q-mb-md">
-    <div class="wishlist-main">
-      <div class="heading text-primary text-bold text-center q-mt-md">
-        WISHLISTS
-      </div>
+  <q-page
+    v-if="!products[0]"
+    style="margin: 0 auto"
+    class="column flex-center items-center"
+  >
+    <div class="text-center text-primary text-h5 text-bold">
+      No Item in Wishlist
+    </div>
+    <q-icon name="favorite_outline" size="3rem" color="primary" />
+  </q-page>
+  <div class="master">
+    <div class="q-py-md card-container">
       <div
-        class="row justify-center q-mt-md q-mx-md bg-grey-3"
-        v-for="n in 4"
-        :key="n"
+        class="bg-white card text-left"
+        v-for="product in products"
+        :key="product._id"
       >
-        <q-img
-          class="col-lg-4 col-md-4 col-sm-3 col-xs-4"
-          src="Homepage/speaker.jpg"
-        />
-        <div
-          class="col-lg-8 col-md-8 col-sm-9 col-xs-8 q-py-sm body_text column justify-between"
-        >
-          <div>
+        <div class="main" @click="this.$router.push(`/details/${product._id}`)">
+          <q-img
+            class="rounded-borders img"
+            :src="product.img[0].url"
+            @click="this.$router.push(`/details/${product._id}`)"
+          >
+          </q-img>
+          <div class="q-pa-sm card">
+            <div class="row justify-between relative-position">
+              <div>
+                <div
+                  class="text-subtitle1 text-bold product-title"
+                  @click="this.$router.push(`/details/${product._id}`)"
+                >
+                  {{ product.name }}
+                </div>
+                <q-rating
+                  class=""
+                  v-model="stars"
+                  :max="5"
+                  size="0.7rem"
+                  color="orange-7"
+                />
+                <span class="q-my-auto q-ml-sm text-right text-caption"
+                  >(4.8)</span
+                >
+              </div>
+              <q-checkbox
+                v-model="val"
+                checked-icon="favorite"
+                keep-color
+                unchecked-icon="favorite_border"
+                class="favorite-btn"
+                @click="deleteFromWishlist(product._id)"
+              />
+            </div>
             <div
-              class="q-pl-sm text-bold text-subtitle1 row items-center align-items justify-between"
+              class="text-caption text-weight-bold text-grey ellipsis-2-lines"
             >
-              <div>Lorem</div>
-              <q-btn icon="close" flat round dense />
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam
+              repellat consequuntur, laudantium eum, voluptate nam nemo minima
+              qui aspernatur mollitia tenetur velit, esse maxime sapiente? Id
+              iste placeat molestiae ipsam!
             </div>
-            <div class="q-pl-sm">Lorem description</div>
-          </div>
-          <div class="two row justify-between q-px-sm">
-            <div class="">
-              <div>Price</div>
-              <div class="text-bold">N3000</div>
+            <div class="q-my-xs">
+              <span class="text-bold">N{{ product.price }}</span
+              ><span
+                class="q-ml-sm text-grey-6"
+                style="text-decoration: line-through"
+                v-if="discount !== 0"
+                >{{ discount }}</span
+              >
             </div>
-            <q-btn
-              label="Add to cart"
-              flat
-              class="button bg-primary"
-              color="white"
-              icon="shopping_cart"
-              dense
-            />
+            <div class="row justify-between">
+              <q-space />
+              <q-btn
+                outline
+                rounded
+                size="0.6rem"
+                color="primary"
+                class="q-py-none q-my-sm add-btn"
+                @click="addToCart(product)"
+              >
+                <q-icon name="add" />
+                Cart
+              </q-btn>
+              <q-space />
+            </div>
           </div>
         </div>
+        <!-- <ProductCard :product="product" /> -->
       </div>
     </div>
-
-    <Trending class="hide" />
-  </q-page>
+  </div>
 </template>
 
 <script>
-import Trending from "src/components/Homepage/Trending.vue";
+import { ref } from "vue";
+import ProductCard from "../../components/ProductCard.vue";
+
 export default {
-  components: { Trending },
+  name: "Recent",
+  components: { ProductCard },
   data() {
-    return {};
+    return {
+      products: [],
+      stars: 5,
+      val: ref(true),
+    };
+  },
+  methods: {
+    getWishlists() {
+      this.products = this.$store.getters["moduleExample/getWishlist"];
+      console.log(this.products);
+    },
+    addToCart(product) {
+      this.$store.dispatch("moduleExample/addProductToCart", {
+        product: product,
+        quantity: 1,
+      });
+    },
+    deleteFromWishlist(id) {
+      console.log("delete");
+      console.log(id);
+      // let products = this.$store.state.moduleExample.wishlist.filter(
+      //   (item) => item.product._id !== id
+      // );
+      // console.log(products);
+      // this.$store.dispatch("moduleExample/setCart", this.products);
+      // this.products = products;
+      // this.setCart();
+    },
+  },
+  mounted() {
+    this.getWishlists();
   },
 };
 </script>
 
 <style scoped>
-.heading {
-  font-size: 1.3rem;
+.main {
+  cursor: pointer;
+}
+.add-btn {
+  height: 15px;
+  margin: auto 0;
 }
 
-.wishlist-main {
-  padding: 0 15%;
+.card {
+  border-radius: 10px;
+}
+.img {
+  height: 150px;
+  width: 100%;
+}
+.master {
+  padding: 0 4%;
+}
+.card-container {
+  display: grid;
+  gap: 8px;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(5, 1fr);
+  position: relative;
+  justify-content: center;
 }
 
-.hide {
-  display: none;
+.card-container::-webkit-scrollbar {
+  display: none; /* hiding the scrollbar for Chrome, Safari, and Opera */
 }
-@media screen and (max-width: 851px) {
-  .wishlist-main {
-    padding: 0 12%;
+@media screen and (min-width: 1024px) {
+  .card-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media screen and (max-width: 975px) {
+  .card-container {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
-@media screen and (max-width: 771px) {
-  .button {
-    font-size: 0.8rem !important;
-  }
-  .hide {
-    display: block;
+@media screen and (max-width: 777px) {
+  .card-container {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media screen and (max-width: 651px) {
-  .wishlist-main {
-    padding: 0;
-  }
-  .button {
-    font-size: 0.7rem !important;
+@media screen and (max-width: 585px) {
+  .card-container {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media screen and (max-width: 500px) {
-  .button {
-    font-size: 0.6rem !important;
+@media screen and (max-width: 360px) {
+  .card-container {
+    grid-template-columns: repeat(1, 70%);
   }
-}
-
-@media screen and (max-width: 370px) {
-  .body_text {
-    font-size: 0.7rem !important;
+  .card {
+    margin: 0 auto !important;
   }
 }
 </style>

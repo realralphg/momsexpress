@@ -1,7 +1,7 @@
 <template>
   <!-- Add New Product  -->
   <q-dialog v-model="icon">
-    <q-card style="width: 100%; max-width: 100%">
+    <q-card class="addProduct">
       <q-card-section class="row items-center q-pb-none">
         <q-space />
         <q-btn icon="close" flat round dense v-close-popup />
@@ -106,6 +106,15 @@ export default {
 </script>
 
 <style scoped>
+.addProduct {
+  width: 100%;
+  max-width: 100%;
+}
+@media screen and (min-width: 1024px) {
+  .addProduct {
+    width: 70% !important;
+  }
+}
 p {
   display: inline;
 }

@@ -12,7 +12,7 @@
   </div>
 
   <!-- Profile Image and Details -->
-  <div class="q-px-md items-center q-my-md hide_me">
+  <div class="q-px-md items-center text-center q-my-md hide_me">
     <q-avatar
       size="4rem"
       font-size="2.5rem"

@@ -11,7 +11,7 @@
       </h5>
       <q-btn
         color="primary"
-        to="/shop"
+        to="/category"
         class="q-pr-none"
         label="View all"
         icon-right="chevron_right"
@@ -24,9 +24,57 @@
       <div
         class="bg-white card text-left"
         v-for="product in products"
-        :key="product.id"
+        :key="product._id"
       >
-        <ProductCard :product="product" />
+        <!-- <q-card flat style="max-width: 300px">
+          <q-skeleton height="150px" square />
+
+          <q-card-section>
+            <q-skeleton type="text" class="text-subtitle1" />
+            <q-skeleton type="text" width="50%" class="text-subtitle1" />
+            <q-skeleton type="text" class="text-caption" />
+          </q-card-section>
+        </q-card> -->
+        <div class="main" @click="this.$router.push(`/details/${product._id}`)">
+          <q-img style="" class="rounded-borders img" :src="product.img[0].url">
+          </q-img>
+          <div class="q-pa-sm">
+            <div class="justify-between">
+              <div class="text-subtitle1 text-bold product-title">
+                {{ product.name }}
+              </div>
+              <div class="row">
+                <q-rating
+                  class=""
+                  v-model="stars"
+                  :max="5"
+                  size="0.7rem"
+                  color="orange-7"
+                />
+                <span class="q-my-auto text-right text-caption q-ml-xs"
+                  >(4.8)</span
+                >
+              </div>
+            </div>
+            <div
+              class="text-caption text-weight-bold text-grey ellipsis-2-lines"
+            >
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam
+              repellat consequuntur, laudantium eum, voluptate nam nemo minima
+              qui aspernatur mollitia tenetur velit, esse maxime sapiente? Id
+              iste placeat molestiae ipsam!
+            </div>
+            <div class="q-my-xs">
+              <span class="text-bold">N2000</span
+              ><span
+                class="q-ml-sm text-grey-6"
+                style="text-decoration: line-through"
+                >N4000</span
+              >
+            </div>
+          </div>
+        </div>
+        <!-- <ProductCard :product="product" /> -->
       </div>
     </div>
   </div>
@@ -36,46 +84,44 @@
 import { ref } from "vue";
 import ProductCard from "../../components/ProductCard.vue";
 
-const images = [
-  {
-    name: "Suit",
-    image: "/books.jpg",
-  },
-  {
-    name: "Female shoe",
-    image: "/camera.jpg",
-  },
-  {
-    name: "MacBook",
-    image: "/laptop.jpg",
-  },
-  {
-    name: "T-shirts",
-    image: "/shirts.jpg",
-  },
-  {
-    name: "Watch",
-    image: "/watch.jpg",
-  },
-
-  {
-    name: "Speaker",
-    image: "/speaker.jpg",
-  },
-];
-
 export default {
   name: "Recent",
   components: { ProductCard },
   data() {
     return {
-      products: images,
+      products: [],
+      stars: 5,
     };
+  },
+  methods: {
+    getProducts() {
+      this.$store.dispatch("moduleExample/getProducts").then((response) => {
+        this.products = response.docs;
+      });
+    },
+  },
+  mounted() {
+    this.getProducts();
   },
 };
 </script>
 
-<style>
+<style scoped>
+.main {
+  cursor: pointer;
+}
+.add-btn {
+  height: 15px;
+  margin: auto 0;
+}
+
+.card {
+  border-radius: 10px;
+}
+.img {
+  height: 150px;
+  width: 100%;
+}
 .master {
   padding: 0 4%;
 }

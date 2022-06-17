@@ -1,18 +1,15 @@
 <template>
-  <div class="category bg-grey-3 border_radius">
-    <nav
-      @mouseleave="show = false"
-      role="navigation"
-      class="primary-navigation"
-    >
-      <ul v-for="n in 10" :key="n">
+  <div class="category bg-white border_radius">
+    <nav @mouseleave="show = false" class="primary-navigation">
+      <ul v-for="item in categories" :key="item.id">
         <li>
+          <!-- <q-icon name="settings" class="q-mx-md ellipsis" />  -->
           <a
             @mouseenter="show = true"
             @click="this.$router.push('/category')"
-            class="text-primary text-bold text-subtitle1 row items-center"
+            class="text-primary text-bold text-subtitle2 row items-center"
           >
-            <q-icon name="settings" class="q-mx-md" /> Category
+            {{ item }}
           </a>
           <!-- <div v-if="show" @mouseleave="show = false" class="dropdown row">
             <div v-for="n in 6" :key="n" class="category-group col-4">
@@ -37,19 +34,35 @@ export default {
   name: "Categories",
   data() {
     return {
-      show: ref(false),
+      // show: ref(false),
+      categories: [],
     };
+  },
+  methods: {
+    getCategories() {
+      this.$store.dispatch("moduleExample/getCategories").then((response) => {
+        // console.log(response.categories);
+        this.categories = response.categories;
+      });
+    },
+  },
+  mounted() {
+    this.getCategories();
   },
 };
 </script>
 
 <style scoped>
 h5 {
-  margin: 0 0 5%;
+  /* margin: 0 0 5%; */
 }
 
 ul {
   padding: 0;
+}
+
+li {
+  margin: auto 0;
 }
 
 .category {
@@ -59,7 +72,7 @@ ul {
   padding: 0;
 }
 
-.category-group {
+/* .category-group {
   padding: 0 2%;
   margin: 0;
   display: block;
@@ -68,17 +81,16 @@ ul {
 .category-group-list li {
   padding: 0;
   margin: 0;
-}
+} */
 nav.primary-navigation {
   margin: 0 auto;
   text-align: left;
-  padding: 0 10%;
-  font-size: 16px;
+  /* padding: 0 10%; */
 }
 
 .primary-navigation ul {
   padding: 0;
-  margin: 0;
+  margin: auto 0;
 }
 nav.primary-navigation ul li {
   margin: 3% 0;

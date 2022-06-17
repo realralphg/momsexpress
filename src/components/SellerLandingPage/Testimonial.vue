@@ -4,23 +4,7 @@
     <q-card
       class="col-lg-3 col-md-3 col-sm-12 col-xs-12 card q-my-md q-mx-xs q-px-md q-py-lg"
     >
-      <q-avatar>
-        <q-icon name="chat_bubble_outline" size="2rem" color="secondary" />
-      </q-avatar>
-      <div>
-        <q-rating
-          v-model="stars"
-          :max="5"
-          size="17px"
-          class="q-my-md"
-          color="orange-7"
-        />
-      </div>
-      <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate
-        quisquam soluta id! Neque harum vitae similique.
-      </p>
-      <div class="row">
+      <div class="row q-my-sm">
         <q-avatar square>
           <img src="https://cdn.quasar.dev/img/avatar.png" />
         </q-avatar>
@@ -29,28 +13,20 @@
           <div class="text-primary">Occupation</div>
         </div>
       </div>
+      <!-- <q-avatar>
+        <q-icon name="chat_bubble_outline" size="2rem" color="secondary" />
+      </q-avatar> -->
+
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate
+        quisquam soluta id! Neque harum vitae similique.
+      </p>
     </q-card>
 
     <q-card
       class="col-lg-3 col-md-3 col-sm-12 col-xs-12 card q-my-md q-mx-xs q-px-md q-py-lg"
     >
-      <q-avatar>
-        <q-icon name="chat_bubble_outline" size="2rem" color="secondary" />
-      </q-avatar>
-      <div>
-        <q-rating
-          v-model="stars"
-          :max="5"
-          size="17px"
-          class="q-my-md"
-          color="orange-7"
-        />
-      </div>
-      <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate
-        quisquam soluta id! Neque harum vitae similique.
-      </p>
-      <div class="row">
+      <div class="row q-my-sm">
         <q-avatar square>
           <img src="https://cdn.quasar.dev/img/avatar.png" />
         </q-avatar>
@@ -59,28 +35,20 @@
           <div class="text-primary">Occupation</div>
         </div>
       </div>
+      <!-- <q-avatar>
+        <q-icon name="chat_bubble_outline" size="2rem" color="secondary" />
+      </q-avatar> -->
+
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate
+        quisquam soluta id! Neque harum vitae similique.
+      </p>
     </q-card>
 
     <q-card
       class="col-lg-3 col-md-3 col-sm-12 col-xs-12 card q-my-md q-mx-xs q-px-md q-py-lg"
     >
-      <q-avatar>
-        <q-icon name="chat_bubble_outline" size="2rem" color="secondary" />
-      </q-avatar>
-      <div>
-        <q-rating
-          v-model="stars"
-          :max="5"
-          size="17px"
-          class="q-my-md"
-          color="orange-7"
-        />
-      </div>
-      <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate
-        quisquam soluta id! Neque harum vitae similique.
-      </p>
-      <div class="row">
+      <div class="row q-my-sm">
         <q-avatar square>
           <img src="https://cdn.quasar.dev/img/avatar.png" />
         </q-avatar>
@@ -89,6 +57,14 @@
           <div class="text-primary">Occupation</div>
         </div>
       </div>
+      <!-- <q-avatar>
+        <q-icon name="chat_bubble_outline" size="2rem" color="secondary" />
+      </q-avatar> -->
+
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate
+        quisquam soluta id! Neque harum vitae similique.
+      </p>
     </q-card>
   </div>
 </template>

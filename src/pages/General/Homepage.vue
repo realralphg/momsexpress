@@ -1,5 +1,5 @@
 <template>
-  <q-page class="relative-position">
+  <q-page class="relative-position bg-grey-2">
     <Hero />
     <!-- <Categories /> -->
     <Categories2 />
@@ -8,10 +8,10 @@
     <Trending />
     <FeaturedShops />
     <Trending />
+    <EasyBudgetVue />
     <Seamless />
     <Trending />
-    <Trending />
-    <Trending />
+    <MoreProductsVue />
     <!-- <Newlayout /> -->
   </q-page>
 </template>
@@ -27,6 +27,8 @@ import Trending from "components/Homepage/Trending";
 import Seamless from "components/Homepage/Seamless";
 import Doublestuff from "src/components/Homepage/Doublestuff.vue";
 import FeaturedShops from "src/components/Homepage/FeaturedShops.vue";
+import EasyBudgetVue from "src/components/Homepage/EasyBudget.vue";
+import MoreProductsVue from "../../components/Homepage/MoreProducts.vue";
 
 export default defineComponent({
   name: "PageIndex",
@@ -39,6 +41,8 @@ export default defineComponent({
     Seamless,
     Doublestuff,
     FeaturedShops,
+    EasyBudgetVue,
+    MoreProductsVue,
   },
   data() {
     return {};

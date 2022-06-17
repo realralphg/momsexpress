@@ -24,7 +24,9 @@
     <div class="column q-col-gutter-sm shops">
       <div
         class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
-        @click="this.$router.push('/shop')"
+        v-for="shop in shops"
+        :key="shop._id"
+        @click="this.$router.push(`/shop/${shop._id}`)"
       >
         <div class="div1">
           <div class="absolute flex flex-center one items-center q-py-xl">
@@ -75,7 +77,22 @@ export default {
   name: "Rename",
   components: {},
   data() {
-    return {};
+    return {
+      shops: [],
+    };
+  },
+  methods: {
+    getShops() {
+      console.log("why");
+      this.$store.dispatch("moduleExample/getShops").then((response) => {
+        console.log("why");
+        // this.shops = response;
+        console.log(response);
+      });
+    },
+  },
+  mounted() {
+    this.getShops();
   },
 };
 </script>

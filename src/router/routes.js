@@ -30,7 +30,7 @@ const routes = [
         component: () => import("src/pages/Seller/sellerSignup.vue"),
       },
       {
-        path: "/details",
+        path: "/details/:productId",
         component: () => import("src/pages/General/Details.vue"),
       },
       {
@@ -58,7 +58,7 @@ const routes = [
         component: () => import("src/pages/General/Checkout.vue"),
       },
       {
-        path: "/shop",
+        path: "/shop/:shopId",
         component: () => import("src/pages/Categories/SingleShopPage.vue"),
       },
       { path: "/user", component: () => import("src/pages/User/User.vue") },

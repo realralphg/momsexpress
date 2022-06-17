@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 0 5% 2%">
+  <div class="user-main">
     <div class="row">
       <!-- User profile side -->
       <div
@@ -57,7 +57,7 @@
 
       <!-- Pages -->
       <div class="col-lg-8 col-md-7 col-sm-12 col-xs-12" style="">
-        <div class="q-gutter-y-md" style="max-width: 100%; margin: 0 auto">
+        <div class="q-gutter-y-md" style="width: 100%; margin: 0 auto">
           <div>
             <q-tabs
               v-model="tab"
@@ -81,7 +81,7 @@
                 <Order />
               </q-tab-panel>
 
-              <q-tab-panel class="q-pa-none" name="alarms">
+              <q-tab-panel class="q-pa-none bg-grey-2" name="alarms">
                 <Wishlist />
               </q-tab-panel>
 
@@ -135,6 +135,15 @@ export default {
 </script>
 
 <style scoped>
+.user-main {
+  padding: 0 5% 2%;
+}
+
+@media screen and (max-width: 1024px) {
+  .user-main {
+    padding: 0 2% 2%;
+  }
+}
 .profile_det {
   border: 2px solid red;
   /* border-radius: 22px; */

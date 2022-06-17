@@ -1,9 +1,7 @@
 <template>
   <div class="hero" style="padding: 2% 5% 1%">
     <!-- Categories Section -->
-    <div class="q-pa-none border_radius height hide_me">
-      <Categories />
-    </div>
+    <Categories class="q-pa-none border_radius hide_me height" />
 
     <!-- Carousel two  -->
     <q-carousel
@@ -80,12 +78,8 @@
     </q-carousel>
 
     <!-- Advertisement  -->
-    <div class="q-pa-none border_radius height hide_me">
-      <q-img
-        src="/Homepage/watch4.jpg"
-        class="border_radius"
-        style="height: 100%"
-      />
+    <div class="q-pa-none border_radius hide_me height">
+      <q-img src="/Homepage/watch4.jpg" class="border_radius height" />
     </div>
   </div>
 </template>
@@ -106,7 +100,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .hero {
   display: grid;
   grid-template-columns: 20% 55% 25%;
@@ -118,7 +112,8 @@ export default {
 }
 
 .height {
-  height: 60vh;
+  /* height: 60vh; */
+  height: 100%;
 }
 
 @media screen and (max-width: 830px) {

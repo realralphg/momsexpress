@@ -5,7 +5,7 @@
     <div class="row justify-between q-px-md bg-primary q-py-xl q-px-xl">
       <div class="col-lg-4 col-md-5 col-sm-5 col-xs-12 text-white">
         <div class="text-subtitle1 text-weight-bold">
-          <div class="text-subtitle3 hover_underline_white q-my-sm">
+          <div class="text-subtitle2 hover_underline_white q-my-sm">
             Get the latest information about newly posted products
           </div>
           <div class="row">
@@ -29,17 +29,17 @@
           <div class="row q-mt-md">
             <q-icon
               class="q-mr-sm cursor-pointer icon"
-              size="2rem"
+              size="1.4rem"
               name="facebook"
             />
             <q-icon
               class="q-mr-sm cursor-pointer icon"
-              size="2rem"
+              size="1.4rem"
               name="eva-twitter"
             />
             <q-icon
               class="q-mr-sm cursor-pointer icon"
-              size="2rem"
+              size="1.4rem"
               name="eva-linkedin"
             />
           </div>
@@ -49,40 +49,30 @@
       <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12"></div>
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-10 text-white">
         <div class="text-h6 text-weight-bold">Services</div>
-        <div class="text-subtitle3 hover_underline_white q-mt-sm">
-          Contact us
+        <div class="text-caption hover_underline_white q-mt-sm">Contact us</div>
+        <div class="text-caption hover_underline_white">About Us</div>
+        <div class="text-caption hover_underline_white">
+          Sell on MOMS Express
         </div>
-        <div class="text-subtitle3 hover_underline_white">About Us</div>
-        <div class="text-subtitle3 hover_underline_white">Lorem</div>
-        <div class="text-subtitle3 hover_underline_white">Lorem</div>
-        <div class="text-subtitle3 hover_underline_white">Lorem</div>
       </div>
-
-      <!-- <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 text-white">
-            <div class="text-h6 text-weight-bold">Socials</div>
-            <div class="text-subtitle3 hover_underline_white q-mt-sm"><q-icon size="1.5rem" name="facebook" class="sub_section" />Facebook</div>
-            <div class="text-subtitle3 hover_underline_white"><q-icon size="1.5rem" name="eva-twitter" />Twitter</div>
-            <div class="text-subtitle3 hover_underline_white"><q-icon size="1.5rem" name="eva-twitter" />Twitter</div>
-          </div> -->
 
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-white">
         <div class="text-h6 text-weight-bold">Policy</div>
-        <div class="text-subtitle3 hover_underline_white q-mt-sm">
+        <div class="text-caption hover_underline_white q-mt-sm">
           Return Policy
         </div>
-        <div class="text-subtitle3 hover_underline_white">Terms Of Use</div>
-        <div class="text-subtitle3 hover_underline_white">Security</div>
-        <div class="text-subtitle3 hover_underline_white">Privacy</div>
+        <div class="text-caption hover_underline_white">Terms Of Use</div>
+        <div class="text-caption hover_underline_white">
+          Cancellation & Returns
+        </div>
       </div>
 
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-white">
         <div class="text-h6 text-weight-bold">Help</div>
-        <div class="text-subtitle3 hover_underline_white q-mt-sm">Payments</div>
-        <div class="text-subtitle3 hover_underline_white">Shipping</div>
-        <div class="text-subtitle3 hover_underline_white">
-          Cancellation & Returns
-        </div>
-        <div class="text-subtitle3 hover_underline_white">FAQ</div>
+        <div class="text-caption hover_underline_white q-mt-sm">Payments</div>
+        <div class="text-caption hover_underline_white">Shipping</div>
+        <div class="text-caption hover_underline_white">FAQ</div>
+        <div class="text-caption hover_underline_white">Security</div>
       </div>
     </div>
     <div class="bg-secondary">

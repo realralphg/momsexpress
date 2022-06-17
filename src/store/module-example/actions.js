@@ -149,7 +149,7 @@ export function getSingleSellerProduct({ commit }, productId) {
       },
     })
       .then(({ data, status }) => {
-        console.log(data.data);
+        console.log(data.data.desc.color);
         let product = data.data;
         if (status === 200 || status === 201) {
           commit("setSingleSellerProduct", product);
@@ -391,6 +391,105 @@ export function addProductToCart({ commit }, { product, quantity }) {
   commit("addToCart", { product, quantity });
 }
 
+export function cartItemIncrement({ commit }, { product, quantity }) {
+  commit("cartItemIncrement", { product, quantity });
+}
+
+export function cartItemDecrement({ commit }, { product, quantity }) {
+  commit("cartItemDecrement", { product, quantity });
+}
+
+export function deleteCartItem({ commit }, { product }) {
+  commit("deleteCartItem", { product });
+}
+
+export function addProductToWishlist({ commit }, { product }) {
+  commit("addToWishlist", { product });
+}
+
 export function setCart({ commit }, cart) {
   commit("setCart", cart);
+}
+
+export function setWishlist({ commit }, wishlist) {
+  commit("setWishlist", wishlist);
+}
+
+export function getCategories() {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/search/categories/new`,
+      // headers: {
+      //   Authorization: "Bearer " + localStorage.getItem("buyerToken"),
+      // },
+    })
+      .then((response) => {
+        if (response) {
+          resolve(response.data.data);
+        }
+      })
+      .catch((error) => {
+        reject();
+      });
+  });
+}
+
+export function getProducts() {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/search?page=1`,
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("buyerToken"),
+      },
+    })
+      .then((response) => {
+        if (response) {
+          // console.log(response.data.data);
+          resolve(response.data.data);
+        }
+      })
+      .catch((error) => {
+        reject();
+      });
+  });
+}
+
+export function getSingleSeller(id) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/search/shops/${id}`,
+    })
+      .then((response) => {
+        if (response) {
+          // console.log(response.data.data);
+          resolve(response.data.data);
+        }
+      })
+      .catch((error) => {
+        reject();
+      });
+  });
+}
+
+export function getShops() {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/search/shops`,
+    })
+      .then((response) => {
+        console.log("why");
+        if (response) {
+          console.log("why");
+          // console.log(response.data.data);
+          resolve(response);
+        }
+      })
+      .catch((error) => {
+        reject();
+      });
+  });
 }

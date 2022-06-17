@@ -1,31 +1,30 @@
 <template>
-  <q-page v-if="!products[0]" class="column flex-center">
+  <q-page v-if="!cartItems[0]" class="column flex-center">
     <div class="text-center text-primary text-h5 text-bold">
       No Item in cart
     </div>
+    <!-- {{ cartItems }} -->
+    <!-- {{ cartItems }} -->
     <q-icon name="shopping_cart" size="3rem" color="primary" />
   </q-page>
   <div class="q-pa-md">
     <div class="scroll">
-      <div v-if="products[0]">
+      <div v-if="cartItems[0]">
         <div
           class="row bg-white cart_item q-mb-lg"
-          v-for="item in products"
-          :key="item.id"
+          v-for="item in cartItems"
+          :key="item._id"
         >
-          <q-img
-            :src="`Homepage/${item.product.image}`"
-            class="col-5 cart_item_image"
-          />
+          <q-img :src="item.product.img[0].url" class="col-5 cart_item_image" />
           <div class="col-7 q-px-xs text-black relative-position">
-            <div class="text-bold">{{ item.product.title }}</div>
+            <div class="text-bold">{{ item.product.name }}</div>
             <div class="text-caption">
-              {{ item.product.price * item.quantity }}
+              N{{ item.product.price * item.quantity }}
             </div>
             <div class="row absolute-bottom q-mb-sm">
               <q-btn
                 icon="remove"
-                @click="decrement(item.product.id)"
+                @click="decrement(item.product)"
                 :disable="item.quantity <= 1"
                 size="0.6rem"
                 class="q-mr-sm button"
@@ -37,7 +36,7 @@
               <input v-model="item.quantity" class="text-center" />
               <q-btn
                 icon="add"
-                @click="increment(item.product.id)"
+                @click="increment(item.product)"
                 size="0.6rem"
                 class="q-ml-sm button"
                 round
@@ -49,7 +48,7 @@
           </div>
           <q-btn
             label="Remove"
-            @click="deleteProduct(item.product.id)"
+            @click="deleteProduct(item.product)"
             no-caps
             style="width: 100%"
             size="0.8rem"
@@ -61,7 +60,7 @@
         </div>
         <!-- CheckOut Section -->
         <div
-          v-show="products[0]"
+          v-show="cartItems[0]"
           class="bg-grey-1 text-black text-caption q-py-md"
         >
           <div class="text-h6 text-center text-bold">Total Price Details</div>
@@ -97,58 +96,41 @@
 </template>
 
 <script>
-import moduleExample from "src/store/module-example";
+import { watch } from "@vue/runtime-core";
+import { mapGetters } from "vuex";
+
 export default {
   name: "buyerSidebar",
   data() {
-    const products = moduleExample.state.cart;
-    return {
-      products,
-      // num:''
-    };
+    return {};
   },
   computed: {
+    cartItems() {
+      return JSON.parse(JSON.stringify(this.$store.state.moduleExample.cart));
+    },
     total() {
-      return this.products.reduce(function (sum, item) {
+      return this.cartItems.reduce(function (sum, item) {
         return sum + item.product.price * item.quantity;
       }, 0);
     },
     numberOfItemsInCart() {
-      return this.products.length;
+      return this.cartItems.length;
     },
+    ...mapGetters(["getCartItems"]),
   },
   methods: {
-    increment(id) {
-      this.products = this.products.map((item) => {
-        return item.product.id === id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item;
-      });
-      this.setCart();
+    increment(product) {
+      this.$store.dispatch("moduleExample/cartItemIncrement", { product });
     },
-    decrement(id) {
-      this.products = this.products.map((item) => {
-        return item.product.id === id
-          ? { ...item, quantity: item.quantity - 1 }
-          : item;
-      });
-      this.setCart();
+    decrement(product) {
+      this.$store.dispatch("moduleExample/cartItemDecrement", { product });
     },
-    setCart() {
-      this.$store.dispatch("moduleExample/setCart", this.products);
-    },
-    deleteProduct(id) {
-      console.log(id);
-      let products = this.$store.state.moduleExample.cart.filter(
-        (item) => item.product.id !== id
-      );
-      this.products = products;
-      this.setCart();
+
+    deleteProduct(product) {
+      this.$store.dispatch("moduleExample/deleteCartItem", { product });
     },
   },
   created() {
-    // return this.$store.state.products
-    // this.products = this.$store.state.moduleExample.cart;
     // console.log(this.products);
   },
 };

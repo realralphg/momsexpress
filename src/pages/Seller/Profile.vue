@@ -54,14 +54,6 @@
           </q-card-section>
         </q-card>
       </div>
-
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <q-card>
-          <q-card-section>
-            <BankDets />
-          </q-card-section>
-        </q-card>
-      </div>
     </div>
   </q-page>
 </template>

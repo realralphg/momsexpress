@@ -10,13 +10,16 @@
       </h6>
     </div>
 
-    <q-toolbar-title class="">
+    <q-toolbar-title class="search-input">
       <q-input
         outlined
         dense
         bg-color="white"
         class="input"
         v-model="search"
+        @click="search !== '' ? (result = true) : (result = false)"
+        @blur="result = false"
+        @keydown="result = true"
         placeholder="Search for Products/Categories"
       >
         <template v-slot:append>
@@ -28,6 +31,17 @@
           />
         </template>
       </q-input>
+
+      <div
+        v-if="(result, search === '' ? (result = false) : result)"
+        class="search-result text-black text-subtitle2 bg-grey-2"
+      >
+        <q-list>
+          <q-scroll-area style="height: 60vh">
+            <div class="search" v-for="n in 18" :key="n">Single line item</div>
+          </q-scroll-area>
+        </q-list>
+      </div>
     </q-toolbar-title>
 
     <q-btn flat no-caps class="hide">
@@ -121,6 +135,7 @@ export default {
   data() {
     return {
       search: ref(""),
+      result: ref(false),
       text: ref(null),
       role: localStorage.getItem("userRole"),
       userName: localStorage.getItem("buyerFullname"),
@@ -170,6 +185,23 @@ export default {
 </script>
 
 <style scoped>
+.search-input {
+  position: relative;
+  overflow: visible;
+}
+
+.search-result {
+  position: absolute;
+  background: white;
+  width: 100%;
+  top: 100%;
+  z-index: 100;
+  padding: 2% 5%;
+}
+.search {
+  cursor: pointer;
+  margin: 2% 0;
+}
 .card {
   margin: 0 auto !important;
   width: 100%;
@@ -216,6 +248,17 @@ export default {
   }
 } */
 @media screen and (max-width: 830px) {
+  .search-input {
+    position: static;
+  }
+  .search-result {
+    position: absolute;
+    background: rgb(0, 0, 0, 0.4);
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    /* margin-top: %; */
+  }
   .hide {
     display: none;
   }

@@ -1,5 +1,9 @@
 <template>
-  <q-page class="padding">
+  <q-page v-if="!orders[0]" style="margin: 0 auto" class="column flex-center">
+    <div class="text-center text-primary text-h5 text-bold">No Orders yet</div>
+    <q-icon name="shopping_cart" size="3rem" color="primary" />
+  </q-page>
+  <q-page class="padding" v-if="orders[0]">
     <div class="heading text-primary text-bold text-center q-mt-md">ORDERS</div>
 
     <!-- Table Head  -->
@@ -15,8 +19,8 @@
     </div>
 
     <div
-      v-for="n in 10"
-      :key="n"
+      v-for="order in orders"
+      :key="order._id"
       class="q-my-sm row justify-evenly text-center items-center bg-grey-3 body_text"
       style=""
     >
@@ -35,7 +39,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      orders: [],
+    };
   },
 };
 </script>

@@ -5,7 +5,7 @@
       <q-list class="rounded-borders">
         <q-expansion-item
           expand-separator
-          label="What is MOMS About"
+          label="Why should I sell on MOMS?"
           class="bg-secondary q-mb-md"
           header-class="text-subtitle1 text-white"
           style="border: 1px solid grey"
@@ -13,17 +13,16 @@
         >
           <q-card>
             <q-card-section>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem,
-              eius reprehenderit eos corrupti commodi magni quaerat ex numquam,
-              dolorum officiis modi facere maiores architecto suscipit iste
-              eveniet doloribus ullam aliquid.
+              MOMS is the number one marketplace in Nigeria for indigenous
+              sellers to reach a far wider audience while being part of the
+              largest marketplace in Nigeria.
             </q-card-section>
           </q-card>
         </q-expansion-item>
 
         <q-expansion-item
           expand-separator
-          label="Wifi settings"
+          label="How Long Does Verification Take?"
           class="bg-secondary q-mb-md"
           header-class="text-subtitle1 text-white"
           style="border: 1px solid grey"
@@ -31,17 +30,17 @@
         >
           <q-card>
             <q-card-section>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem,
-              eius reprehenderit eos corrupti commodi magni quaerat ex numquam,
-              dolorum officiis modi facere maiores architecto suscipit iste
-              eveniet doloribus ullam aliquid.
+              The verification process is all standard procedure and shouldn’t
+              take more than a few minutes to get you verified. However, if
+              there is a problem with your verification you would be notified
+              via email or text through your registered phone number and email.
             </q-card-section>
           </q-card>
         </q-expansion-item>
 
         <q-expansion-item
           expand-separator
-          label="Drafts"
+          label="How Do I Get Paid on MOMS?"
           class="bg-secondary q-mb-md"
           header-class="text-subtitle1 text-white"
           style="border: 1px solid grey"
@@ -49,28 +48,9 @@
         >
           <q-card>
             <q-card-section>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem,
-              eius reprehenderit eos corrupti commodi magni quaerat ex numquam,
-              dolorum officiis modi facere maiores architecto suscipit iste
-              eveniet doloribus ullam aliquid.
-            </q-card-section>
-          </q-card>
-        </q-expansion-item>
-
-        <q-expansion-item
-          expand-separator
-          label="Drafts"
-          class="bg-secondary q-mb-md"
-          header-class="text-subtitle1 text-white"
-          style="border: 1px solid grey"
-          expand-icon-class="text-white"
-        >
-          <q-card>
-            <q-card-section>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem,
-              eius reprehenderit eos corrupti commodi magni quaerat ex numquam,
-              dolorum officiis modi facere maiores architecto suscipit iste
-              eveniet doloribus ullam aliquid.
+              MOMS uses a direct payment system via paystack so once your item
+              is purchased the money is directly sent to your registered account
+              number.
             </q-card-section>
           </q-card>
         </q-expansion-item>

@@ -26,7 +26,7 @@
       v-model="drawerOpen"
       :width="250"
       :breakpoint="2200"
-      class="cart-drawer text-white bg-grey-3 sidebar absolute"
+      class="cart-drawer text-white bg-grey-2 sidebar absolute"
       style="height: 100%"
     >
       <q-list>

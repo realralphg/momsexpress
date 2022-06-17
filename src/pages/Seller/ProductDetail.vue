@@ -100,28 +100,8 @@
               </div>
 
               <div>
-                <label for="">Subcategory</label>
-                <q-input filled lazy-rules v-model="product.subCategories" />
-              </div>
-
-              <div>
-                <label for="">Color</label>
-                <q-input filled label="Color" lazy-rules v-model="color" />
-              </div>
-
-              <div>
-                <label for="">Size</label>
-                <q-input filled label="Size" lazy-rules v-model="size" />
-              </div>
-
-              <div>
                 <label for="">Description</label>
-                <q-input
-                  filled
-                  label="Description"
-                  lazy-rules
-                  v-model="description"
-                />
+                <q-input filled label="Description" v-model="description" />
               </div>
 
               <div class="row">
@@ -263,14 +243,19 @@ export default {
       id: "",
       product: "",
       productName: name,
-      color: "red",
-      size: 15,
-      description: "haaa",
+      // color: "red",
+      // size: 15,
+      // description: "haaa",
       // Has to be a nested object
       images: [],
     };
   },
   computed: {
+    async description() {
+      return (
+        await this.product.desc.color, console.log(this.product.desc.color)
+      );
+    },
     win_width() {
       return this.$q.screen.width - 59;
     },

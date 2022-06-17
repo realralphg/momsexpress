@@ -3,10 +3,7 @@
     <!-- Contact Us section -->
 
     <div class="">
-      <div
-        class="q-px-lg q-pb-sm"
-        style="border: 1px solid grey; border-radius: 4px"
-      >
+      <div class="q-px-lg q-pb-sm">
         <h3 class="">Message Us</h3>
         <div class="row justify-between">
           <q-input

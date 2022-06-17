@@ -7,7 +7,7 @@
       <h5
         class="text-h5 text-bold q-my-auto text-primary homepage_heading_font"
       >
-        Trending
+        Easy Budget
       </h5>
       <q-btn
         color="primary"
@@ -37,6 +37,31 @@ import { ref } from "vue";
 import ProductCard from "../../components/ProductCard.vue";
 
 const images = [
+  {
+    name: "Suit",
+    image: "/books.jpg",
+  },
+  {
+    name: "Female shoe",
+    image: "/camera.jpg",
+  },
+  {
+    name: "MacBook",
+    image: "/laptop.jpg",
+  },
+  {
+    name: "T-shirts",
+    image: "/shirts.jpg",
+  },
+  {
+    name: "Watch",
+    image: "/watch.jpg",
+  },
+
+  {
+    name: "Speaker",
+    image: "/speaker.jpg",
+  },
   {
     name: "Suit",
     image: "/books.jpg",

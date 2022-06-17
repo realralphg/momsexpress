@@ -20,3 +20,7 @@ export function cartItemCounter(state) {
 export function getCartItems(state) {
   return state.cart;
 }
+
+export function getWishlist(state) {
+  return state.wishlist;
+}
