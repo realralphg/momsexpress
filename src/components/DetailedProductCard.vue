@@ -34,10 +34,7 @@
       />
     </div>
     <div class="text-caption text-weight-bold text-grey ellipsis-2-lines">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam repellat
-      consequuntur, laudantium eum, voluptate nam nemo minima qui aspernatur
-      mollitia tenetur velit, esse maxime sapiente? Id iste placeat molestiae
-      ipsam!
+      {{ product.desc.color }}
     </div>
     <div class="q-my-xs">
       <span class="text-bold">N{{ product.price }}</span
@@ -45,7 +42,7 @@
         class="q-ml-sm text-grey-6"
         style="text-decoration: line-through"
         v-if="discount !== 0"
-        >{{ discount }}</span
+        >N{{ product.desc.size }}</span
       >
     </div>
     <div class="row justify-between">
@@ -72,7 +69,7 @@ export default {
   props: ["product"],
   computed: {
     discount() {
-      let discount = this.product.price * (this.product.discount / 100);
+      let discount = this.product.price * (this.product.desc.size / 100);
       return discount;
     },
   },

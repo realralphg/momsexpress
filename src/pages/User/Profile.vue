@@ -1,11 +1,11 @@
 <template>
   <div>
     <!-- Auth Buttons  -->
-    <div class="row justify-evenly q-my-md" v-if="!buyerToken">
+    <div class="row justify-evenly q-my-md" v-if="!buyerId">
       <q-btn
         color="primary"
         class="bg-secondary button q-mt-md"
-        to="/auth/Signup"
+        to="/signup"
         flat
         label="SIGN UP"
         size="1.1rem"
@@ -13,14 +13,14 @@
       <q-btn
         color="white"
         class="bg-primary button q-mt-md"
-        to="/auth"
+        to="/login"
         flat
         label="login"
         size="1.1rem"
       />
     </div>
 
-    <div class="column" v-if="buyerToken">
+    <div class="column" v-if="buyerId">
       <!-- Profile Image and Details -->
       <div class="column text-center items-center q-px-xl q-mt-md">
         <q-avatar
@@ -32,7 +32,7 @@
           icon="person"
         />
         <div class="row">
-          <div class="q-my-xs text-bold text-h5">Big Billy</div>
+          <div class="q-my-xs text-bold text-h5">{{ buyerName }}</div>
           <q-btn
             icon="edit"
             size="0.8rem"
@@ -46,8 +46,8 @@
             </q-tooltip>
           </q-btn>
         </div>
-        <div class="q-my-xs text-h6">tobiikupolati33@gmail.com</div>
-        <div class="q-my-xs text-h6">08012345678</div>
+        <div class="q-my-xs text-h6">{{ buyerEmail }}</div>
+        <!-- <div class="q-my-xs text-h6">08012345678</div> -->
       </div>
 
       <!-- <div class="q-px-xl">
@@ -141,7 +141,7 @@
         clickable
         class="q-mb-lg list_font text-h6"
         v-ripple
-        to="/help"
+        to="/about"
         style="border-radius: 15px"
       >
         <q-item-section>
@@ -152,7 +152,7 @@
       <q-item
         clickable
         class="q-mb-lg list_font text-h6"
-        to="/contact"
+        to="/about"
         v-ripple
         style="border-radius: 15px"
       >
@@ -164,7 +164,7 @@
       <q-item
         clickable
         class="q-mb-lg list_font text-h6"
-        to="/about-us"
+        to="/about"
         v-ripple
         style="border-radius: 15px"
       >
@@ -179,7 +179,7 @@
         to="/about-us"
         v-ripple
         style="border-radius: 15px"
-        v-if="buyerToken == ''"
+        v-if="buyerId == ''"
         @click="logout()"
       >
         <q-item-section>
@@ -209,7 +209,9 @@ export default {
     return {
       role: localStorage.getItem("userRole"),
       sellerToken: localStorage.getItem("sellerToken"),
-      buyerToken: localStorage.getItem("buyerToken"),
+      buyerId: localStorage.getItem("buyerId"),
+      buyerName: localStorage.getItem("buyerFullname"),
+      buyerEmail: localStorage.getItem("buyerEmail"),
     };
   },
   methods: {

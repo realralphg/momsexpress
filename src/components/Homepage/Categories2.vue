@@ -4,7 +4,7 @@
       <q-btn
         color="primary"
         to="/allCategory"
-        class="q-pr-none"
+        class="q-pr-none text-bold"
         label="All categories"
         icon-right="chevron_right"
         flat
@@ -16,15 +16,27 @@
     <div class="story-container">
       <div class="story-item">
         <!-- <Story  /> -->
-        <div class="story text-center" v-for="n in 12" :key="n">
+        <div
+          class="story text-center"
+          v-for="item in categories"
+          :key="item.id"
+        >
           <div>
-            <q-btn round class="avatar-container" to="/category">
-              <q-avatar class="avatar" size="60px">
-                <img src="Homepage/laptop.jpg" />
+            <q-btn
+              round
+              flat
+              color="primary"
+              class="avatar-container"
+              :to="`/category/${item.name}`"
+            >
+              <q-avatar class="avatar bg-transparent" size="30px">
+                <img :src="item.icon" />
               </q-avatar>
             </q-btn>
           </div>
-          Category
+          <div class="cat-name text-primary ellipsis q-mx-sm">
+            {{ item.name }}
+          </div>
         </div>
       </div>
     </div>
@@ -35,10 +47,32 @@
 export default {
   name: "Stories",
   components: {},
+  data() {
+    return {
+      categories: [],
+    };
+  },
+  methods: {
+    getCategories() {
+      this.$store.dispatch("moduleExample/getCategories").then((response) => {
+        // console.log(response.categories);
+        this.categories = response.categories;
+      });
+    },
+  },
+  mounted() {
+    this.getCategories();
+  },
 };
 </script>
 
 <style scoped>
+.cat-name {
+  /* display: inline; */
+}
+.story {
+  width: 15% !important;
+}
 .avatar-container {
   margin: 5px 10px;
   padding: 2px;
@@ -78,11 +112,16 @@ export default {
   }
 }
 
-@media screen and (max-width: 501px) {
+@media screen and (max-width: 600px) {
   .avatar {
-    font-size: 40px !important;
+    font-size: 20px !important;
   }
+  .cat-name {
+    font-size: 0.7rem;
+  }
+}
 
+@media screen and (max-width: 501px) {
   .story-container {
     height: 80px;
   }

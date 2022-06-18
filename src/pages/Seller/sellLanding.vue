@@ -1,27 +1,29 @@
 <template>
-  <div style="height: 70vh" class="container">
-    <div class="overlay flex flex-center text-white">
-      <div class="text-center">
-        <h2 class="text-h2 text-bold q-my-none">Become a seller Today</h2>
-        <h4 class="text-h4 q-mb-lg q-mt-md">Get closer to your customers</h4>
-        <q-btn
-          color="primary"
-          class="bg-white button"
-          to="/seller/Signup"
-          flat
-          label="SIGN UP"
-          size="1.2rem"
-        />
+  <q-page style="padding-bottom: 15%">
+    <div style="height: 70vh" class="container">
+      <div class="overlay flex flex-center text-white">
+        <div class="text-center">
+          <h2 class="text-h2 text-bold q-my-none">Become a seller Today</h2>
+          <h4 class="text-h4 q-mb-lg q-mt-md">Get closer to your customers</h4>
+          <q-btn
+            color="primary"
+            class="bg-white button"
+            to="/seller/Signup"
+            flat
+            label="SIGN UP"
+            size="1.2rem"
+          />
 
-        <div class="figures"></div>
+          <div class="figures"></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <WhatWeOffer />
-  <Testimonial />
-  <Faq />
-  <Become />
+    <WhatWeOffer />
+    <Testimonial />
+    <Faq />
+    <Become />
+  </q-page>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <q-page class="relative-position bg-grey-2">
+  <q-page class="relative-position bg-grey-2" style="padding-bottom: 22%">
     <Hero />
     <!-- <Categories /> -->
     <Categories2 />
@@ -52,6 +52,7 @@ export default defineComponent({
       this.$store
         .dispatch("moduleExample/getUser")
         .then((response) => {
+          console.log("hello");
           // this.$router.push("/");
           console.log(response);
         })
@@ -60,9 +61,9 @@ export default defineComponent({
         });
     },
   },
-  created() {
-    // let user = localStorage.getItem("buyerName");
-    // if (user == "") {
+  mounted() {
+    let user = localStorage.getItem("buyerName");
+    // if (user === null || user === "" || user === undefined) {
     this.getUserDetails();
     // }
   },

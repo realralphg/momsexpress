@@ -72,7 +72,7 @@ export function sellerLogin({ commit }, { email, password }) {
   });
 }
 
-export function addProduct(data) {
+export function addProduct(context, data) {
   const { formData } = data;
 
   return new Promise((resolve, reject) => {
@@ -154,7 +154,7 @@ export function getSingleSellerProduct({ commit }, productId) {
         if (status === 200 || status === 201) {
           commit("setSingleSellerProduct", product);
         }
-        resolve();
+        resolve(data.data);
       })
       .catch((error) => {
         console.log(error);
@@ -212,7 +212,8 @@ export function updateImage({ id, formData }) {
   });
 }
 
-export function deleteProduct(id) {
+export function deleteProduct(context, id) {
+  console.log(id);
   return new Promise((resolve, reject) => {
     axios({
       method: "DELETE",
@@ -262,7 +263,7 @@ export function buyerRegister({ email }) {
   });
 }
 
-export function buyerLogin(data) {
+export function buyerLogin(context, data) {
   return new Promise((resolve, reject) => {
     axios({
       method: "POST",
@@ -320,43 +321,58 @@ export function getUser() {
     // console.log(location.href)
     let x = location.href;
     let a = "";
-    if (x.split("=")[1] !== undefined) {
+    let person = localStorage.getItem("buyerId");
+    console.log(person);
+    console.log(x);
+    if (x !== "http://localhost:8080/" && person !== "") {
+      console.log(x);
       a = "?h=" + x.split("=")[1].split("#")[0]; //.split('=')[1].split('#')[0]
-      //  console.log(a);
-    }
-    let person = localStorage.getItem("buyerEmail");
-    if (!person) {
+      console.log(a);
       axios({
         withCredentials: true,
         method: "GET",
         url: baseurl + `/login3${a}`,
       })
         .then((response) => {
-          // location.href = '/'
+          console.log("allow");
+
+          // console.log("allow");
           let user = response.data.data.user;
           console.log(user);
-          if (user !== "") {
-            // if (location.href !== "http://localhost:8080") location.href = "/";
+          // if (user) {
+          console.log(user);
+          // if (location.href !== "http://localhost:8080") location.href = "/";
 
-            let id = user._id;
-            let name = user.fullname;
-            let email = user.email;
-            let role = user.role;
-            // context.commit('getUser', {user})
-            localStorage.setItem("buyerId", id);
-            localStorage.setItem("buyerFullname", name);
-            localStorage.setItem("buyerEmail", email);
-            localStorage.setItem("buyerRole", role);
-            resolve();
-          } else {
-            console.log("Not Working");
-            reject();
-          }
+          let id = user._id;
+          let name = user.fullname;
+          let email = user.email;
+          let role = user.role;
+          // context.commit('getUser', {user})
+          localStorage.setItem("buyerId", id);
+          localStorage.setItem("buyerFullname", name);
+          localStorage.setItem("buyerEmail", email);
+          localStorage.setItem("role", role);
+          location.href = "/";
+          resolve();
+          // } else {
+          // }
         })
         .catch((err) => {
+          reject();
           console.log(err);
+          console.log("Not Working");
         });
+    } else {
+      console.log("Halla");
     }
+    // if (x.split("=")[1] !== undefined) {
+    //   a = "?h=" + x.split("=")[1].split("#")[0]; //.split('=')[1].split('#')[0]
+    //   console.log(a);
+    // }
+
+    // if (person !== "" || person !== undefined) {
+    //   console.log("hi");
+    // }
   });
 }
 
@@ -419,7 +435,7 @@ export function getCategories() {
   return new Promise((resolve, reject) => {
     axios({
       method: "GET",
-      url: baseurl + `/search/categories/new`,
+      url: baseurl + `/shops/categories`,
       // headers: {
       //   Authorization: "Bearer " + localStorage.getItem("buyerToken"),
       // },
@@ -456,11 +472,12 @@ export function getProducts() {
   });
 }
 
-export function getSingleSeller(id) {
+export function searchProduct(context, search) {
+  console.log(search);
   return new Promise((resolve, reject) => {
     axios({
       method: "GET",
-      url: baseurl + `/search/shops/${id}`,
+      url: baseurl + `/search?productName=${search}`,
     })
       .then((response) => {
         if (response) {
@@ -474,18 +491,96 @@ export function getSingleSeller(id) {
   });
 }
 
+export function getSingleCategory(context, category) {
+  console.log(category);
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/search?category=${category}`,
+    })
+      .then((response) => {
+        if (response) {
+          // console.log(response.data.data);
+          resolve(response.data.data);
+        }
+      })
+      .catch((error) => {
+        reject();
+      });
+  });
+}
+
+export function getEasyBudgetCategory(context, amount) {
+  console.log(amount);
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/search?price=${amount}`,
+    })
+      .then((response) => {
+        if (response) {
+          // console.log(response.data.data);
+          resolve(response.data.data);
+        }
+      })
+      .catch((error) => {
+        reject();
+      });
+  });
+}
+
+export function getSingleSeller(context, productId) {
+  console.log(productId);
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/shops/${productId}`,
+    })
+      .then((response) => {
+        if (response) {
+          console.log(response.data.data);
+          resolve(response.data.data);
+        }
+      })
+      .catch((error) => {
+        reject();
+      });
+  });
+}
+
 export function getShops() {
   return new Promise((resolve, reject) => {
     axios({
       method: "GET",
-      url: baseurl + `/search/shops`,
+      url: baseurl + `/shops`,
     })
       .then((response) => {
-        console.log("why");
         if (response) {
-          console.log("why");
           // console.log(response.data.data);
-          resolve(response);
+          resolve(response.data.data);
+        }
+      })
+      .catch((error) => {
+        reject();
+      });
+  });
+}
+
+export function commentOnProduct(context, { comment, id }) {
+  console.log(comment);
+  console.log(id);
+  return new Promise((resolve, reject) => {
+    axios({
+      withCredentials: true,
+      method: "POST",
+      url: baseurl + `/search/${id}/comment`,
+
+      data: comment,
+    })
+      .then((response) => {
+        if (response) {
+          console.log(response.data);
+          resolve(response.data.data);
         }
       })
       .catch((error) => {

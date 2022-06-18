@@ -22,7 +22,10 @@
 
       <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 q-px-lg details">
         <div class="row">
-          <div class="" :class="$q.platform.is.desktop ? '' : 'q-px-md'">
+          <div
+            class="center-details"
+            :class="$q.platform.is.desktop ? '' : 'q-px-md'"
+          >
             <div class="text-h6 text-grey-10 q-mt-sm q-pt-xs">
               {{ product.name }}
             </div>
@@ -51,16 +54,7 @@
             <div
               class="text-subtitle1 q-mb-md q-pr-md text-justify description"
             >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure
-              optio tenetur ipsa error, rem quo nemo mollitia distinctio,
-              debitis amet maiores aut enim vitae sit harum incidunt, maxime
-              pariatur aliquid! Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Iure optio tenetur ipsa error, rem quo nemo
-              mollitia distinctio, debitis amet maiores aut enim vitae sit harum
-              incidunt, maxime pariatur aliquid! Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Iure optio tenetur ipsa error, rem
-              quo nemo mollitia distinctio, debitis amet maiores aut enim vitae
-              sit harum incidunt, maxime pariatur aliquid! Lorem ipsum dolor sit
+              {{ description }}
             </div>
 
             <div>
@@ -75,21 +69,25 @@
                   class="q-ml-sm text-grey-6 text-h6"
                   style="text-decoration: line-through"
                   v-if="discount !== 0"
-                  >N{{ discount }}</span
+                  >N{{ calDiscount }}</span
                 >
                 <q-chip
-                  v-if="product.discount !== 0"
+                  v-if="discount !== 0"
                   color="primary"
+                  size="0.7rem"
                   class="text-bold text-white q-my-auto"
                 >
-                  {{ product.discount }}
+                  {{ discount }}%
                 </q-chip>
               </div>
             </div>
 
             <div class="q-mt-sm">
-              <div class="text-subtitle1 text-secondary text-weight-bold">
-                {{ product.qtyInStore }} Items in stock.
+              <div class="text-caption text-secondary text-weight-bold">
+                <span class="text-weight-light text-subtitle1"
+                  >{{ product.qtyInStore }}
+                </span>
+                Items in stock.
               </div>
             </div>
             <div class="q-mt-md row items-center">
@@ -100,9 +98,10 @@
                 size="1.1rem"
                 class="q-my-md cart-btn"
                 color="primary"
+                no-caps=""
                 @click="addToCart(product)"
                 icon="shopping_cart"
-                label="Add to cart"
+                label="Add to Cart"
               />
               <q-space />
             </div>
@@ -113,7 +112,7 @@
       </div>
     </div>
 
-    <!-- Specification and Reviews  -->
+    <!-- Comments -->
     <div class="row q-mt-sm">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="row">
@@ -147,6 +146,33 @@
 
                 <q-item-section side top> 1 min ago </q-item-section>
               </q-item>
+
+              <div class="column q-mt-sm q-mb-xl">
+                <div class="q-px-lg q-pt-lg q-pb-xs">
+                  <q-input
+                    bottom-slots
+                    v-model="comment"
+                    placeholder="Leave a comment about this product..."
+                    type="textarea"
+                    outlined
+                  >
+                  </q-input>
+                </div>
+                <div class="row q-px-lg justify-between">
+                  <q-space />
+                  <div>
+                    <q-btn
+                      unelevated
+                      rounded
+                      outline=""
+                      color="primary"
+                      @click="commentOnProduct()"
+                      label="Post a  Comment"
+                      no-caps
+                    />
+                  </div>
+                </div>
+              </div>
             </q-list>
           </div>
         </div>
@@ -170,6 +196,10 @@ export default {
     return {
       productId: "",
       product: {},
+      description: "",
+      discount: "",
+      comment: "",
+
       slide: 1,
       tab: "Ratings",
       rating_point: 3.5,
@@ -192,9 +222,8 @@ export default {
     win_height() {
       return this.$q.screen.height - 0;
     },
-    discount() {
-      let discount = this.product.price * (this.product.discount / 100);
-      return discount;
+    calDiscount() {
+      return this.product.price * (this.discount / 100) + this.product.price;
     },
   },
   methods: {
@@ -207,10 +236,12 @@ export default {
             Authorization: "Bearer " + localStorage.getItem("buyerToken"),
           },
         })
-          .then((response) => {
+          .then(async (response) => {
             if (response) {
-              this.product = response.data.data;
-              console.log(response.data.data);
+              this.product = await response.data.data;
+              this.description = response.data.data.desc.color;
+              this.discount = response.data.data.desc.size;
+              // console.log(this.discount);
               resolve();
             }
           })
@@ -225,11 +256,27 @@ export default {
         quantity: 1,
       });
     },
+    commentOnProduct() {
+      console.log(this.productId);
+      if (this.comment !== "") {
+        console.log(this.productId);
+        this.$store
+          .dispatch("moduleExample/commentOnProduct", {
+            comment: this.comment,
+            id: this.productId,
+          })
+          .then((response) => {
+            console.log(response);
+          });
+      } else {
+        console.log("Input a comment please");
+      }
+    },
   },
   mounted() {
     let route = location.href.split("details/");
     this.productId = route[1];
-    console.log(this.productId);
+    // console.log(this.productId);
     this.getSingleProduct(this.productId);
   },
 };
@@ -246,6 +293,10 @@ export default {
 .carousel {
   border-radius: 7px;
   height: 100%;
+}
+
+.center-details {
+  width: 100% !important;
 }
 
 /* .cart-btn {

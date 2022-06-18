@@ -62,31 +62,6 @@ const images = [
     name: "Speaker",
     image: "/speaker.jpg",
   },
-  {
-    name: "Suit",
-    image: "/books.jpg",
-  },
-  {
-    name: "Female shoe",
-    image: "/camera.jpg",
-  },
-  {
-    name: "MacBook",
-    image: "/laptop.jpg",
-  },
-  {
-    name: "T-shirts",
-    image: "/shirts.jpg",
-  },
-  {
-    name: "Watch",
-    image: "/watch.jpg",
-  },
-
-  {
-    name: "Speaker",
-    image: "/speaker.jpg",
-  },
 ];
 
 export default {

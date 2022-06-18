@@ -40,7 +40,7 @@
           </q-img>
           <div class="q-pa-sm">
             <div class="justify-between">
-              <div class="text-subtitle1 text-bold product-title">
+              <div class="text-subtitle1 ellipsis text-bold product-title">
                 {{ product.name }}
               </div>
               <div class="row">
@@ -59,22 +59,28 @@
             <div
               class="text-caption text-weight-bold text-grey ellipsis-2-lines"
             >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam
-              repellat consequuntur, laudantium eum, voluptate nam nemo minima
-              qui aspernatur mollitia tenetur velit, esse maxime sapiente? Id
-              iste placeat molestiae ipsam!
+              {{ product.desc.color }}
             </div>
             <div class="q-my-xs">
-              <span class="text-bold">N2000</span
+              <span class="text-bold">{{ product.price }}</span
               ><span
                 class="q-ml-sm text-grey-6"
                 style="text-decoration: line-through"
-                >N4000</span
+                v-if="product.desc.size !== 0"
+                >N{{
+                  product.price * (product.desc.size / 100) + product.price
+                }}</span
               >
+              <q-chip
+                size="0.5rem"
+                color="primary"
+                class="text-white q-ml-xs q-my-auto"
+              >
+                {{ product.desc.size }}%
+              </q-chip>
             </div>
           </div>
         </div>
-        <!-- <ProductCard :product="product" /> -->
       </div>
     </div>
   </div>
@@ -92,6 +98,12 @@ export default {
       products: [],
       stars: 5,
     };
+  },
+  computed: {
+    discount(product) {
+      let discount = this.product.price * (this.product.desc.size / 100);
+      return discount;
+    },
   },
   methods: {
     getProducts() {
@@ -166,7 +178,7 @@ export default {
 
 @media screen and (max-width: 330px) {
   .card-container {
-    grid-template-columns: repeat(6, 46%);
+    grid-template-columns: repeat(6, 47%);
   }
 }
 </style>

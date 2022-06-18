@@ -1,123 +1,125 @@
 <template>
-  <q-card class="relative-position" style="width: 80%; margin: 5% auto">
-    <div class="row">
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 q-pb-lg">
-        <!-- Login Form  -->
-        <div class="q-px-lg">
-          <p class="text-center text-h4 text-bold text-primary q-my-xl">
-            Register
-          </p>
+  <q-page>
+    <q-card class="relative-position card">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 q-pb-lg">
+          <!-- Login Form  -->
+          <div class="q-px-lg">
+            <p class="text-center text-h4 text-bold text-primary q-my-xl">
+              Register
+            </p>
 
-          <q-input
-            outlined
-            elevated
-            v-model="name"
-            placeholder="Full Name"
-            class="q-mb-md q-mt-md q-mx-auto"
-            color="black"
-            style="width: 90%"
-          >
-            <template v-slot:append>
-              <q-avatar>
-                <q-icon name="person" size="1.8rem" />
-              </q-avatar>
-            </template>
-          </q-input>
-
-          <q-input
-            outlined
-            elevated
-            v-model="email"
-            placeholder="Email"
-            class="q-mb-md q-mt-md q-mx-auto"
-            color="black"
-            style="width: 90%"
-          >
-            <template v-slot:append>
-              <q-avatar>
-                <q-icon name="mail" size="1.8rem" />
-              </q-avatar>
-            </template>
-          </q-input>
-
-          <q-input
-            v-model="password1"
-            :type="isPwd1 ? 'password' : ''"
-            placeholder="Enter Password"
-            outlined
-            class="q-mb-md q-mt-md q-mx-auto"
-            color="black"
-            style="width: 90%"
-          >
-            <template v-slot:append>
-              <q-icon
-                :name="isPwd1 ? 'visibility_off' : 'visibility'"
-                class="cursor-pointer"
-                @click="isPwd1 = !isPwd1"
-              />
-            </template>
-          </q-input>
-
-          <q-input
-            v-model="password2"
-            :type="isPwd2 ? 'password' : ''"
-            placeholder="Re-type Password"
-            outlined
-            class="q-mb-md q-mt-md q-mx-auto"
-            color="black"
-            style="width: 90%"
-          >
-            <template v-slot:append>
-              <q-icon
-                :name="isPwd2 ? 'visibility_off' : 'visibility'"
-                class="cursor-pointer"
-                @click="isPwd2 = !isPwd2"
-              />
-            </template>
-          </q-input>
-
-          <!-- Signup Button  -->
-          <div class="row q-my-md">
-            <q-space />
-            <q-btn
-              @click="registerSeller()"
-              unelevated
-              color="primary"
-              text-color="secondary"
-              v-on:keyup.enter="userLogin"
-              label="Signup"
-              class="q-my-auto q-mb-md"
-              style="width: 40%"
-            />
-            <q-space />
-          </div>
-
-          <!-- Forgotten Password link  -->
-          <div class="row q-my-sm justify-between">
-            <q-space />
-            <!-- <q-space/> -->
-            <p class="q-my-auto">Already a Seller?</p>
-            <router-link
-              to="/sell/auth"
-              class="issue text-center text-subtitle1 text-bold text-black q-mx-md"
-              style="text-decoration: none"
-              >Login</router-link
+            <q-input
+              outlined
+              elevated
+              v-model="name"
+              placeholder="Full Name"
+              class="q-mb-md q-mt-md q-mx-auto"
+              color="black"
+              style="width: 90%"
             >
-            <q-space />
+              <template v-slot:append>
+                <q-avatar>
+                  <q-icon name="person" size="1.8rem" />
+                </q-avatar>
+              </template>
+            </q-input>
+
+            <q-input
+              outlined
+              elevated
+              v-model="email"
+              placeholder="Email"
+              class="q-mb-md q-mt-md q-mx-auto"
+              color="black"
+              style="width: 90%"
+            >
+              <template v-slot:append>
+                <q-avatar>
+                  <q-icon name="mail" size="1.8rem" />
+                </q-avatar>
+              </template>
+            </q-input>
+
+            <q-input
+              v-model="password1"
+              :type="isPwd1 ? 'password' : ''"
+              placeholder="Enter Password"
+              outlined
+              class="q-mb-md q-mt-md q-mx-auto"
+              color="black"
+              style="width: 90%"
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="isPwd1 ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd1 = !isPwd1"
+                />
+              </template>
+            </q-input>
+
+            <q-input
+              v-model="password2"
+              :type="isPwd2 ? 'password' : ''"
+              placeholder="Re-type Password"
+              outlined
+              class="q-mb-md q-mt-md q-mx-auto"
+              color="black"
+              style="width: 90%"
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="isPwd2 ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd2 = !isPwd2"
+                />
+              </template>
+            </q-input>
+
+            <!-- Signup Button  -->
+            <div class="row q-my-md">
+              <q-space />
+              <q-btn
+                @click="registerSeller()"
+                unelevated
+                color="primary"
+                text-color="white"
+                v-on:keyup.enter="userLogin"
+                label="Signup"
+                class="q-my-auto q-mb-md"
+                style="width: 40%"
+              />
+              <q-space />
+            </div>
+
+            <!-- Forgotten Password link  -->
+            <div class="row q-my-sm justify-between">
+              <q-space />
+              <!-- <q-space/> -->
+              <p class="q-my-auto">Already a Seller?</p>
+              <router-link
+                to="/seller/login"
+                class="issue text-center text-subtitle1 text-primary text-bold q-mx-md"
+                style="text-decoration: none"
+                >Login</router-link
+              >
+              <q-space />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div
-        class="col-6"
-        style="
-          background-image: url('UserAuth/beautiful-african-female-posting-social-media-using-her-smartphone-about-her-shopping-spree.jpg');
-          background-size: cover;
-          background-position: center;
-        "
-      ></div>
-    </div>
-  </q-card>
+        <div
+          class="col-6"
+          style="
+            background-image: url('UserAuth/beautiful-african-female-posting-social-media-using-her-smartphone-about-her-shopping-spree.jpg');
+            background-size: cover;
+            background-position: center;
+          "
+        ></div>
+      </div>
+    </q-card>
+  </q-page>
 </template>
 
 <script>
@@ -167,6 +169,26 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.card {
+  width: 80%;
+  margin: 6% auto;
+}
+
+@media screen and (max-width: 830px) {
+  .card {
+    margin: 0 !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .card {
+    width: 95% !important;
+  }
+}
 .text {
   position: relative;
   top: 15%;

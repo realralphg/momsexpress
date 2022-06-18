@@ -17,16 +17,23 @@
     <q-btn fab icon="add" @click="icon = true" color="primary" />
   </q-page-sticky>
 
+  <q-page v-if="!products[0]" class="column flex-center">
+    <div class="text-center text-primary text-h5 text-bold">
+      No Products in Store
+    </div>
+    <!-- <q-icon name="add" size="3rem" color="primary" /> -->
+  </q-page>
+
   <!-- Products Cards  -->
-  <div class="q-mx-auto" style="max-width: 90%">
+  <div class="q-mx-auto" v-if="products[0]" style="max-width: 90%">
     <div>
-      <div class="pro row q-mb-xl margin q-mx-auto">
+      <div class="container q-mb-xl margin q-mx-auto">
         <div
-          class="col-4 grid-boxes q-mt-xl q-mx-auto"
+          class="card q-mt-xl q-mx-auto"
           v-for="product in products"
           :key="product.id"
         >
-          <q-card flat bordered class="my-card bg-grey-1 grid-boxes">
+          <q-card flat bordered class="bg-grey-1 q-mx-auto">
             <q-card-section>
               <q-img style="height: 220px" :src="product.img[0].url"></q-img>
               <div class="row items-center no-wrap q-my-md">
@@ -91,12 +98,15 @@ export default {
   },
   methods: {
     getProducts() {
-      this.$store.dispatch("moduleExample/getSellerProducts").then(() => {
-        this.products = this.$store.getters["moduleExample/getSellerProducts"];
-      });
+      this.$store
+        .dispatch("moduleExample/getSellerProducts")
+        .then((response) => {
+          this.products =
+            this.$store.getters["moduleExample/getSellerProducts"];
+        });
     },
     deleteProduct(id) {
-      this.$store.dispatch("moduleExample/deleteProduct", this.id);
+      this.$store.dispatch("moduleExample/deleteProduct", id);
     },
   },
   mounted() {
@@ -123,7 +133,7 @@ p {
   color: blue;
 }
 
-.grid-boxes {
+. {
   height: 320px;
   width: 250px;
   cursor: pointer;
@@ -137,7 +147,46 @@ p {
   padding: 3% 1.5%;
 }
 
-.pro {
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+@media screen and (max-width: 1175px) {
+  .container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 870px) {
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 831px) {
+  .container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 620px) {
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .container {
+    grid-template-columns: repeat(1, 80%);
+    place-content: center;
+  }
+  .card {
+  }
+}
+
+.card {
   width: 100%;
 }
 

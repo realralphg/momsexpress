@@ -15,7 +15,7 @@
 
         <SellerLanding
           v-if="
-            this.$router.currentRoute.value.path.split('/').includes('sell')
+            this.$router.currentRoute.value.path.split('/').includes('seller')
           "
         />
       </div>

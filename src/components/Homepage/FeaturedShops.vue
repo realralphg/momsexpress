@@ -83,11 +83,8 @@ export default {
   },
   methods: {
     getShops() {
-      console.log("why");
       this.$store.dispatch("moduleExample/getShops").then((response) => {
-        console.log("why");
-        // this.shops = response;
-        console.log(response);
+        this.shops = response;
       });
     },
   },

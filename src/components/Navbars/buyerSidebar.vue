@@ -3,8 +3,6 @@
     <div class="text-center text-primary text-h5 text-bold">
       No Item in cart
     </div>
-    <!-- {{ cartItems }} -->
-    <!-- {{ cartItems }} -->
     <q-icon name="shopping_cart" size="3rem" color="primary" />
   </q-page>
   <div class="q-pa-md">

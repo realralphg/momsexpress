@@ -2,14 +2,19 @@
   <div class="category bg-white border_radius">
     <nav @mouseleave="show = false" class="primary-navigation">
       <ul v-for="item in categories" :key="item.id">
-        <li>
-          <!-- <q-icon name="settings" class="q-mx-md ellipsis" />  -->
+        <li class="q-pl-sm">
           <a
             @mouseenter="show = true"
-            @click="this.$router.push('/category')"
-            class="text-primary text-bold text-subtitle2 row items-center"
+            @click="this.$router.push(`/category/${item.name}`)"
+            class="text-primary text-bold text-subtitle2 row items-center ellipsis"
           >
-            {{ item }}
+            <!-- <q-icon
+              name="fas fa-mobile-screen-button"
+              class="q-mx-md"
+              color="primary"
+            /> -->
+            <img :src="item.icon" class="q-mr-xs" />
+            {{ item.name }}
           </a>
           <!-- <div v-if="show" @mouseleave="show = false" class="dropdown row">
             <div v-for="n in 6" :key="n" class="category-group col-4">
@@ -41,7 +46,7 @@ export default {
   methods: {
     getCategories() {
       this.$store.dispatch("moduleExample/getCategories").then((response) => {
-        // console.log(response.categories);
+        console.log(response.categories);
         this.categories = response.categories;
       });
     },

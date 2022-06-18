@@ -19,7 +19,9 @@
         v-model="search"
         @click="search !== '' ? (result = true) : (result = false)"
         @blur="result = false"
-        @keydown="result = true"
+        @keydown="
+          (result = true), search.length > 2 ? searchProduct(search) : ''
+        "
         placeholder="Search for Products/Categories"
       >
         <template v-slot:append>
@@ -34,11 +36,18 @@
 
       <div
         v-if="(result, search === '' ? (result = false) : result)"
-        class="search-result text-black text-subtitle2 bg-grey-2"
+        class="search-result text-black text-subtitle2 bg-white"
       >
         <q-list>
-          <q-scroll-area style="height: 60vh">
-            <div class="search" v-for="n in 18" :key="n">Single line item</div>
+          <q-scroll-area style="height: 50vh">
+            <div
+              class="search"
+              @click="this.$router.push(`/details/${item._id}`)"
+              v-for="item in searchResults"
+              :key="item._id"
+            >
+              {{ item.name }}
+            </div>
           </q-scroll-area>
         </q-list>
       </div>
@@ -136,6 +145,7 @@ export default {
     return {
       search: ref(""),
       result: ref(false),
+      searchResults: [],
       text: ref(null),
       role: localStorage.getItem("userRole"),
       userName: localStorage.getItem("buyerFullname"),
@@ -174,6 +184,14 @@ export default {
 
       // this.$store.commit('logout')
       this.$router.push("/");
+    },
+    searchProduct(search) {
+      this.$store
+        .dispatch("moduleExample/searchProduct", search)
+        .then((response) => {
+          // console.log(response);
+          this.searchResults = response;
+        });
     },
   },
   computed: {

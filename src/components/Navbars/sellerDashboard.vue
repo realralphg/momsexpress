@@ -71,7 +71,7 @@ export default {
   border-bottom: 1px solid #d56c33;
 }
 
-@media screen and (max-width: 771px) {
+@media screen and (max-width: 830px) {
   .button {
     display: block;
   }

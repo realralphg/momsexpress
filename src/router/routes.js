@@ -10,6 +10,10 @@ const routes = [
         component: () => import("src/pages/User/UserLogin.vue"),
       },
       {
+        path: "/about",
+        component: () => import("src/pages/General/AboutUs.vue"),
+      },
+      {
         path: "/forgotPassword",
         component: () => import("src/pages/General/Forgotpassword.vue"),
       },
@@ -34,7 +38,7 @@ const routes = [
         component: () => import("src/pages/General/Details.vue"),
       },
       {
-        path: "/category",
+        path: "/category/:categoryName",
         component: () => import("src/pages/Categories/Categorypage.vue"),
       },
       {
@@ -45,7 +49,7 @@ const routes = [
         path: "/cart",
         component: () => import("src/pages/General/Cart.vue"),
         beforeEnter: (to, from, next) => {
-          let token = localStorage.getItem("buyerId");
+          let token = localStorage.getItem("buyerEmail");
           if (!token) {
             next("/login");
           } else {
@@ -74,7 +78,7 @@ const routes = [
         path: "/order",
         component: () => import("src/pages/User/Order.vue"),
         beforeEnter: (to, from, next) => {
-          let token = localStorage.getItem("buyerId");
+          let token = localStorage.getItem("buyerEmail");
           if (!token) {
             next("/login");
           } else {
@@ -86,7 +90,7 @@ const routes = [
         path: "/wishlist",
         component: () => import("src/pages/User/Wishlist.vue"),
         beforeEnter: (to, from, next) => {
-          let token = localStorage.getItem("buyerId");
+          let token = localStorage.getItem("buyerEmail");
           if (!token) {
             next("/login");
           } else {

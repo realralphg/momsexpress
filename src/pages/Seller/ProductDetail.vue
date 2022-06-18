@@ -90,6 +90,11 @@
               </div>
 
               <div>
+                <label for="">Discount</label>
+                <q-input filled lazy-rules v-model="discount" />
+              </div>
+
+              <div>
                 <label for="">Quantity</label>
                 <q-input filled lazy-rules v-model="product.qtyInStore" />
               </div>
@@ -99,15 +104,21 @@
                 <q-input filled lazy-rules v-model="product.categories" />
               </div>
 
-              <div>
-                <label for="">Description</label>
-                <q-input filled label="Description" v-model="description" />
+              <div class="q-mb-md" style="width: 100%">
+                <label for="">Description *</label>
+                <q-input
+                  v-model="product.desc"
+                  dense="dense"
+                  outlined
+                  type="textarea"
+                />
               </div>
 
               <div class="row">
                 <q-space />
                 <q-btn
                   label="Update"
+                  outline
                   type="submit"
                   style="width: 30%"
                   color="primary"
@@ -241,7 +252,7 @@ export default {
       tab: "Specifications",
       rating_point: 3.5,
       id: "",
-      product: "",
+      product: {},
       productName: name,
       // color: "red",
       // size: 15,
@@ -251,10 +262,8 @@ export default {
     };
   },
   computed: {
-    async description() {
-      return (
-        await this.product.desc.color, console.log(this.product.desc.color)
-      );
+    discount() {
+      this.product.desc.color, console.log(this.product.desc.color);
     },
     win_width() {
       return this.$q.screen.width - 59;
@@ -287,21 +296,21 @@ export default {
       console.log(product);
     },
     getProduct() {
-      this.id = location.href.split("productDetail/")[1];
       this.$store
         .dispatch("moduleExample/getSingleSellerProduct", this.id)
-        .then(() => {
-          let detail =
-            this.$store.getters["moduleExample/getSingleSellerProduct"];
-          return (this.product = detail), (this.images = detail.img);
-        })
-        .catch((error) => {
-          console.log(error);
+        .then((response) => {
+          this.product = response;
+          // (this.product = detail),
+          // (this.images = detail.img),
+          // (this.description = detail.desc.color),
+          // (this.discount = detail.desc.size)
         });
     },
   },
   mounted() {
+    this.id = location.href.split("productDetail/")[1];
     this.getProduct();
+    // console.log(this.description, this.discount);
   },
 };
 </script>

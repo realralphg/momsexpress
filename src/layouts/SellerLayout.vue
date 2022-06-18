@@ -12,7 +12,7 @@
       show-if-above
       :width="280"
       class="drawer text-white bg-secondary"
-      :breakpoint="770"
+      :breakpoint="830"
     >
       <q-list>
         <EssentialLink />
