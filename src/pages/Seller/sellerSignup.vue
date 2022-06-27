@@ -85,7 +85,7 @@
                 unelevated
                 color="primary"
                 text-color="white"
-                v-on:keyup.enter="userLogin"
+                v-on:keyup.enter="registerSeller()"
                 label="Signup"
                 class="q-my-auto q-mb-md"
                 style="width: 40%"
@@ -145,6 +145,7 @@ export default defineComponent({
   methods: {
     registerSeller() {
       if (this.valid()) {
+        console.log("hello");
         this.$store
           .dispatch("moduleExample/sellerRegister", {
             email: this.email,
@@ -154,7 +155,7 @@ export default defineComponent({
           })
           .then(({ status }) => {
             console.log(status);
-            this.$router.replace("/sell/auth");
+            this.$router.replace("/seller/login");
           })
           .catch((error) => {
             // console.log(error)

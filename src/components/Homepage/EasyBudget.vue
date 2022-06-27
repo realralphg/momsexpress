@@ -1,5 +1,5 @@
 <template>
-  <div class="master">
+  <div v-if="products[0]" class="master">
     <div
       class="row justify-between q-mx-auto q-my-md q-pl-md q-py-sm"
       style="border-bottom: 2px solid #003348"
@@ -11,7 +11,7 @@
       </h5>
       <q-btn
         color="primary"
-        to="/category"
+        to="/category/easy_budget"
         class="q-pr-none"
         label="View all"
         icon-right="chevron_right"
@@ -21,20 +21,12 @@
     </div>
 
     <div class="q-py-md card-container">
+      <Skeleton :skeleton="skeleton" />
       <div
         class="bg-white card text-left"
         v-for="product in products"
         :key="product._id"
       >
-        <!-- <q-card flat style="max-width: 300px">
-          <q-skeleton height="150px" square />
-
-          <q-card-section>
-            <q-skeleton type="text" class="text-subtitle1" />
-            <q-skeleton type="text" width="50%" class="text-subtitle1" />
-            <q-skeleton type="text" class="text-caption" />
-          </q-card-section>
-        </q-card> -->
         <div class="main" @click="this.$router.push(`/details/${product._id}`)">
           <q-img style="" class="rounded-borders img" :src="product.img[0].url">
           </q-img>
@@ -89,14 +81,16 @@
 <script>
 import { ref } from "vue";
 import ProductCard from "../../components/ProductCard.vue";
+import Skeleton from "../Skeleton.vue";
 
 export default {
   name: "Recent",
-  components: { ProductCard },
+  components: { ProductCard, Skeleton },
   data() {
     return {
       products: [],
       stars: 5,
+      skeleton: ref(true),
     };
   },
   computed: {
@@ -110,7 +104,9 @@ export default {
       this.$store
         .dispatch("moduleExample/getEasyBudgetCategory", 16000)
         .then((response) => {
+          this.skeleton = false;
           this.products = response;
+          this.products.splice(6, response.length - 1);
         });
     },
   },

@@ -10,7 +10,7 @@
       >
         Featured Shops
       </h5>
-      <q-btn
+      <!-- <q-btn
         color="primary"
         to="/shop"
         class="q-pr-none"
@@ -18,10 +18,13 @@
         icon-right="chevron_right"
         flat
         size="0.7rem"
-      />
+      /> -->
     </div>
 
     <div class="column q-col-gutter-sm shops">
+      <div v-if="skeleton" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <q-skeleton height="300px" />
+      </div>
       <div
         class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
         v-for="shop in shops"
@@ -29,39 +32,13 @@
         @click="this.$router.push(`/shop/${shop._id}`)"
       >
         <div class="div1">
-          <div class="absolute flex flex-center one items-center q-py-xl">
+          <div
+            class="flex flex-center items-center one absolute-bottom items-center q-py-xl"
+          >
             <h4
               class="text-white text-bold text-h4 text-center shop_text q-my-none"
             >
-              Lorem Shop
-            </h4>
-          </div>
-        </div>
-      </div>
-      <div
-        class="col-lg-6 col-md-6 col-sm-6 col-xs-6"
-        @click="this.$router.push('/shop')"
-      >
-        <div class="div2">
-          <div class="absolute flex flex-center two items-center q-py-xl">
-            <h4
-              class="text-white text-bold text-h4 text-center shop_text q-my-none"
-            >
-              Lorem Shop
-            </h4>
-          </div>
-        </div>
-      </div>
-      <div
-        class="col-lg-6 col-md-6 col-sm-6 col-xs-6"
-        @click="this.$router.push('/shop')"
-      >
-        <div class="div3">
-          <div class="absolute flex flex-center three items-center q-py-xl">
-            <h4
-              class="text-white text-bold text-h4 text-center shop_text q-my-none"
-            >
-              Lorem Shop
+              {{ shop.store.name }}
             </h4>
           </div>
         </div>
@@ -79,11 +56,15 @@ export default {
   data() {
     return {
       shops: [],
+      skeleton: ref(true),
     };
   },
   methods: {
     getShops() {
       this.$store.dispatch("moduleExample/getShops").then((response) => {
+        this.skeleton = false;
+        let a = response.splice(3, response.length - 1);
+        // console.log(a);
         this.shops = response;
       });
     },
@@ -133,9 +114,9 @@ export default {
 .one,
 .two,
 .three {
-  display: none;
+  /* display: none; */
   background: hsl(0, 0%, 0%, 40%);
-  height: 100%;
+  height: 15%;
   width: 100%;
 }
 

@@ -1,17 +1,15 @@
 import axios from "axios";
 import { Notify } from "quasar";
-import items from "src/data/items";
-
-export function getProductsLocal({ commit }) {
-  let products = items;
-  commit("setProducts", products);
-}
 
 const baseurl = "https://moms-express.herokuapp.com/api";
 // const baseurl = "http://192.168.130.155:5000/api"
 
-//Seller Side
-export function sellerRegister({ fullname, email, password, password2 }) {
+//Seller Section
+export function sellerRegister(
+  { context },
+  { fullname, email, password, password2 }
+) {
+  console.log(fullname, email, password);
   return new Promise((resolve, reject) => {
     axios({
       method: "POST",
@@ -24,7 +22,15 @@ export function sellerRegister({ fullname, email, password, password2 }) {
       },
     })
       .then(({ data, status }) => {
+        console.log(data);
+        console.log(status);
+
         if (status === 200 || status === 201) {
+          Notify.create({
+            message: "Shop successfully created. Login to continue",
+            color: "blue",
+          });
+          this.$router.push("/login");
           console.log(data);
           resolve();
         }
@@ -50,18 +56,16 @@ export function sellerLogin({ commit }, { email, password }) {
           console.log(data);
           let token = data.data.token;
           let seller = data.data.user;
-          localStorage.setItem("userRole", seller.role);
+          localStorage.setItem("role", seller.role);
           localStorage.setItem("sellerToken", token);
           localStorage.setItem("sellerId", seller._id);
-          localStorage.setItem("sellerEmail", seller.email);
           localStorage.setItem("sellerFullname", seller.fullname);
-          localStorage.setItem("sellerStore", seller.store);
           this.$router.push("/seller/dashboard");
           Notify.create({
             message: "Login Success.",
             color: "blue",
           });
-          context.commit("saveSellerToken", { token });
+          commit("saveSellerToken", { token });
           resolve();
         }
       })
@@ -76,7 +80,6 @@ export function addProduct(context, data) {
   const { formData } = data;
 
   return new Promise((resolve, reject) => {
-    console.log(data);
     axios({
       method: "POST",
       url: baseurl + "/product",
@@ -87,13 +90,12 @@ export function addProduct(context, data) {
       },
     })
       .then((data) => {
-        console.log(data);
         if (data.status === 200 || data.status === 201) {
-          // console.log(data);
           Notify.create({
             message: "Product successfully added.",
             color: "blue",
           });
+          this.$router.push("/seller/product");
           resolve();
         } else {
           Notify.create({
@@ -124,13 +126,11 @@ export function getSellerProducts({ commit }) {
       },
     })
       .then(({ data, status }) => {
-        console.log(data);
         if (status === 200 || status === 201) {
-          console.log(data.data.docs);
           let products = data.data.docs;
           commit("sellerProducts", products);
         }
-        resolve();
+        resolve(data.data.docs);
       })
       .catch((error) => {
         console.log(error);
@@ -149,7 +149,6 @@ export function getSingleSellerProduct({ commit }, productId) {
       },
     })
       .then(({ data, status }) => {
-        console.log(data.data.desc.color);
         let product = data.data;
         if (status === 200 || status === 201) {
           commit("setSingleSellerProduct", product);
@@ -176,7 +175,6 @@ export function updateSellerProductData({ commit }, product) {
       .then(({ data, status }) => {
         if (status === 200 || status === 201) {
           // commit('setSingleSellerProduct', data)
-          console.log(data);
         }
         resolve();
       })
@@ -237,11 +235,100 @@ export function deleteProduct(context, id) {
   });
 }
 
+export function changePassword(context, data) {
+  console.log(data);
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "POST",
+      url: baseurl + `/seller/password`,
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("sellerToken"),
+      },
+      data: data,
+    })
+      .then(({ data, status }) => {
+        if (status === 200 || status === 201) {
+          console.log(data);
+          Notify.create({
+            message: "Password successfully Changed",
+            color: "blue",
+          });
+        }
+        resolve();
+      })
+      .catch((error) => {
+        console.log(error);
+        reject();
+      });
+  });
+}
+
+export function updateShopDetails(context, data) {
+  console.log(data);
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "PUT",
+      url: baseurl + `/seller/edit-shop`,
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("sellerToken"),
+      },
+      data: data,
+    })
+      .then((response) => {
+        console.log(response);
+        if (response) {
+          console.log(response);
+          Notify.create({
+            message: "Shop details succefully updated.",
+            color: "blue",
+          });
+        }
+        resolve();
+      })
+      .catch((error) => {
+        console.log(error);
+        reject();
+      });
+  });
+}
+
+export function verificationDetails(context, data) {
+  console.log(data);
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "POST",
+      url: baseurl + "/seller/verify",
+      data: data,
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("sellerToken"),
+      },
+    })
+      .then((data) => {
+        console.log(data);
+        if (data.status === 200 || data.status === 201) {
+          Notify.create({
+            message: "Your Shop has been verified start selling",
+            color: "blue",
+          });
+          resolve();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        Notify.create({
+          message: "Error Verifying your shop.",
+          color: "red",
+        });
+        reject();
+      });
+  });
+}
+
 /////////////////////////////////////////////////////////////////
 
-//Buyer Side
+//Buyer Section
 
-export function buyerRegister({ email }) {
+export function buyerRegister(context, { email }) {
   return new Promise((resolve, reject) => {
     axios({
       method: "POST",
@@ -252,8 +339,11 @@ export function buyerRegister({ email }) {
     })
       .then(({ data, status }) => {
         if (status === 200 || status === 201) {
-          this.$router.replace("/");
           console.log(data);
+          let buyer = data.data.result;
+
+          localStorage.setItem("user", JSON.stringify(buyer));
+          commit("user", buyer);
           resolve();
         }
       })
@@ -263,7 +353,7 @@ export function buyerRegister({ email }) {
   });
 }
 
-export function buyerLogin(context, data) {
+export function buyerLogin({ commit }, data) {
   return new Promise((resolve, reject) => {
     axios({
       method: "POST",
@@ -276,38 +366,140 @@ export function buyerLogin(context, data) {
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
           let buyer = response.data.data.user;
-          console.log(buyer);
-          localStorage.setItem("userRole", buyer.role);
-          localStorage.setItem("buyerId", buyer._id);
-          localStorage.setItem("buyerEmail", buyer.email);
-          localStorage.setItem("buyerFullname", buyer.fullname);
-          // this.$router.push("/");
-          resolve();
+          // console.log(buyer);
+          localStorage.setItem("user", JSON.stringify(buyer));
+          commit("user", buyer);
+
+          resolve(buyer);
         }
       })
       .catch((error) => {
-        // console.log(error);
         reject();
       });
   });
 }
 
-export function buyerLogout() {
+export function getMe() {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/me`,
+    })
+      .then((response) => {
+        if (response) {
+          console.log(response.data);
+          resolve();
+        }
+      })
+      .catch((error) => {
+        reject();
+      });
+  });
+}
+
+export function buyerLogout({ commit }) {
+  localStorage.removeItem("buyerId");
+  localStorage.removeItem("buyerFullname");
+  localStorage.removeItem("buyerEmail");
+  localStorage.removeItem("role");
+  let user = null;
+  commit("user", user);
+
+  let openAuth = localStorage.getItem("openAuth");
+  if (openAuth !== null) {
+    return new Promise((resolve, reject) => {
+      axios({
+        withCredentials: true,
+        method: "GET",
+        url: baseurl + "/logout",
+      })
+        .then(({ data, status }) => {
+          if (status === 200 || status === 201) {
+            console.log("open auth logged out");
+            localStorage.removeItem("openAuth");
+            console.log(data);
+          }
+          resolve();
+        })
+        .catch((error) => {
+          console.log(error);
+          reject();
+        });
+    });
+  }
+}
+
+export function getUser(context) {
+  return new Promise((resolve, reject) => {
+    let x = location.href;
+    let a = "";
+    let person = localStorage.getItem("buyerId");
+    if (x !== "http://localhost:8080/" && person !== "") {
+      a = "?h=" + x.split("=")[1].split("#")[0];
+      axios({
+        withCredentials: true,
+        method: "GET",
+        url: baseurl + `/login3${a}`,
+      })
+        .then((response) => {
+          let user = response.data.data.user;
+          console.log(user);
+
+          localStorage.setItem("user", user);
+          context.commit("user", user);
+          this.$router.replace("/");
+          resolve();
+        })
+        .catch((err) => {
+          reject();
+          console.log(err);
+        });
+    }
+  });
+}
+
+export function commentOnProduct(context, { comment, id }) {
+  console.log(comment);
+  console.log(id);
   return new Promise((resolve, reject) => {
     axios({
       withCredentials: true,
-      method: "GET",
-      url: baseurl + "/logout",
+      method: "POST",
+      url: baseurl + `/search/${id}/comment`,
+
+      data: { comment: comment },
     })
-      .then(({ data, status }) => {
-        if (status === 200 || status === 201) {
-          console.log(data);
-          localStorage.removeItem("buyerId");
-          localStorage.removeItem("buyerName");
-          localStorage.removeItem("buyerEmail");
-          localStorage.removeItem("buyerRole");
+      .then((response) => {
+        if (response) {
+          console.log(response);
+          resolve(response.data.data);
         }
-        resolve();
+      })
+      .catch((error) => {
+        reject();
+      });
+  });
+}
+
+export function createOrder(context, data) {
+  console.log(data);
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "POST",
+      url: baseurl + "/me/order",
+      withCredentials: true,
+      data: data,
+    })
+      .then((response) => {
+        console.log(response);
+        console.log(response.data.data.cart);
+        if (response) {
+          Notify.create({
+            message: "Your order has been created",
+            color: "blue",
+          });
+          resolve();
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -315,67 +507,6 @@ export function buyerLogout() {
       });
   });
 }
-
-export function getUser() {
-  return new Promise((resolve, reject) => {
-    // console.log(location.href)
-    let x = location.href;
-    let a = "";
-    let person = localStorage.getItem("buyerId");
-    console.log(person);
-    console.log(x);
-    if (x !== "http://localhost:8080/" && person !== "") {
-      console.log(x);
-      a = "?h=" + x.split("=")[1].split("#")[0]; //.split('=')[1].split('#')[0]
-      console.log(a);
-      axios({
-        withCredentials: true,
-        method: "GET",
-        url: baseurl + `/login3${a}`,
-      })
-        .then((response) => {
-          console.log("allow");
-
-          // console.log("allow");
-          let user = response.data.data.user;
-          console.log(user);
-          // if (user) {
-          console.log(user);
-          // if (location.href !== "http://localhost:8080") location.href = "/";
-
-          let id = user._id;
-          let name = user.fullname;
-          let email = user.email;
-          let role = user.role;
-          // context.commit('getUser', {user})
-          localStorage.setItem("buyerId", id);
-          localStorage.setItem("buyerFullname", name);
-          localStorage.setItem("buyerEmail", email);
-          localStorage.setItem("role", role);
-          location.href = "/";
-          resolve();
-          // } else {
-          // }
-        })
-        .catch((err) => {
-          reject();
-          console.log(err);
-          console.log("Not Working");
-        });
-    } else {
-      console.log("Halla");
-    }
-    // if (x.split("=")[1] !== undefined) {
-    //   a = "?h=" + x.split("=")[1].split("#")[0]; //.split('=')[1].split('#')[0]
-    //   console.log(a);
-    // }
-
-    // if (person !== "" || person !== undefined) {
-    //   console.log("hi");
-    // }
-  });
-}
-
 /////////////////////////////////////////////////////////////////
 
 //Generalllllllllllll
@@ -419,29 +550,80 @@ export function deleteCartItem({ commit }, { product }) {
   commit("deleteCartItem", { product });
 }
 
-export function addProductToWishlist({ commit }, { product }) {
-  commit("addToWishlist", { product });
-}
+// export function addProductToWishlist({ commit }, { product }) {
+//   commit("addToWishlist", { product });
+// }
 
 export function setCart({ commit }, cart) {
   commit("setCart", cart);
 }
 
-export function setWishlist({ commit }, wishlist) {
-  commit("setWishlist", wishlist);
-}
+// export function setWishlist({ commit }, wishlist) {
+//   commit("setWishlist", wishlist);
+// }
 
 export function getCategories() {
   return new Promise((resolve, reject) => {
     axios({
       method: "GET",
       url: baseurl + `/shops/categories`,
-      // headers: {
-      //   Authorization: "Bearer " + localStorage.getItem("buyerToken"),
-      // },
     })
       .then((response) => {
         if (response) {
+          resolve(response.data.data);
+        }
+      })
+      .catch((error) => {
+        reject();
+      });
+  });
+}
+
+export function getSingleCategory(context, category) {
+  console.log(category);
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/search?category=${category}`,
+    })
+      .then((response) => {
+        if (response) {
+          resolve(response.data.data);
+        }
+      })
+      .catch((error) => {
+        reject();
+      });
+  });
+}
+
+export function getEasyBudgetCategory(context, amount) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/search?price=${amount}`,
+    })
+      .then((response) => {
+        if (response) {
+          // console.log(response.data.data);
+          resolve(response.data.data);
+        }
+      })
+      .catch((error) => {
+        reject();
+      });
+  });
+}
+
+export function getTrendingCategory(context) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/search?trending=1`,
+    })
+      .then((response) => {
+        if (response) {
+          console.log(response.data.data);
           resolve(response.data.data);
         }
       })
@@ -462,7 +644,23 @@ export function getProducts() {
     })
       .then((response) => {
         if (response) {
-          // console.log(response.data.data);
+          resolve(response.data.data);
+        }
+      })
+      .catch((error) => {
+        reject();
+      });
+  });
+}
+
+export function getSingleProduct(context, id) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/search/${id}`,
+    })
+      .then((response) => {
+        if (response) {
           resolve(response.data.data);
         }
       })
@@ -473,7 +671,7 @@ export function getProducts() {
 }
 
 export function searchProduct(context, search) {
-  console.log(search);
+  // console.log(search);
   return new Promise((resolve, reject) => {
     axios({
       method: "GET",
@@ -481,7 +679,6 @@ export function searchProduct(context, search) {
     })
       .then((response) => {
         if (response) {
-          // console.log(response.data.data);
           resolve(response.data.data);
         }
       })
@@ -491,54 +688,15 @@ export function searchProduct(context, search) {
   });
 }
 
-export function getSingleCategory(context, category) {
-  console.log(category);
+export function getSingleSeller(commit, id) {
   return new Promise((resolve, reject) => {
     axios({
       method: "GET",
-      url: baseurl + `/search?category=${category}`,
+      url: baseurl + `/shops/${id}`,
     })
       .then((response) => {
         if (response) {
           // console.log(response.data.data);
-          resolve(response.data.data);
-        }
-      })
-      .catch((error) => {
-        reject();
-      });
-  });
-}
-
-export function getEasyBudgetCategory(context, amount) {
-  console.log(amount);
-  return new Promise((resolve, reject) => {
-    axios({
-      method: "GET",
-      url: baseurl + `/search?price=${amount}`,
-    })
-      .then((response) => {
-        if (response) {
-          // console.log(response.data.data);
-          resolve(response.data.data);
-        }
-      })
-      .catch((error) => {
-        reject();
-      });
-  });
-}
-
-export function getSingleSeller(context, productId) {
-  console.log(productId);
-  return new Promise((resolve, reject) => {
-    axios({
-      method: "GET",
-      url: baseurl + `/shops/${productId}`,
-    })
-      .then((response) => {
-        if (response) {
-          console.log(response.data.data);
           resolve(response.data.data);
         }
       })
@@ -557,29 +715,6 @@ export function getShops() {
       .then((response) => {
         if (response) {
           // console.log(response.data.data);
-          resolve(response.data.data);
-        }
-      })
-      .catch((error) => {
-        reject();
-      });
-  });
-}
-
-export function commentOnProduct(context, { comment, id }) {
-  console.log(comment);
-  console.log(id);
-  return new Promise((resolve, reject) => {
-    axios({
-      withCredentials: true,
-      method: "POST",
-      url: baseurl + `/search/${id}/comment`,
-
-      data: comment,
-    })
-      .then((response) => {
-        if (response) {
-          console.log(response.data);
           resolve(response.data.data);
         }
       })

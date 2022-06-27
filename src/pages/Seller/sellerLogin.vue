@@ -92,7 +92,6 @@
 <script>
 import { defineComponent } from "vue";
 import { ref } from "vue";
-import { Notify } from "quasar";
 
 export default defineComponent({
   name: "PageIndex",
@@ -116,11 +115,7 @@ export default defineComponent({
         })
         .then(() => {
           this.$router.replace("/seller/dashboard");
-          Notify.create({
-            message: "Login Success.",
-            caption: "User successfully authenticated.",
-            color: "blue",
-          });
+
           // this.$router.replace("/seller/dashboard")
         })
         .catch((error) => {});

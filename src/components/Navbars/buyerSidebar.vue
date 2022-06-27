@@ -76,7 +76,7 @@
           </div>
           <q-btn
             label="Checkout"
-            to="/checkout"
+            :to="!userLoggedIn ? '/login' : '/checkout'"
             push
             color="primary"
             text-color="secondary"
@@ -103,6 +103,9 @@ export default {
     return {};
   },
   computed: {
+    userLoggedIn() {
+      return this.$store.getters["moduleExample/user"];
+    },
     cartItems() {
       return JSON.parse(JSON.stringify(this.$store.state.moduleExample.cart));
     },

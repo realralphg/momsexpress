@@ -39,29 +39,34 @@
         class="search-result text-black text-subtitle2 bg-white"
       >
         <q-list>
-          <q-scroll-area style="height: 50vh">
-            <div
-              class="search"
-              @click="this.$router.push(`/details/${item._id}`)"
-              v-for="item in searchResults"
-              :key="item._id"
-            >
-              {{ item.name }}
-            </div>
-          </q-scroll-area>
+          <!-- <q-scroll-area style="height: auto"> -->
+          <router-link
+            class="search"
+            v-for="item in searchResults"
+            :key="item._id"
+            :to="`/details/${item._id}`"
+            >{{ item.name }}</router-link
+          >
+          <!-- </q-scroll-area> -->
         </q-list>
       </div>
     </q-toolbar-title>
 
     <q-btn flat no-caps class="hide">
-      <router-link to="/sell" class="text-primary link"
-        >Sell On MOMS</router-link
-      >
+      <q-btn
+        to="/sell"
+        label="sell"
+        color="primary"
+        flat
+        rounded
+        class="text-white bg-primary"
+      />
+      <!-- <router-link to="/sell" class="text-primary link">Sell </router-link> -->
     </q-btn>
 
     <div class="hide">
       <q-btn-dropdown
-        v-if="role === 'buyer'"
+        v-if="userLoggedIn !== null"
         color="primary"
         flat
         no-caps
@@ -75,7 +80,7 @@
             </q-avatar>
             <div class="text-left text-subtitle1 q-my-auto">
               Hello, <br />
-              <span class="text-bold">{{ userName }}</span>
+              <span class="text-bold">{{ userLoggedIn.fullname }}</span>
             </div>
           </div>
           <q-item clickable v-close-popup to="/user">
@@ -87,7 +92,7 @@
             </q-item-section>
           </q-item>
 
-          <q-item clickable v-close-popup @click="logoutOpenAuthBuyer()">
+          <q-item clickable v-close-popup @click="logout()">
             <q-item-section avatar>
               <q-avatar icon="logout" text-color="black" />
             </q-item-section>
@@ -103,10 +108,10 @@
     <div class="hide">
       <q-tabs class="cart-tab">
         <q-btn
-          v-if="!role"
+          v-if="userLoggedIn === null"
           round
           color="primary"
-          :to="role === 'buyer' ? `/user` : `/login`"
+          :to="userLoggedIn === null ? `/login` : `/user`"
           :ripple="false"
           dense
           flat
@@ -114,7 +119,7 @@
           class="q-ma-md"
         />
         <q-btn
-          class="q-mr-md"
+          class="q-mr-md q-my-md"
           @click="$emit('leftDrawer')"
           color="primary"
           dense
@@ -147,29 +152,20 @@ export default {
       result: ref(false),
       searchResults: [],
       text: ref(null),
-      role: localStorage.getItem("userRole"),
-      userName: localStorage.getItem("buyerFullname"),
       cartCounter: "",
     };
   },
+  computed: {
+    cartNumber() {
+      return this.$store.state.moduleExample.cart.length;
+    },
+    userLoggedIn() {
+      return this.$store.getters["moduleExample/user"];
+    },
+  },
   methods: {
-    logoutOpenAuthBuyer() {
-      this.$store
-        .dispatch("moduleExample/buyerLogout")
-        .then((success) => {
-          console.log(success);
-          localStorage.removeItem("openAuth");
-          console.log("LOGOUT");
-          localStorage.removeItem("userRole");
-          localStorage.removeItem("buyerId");
-          localStorage.removeItem("buyerEmail");
-          localStorage.removeItem("buyerFullname");
-          console.log("Successsssssss!!!!!!");
-          this.$router.push("/");
-        })
-        .catch((error) => {
-          // console.log(error);
-        });
+    logout() {
+      this.$store.dispatch("moduleExample/buyerLogout");
     },
     logoutBuyer() {
       console.log("LOGOUT");
@@ -189,14 +185,14 @@ export default {
       this.$store
         .dispatch("moduleExample/searchProduct", search)
         .then((response) => {
-          // console.log(response);
           this.searchResults = response;
         });
     },
   },
-  computed: {
-    cartNumber() {
-      return this.$store.state.moduleExample.cart.length;
+  watch: {
+    function() {
+      this.$route.params;
+      console.log("hello");
     },
   },
 };
@@ -215,10 +211,18 @@ export default {
   top: 100%;
   z-index: 100;
   padding: 2% 5%;
+  height: auto;
 }
 .search {
   cursor: pointer;
   margin: 2% 0;
+  text-decoration: none;
+  color: black;
+  display: block;
+}
+
+.search:hover {
+  color: #d56c33;
 }
 .card {
   margin: 0 auto !important;

@@ -15,7 +15,10 @@
 
         <SellerLanding
           v-if="
-            this.$router.currentRoute.value.path.split('/').includes('seller')
+            this.$router.currentRoute.value.path
+              .split('/')
+              .includes('seller') ||
+            this.$router.currentRoute.value.path.split('/').includes('sell')
           "
         />
       </div>
@@ -28,6 +31,10 @@
       :breakpoint="2200"
       class="cart-drawer text-white bg-grey-2 sidebar absolute"
       style="height: 100%"
+      v-if="
+        !this.$router.currentRoute.value.path.split('/').includes('seller') &&
+        !this.$router.currentRoute.value.path.split('/').includes('sell')
+      "
     >
       <q-list>
         <BuyerSidebar />
@@ -118,6 +125,9 @@ export default defineComponent({
     cartNumber() {
       return this.$store.state.moduleExample.cart.length;
     },
+  },
+  mounted() {
+    console.log(this.$router.currentRoute.value.path);
   },
 });
 </script>

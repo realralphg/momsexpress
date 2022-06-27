@@ -17,21 +17,11 @@
               icon="person"
             />
             <div class="row justify-center">
-              <div class="q-my-xs text-bold text-h5">{{ username }}</div>
-              <q-btn
-                icon="edit"
-                size="0.8rem"
-                class="q-ml-md"
-                v-ripple="false"
-                flat
-                round
-              >
-                <q-tooltip anchor="bottom middle" self="center middle">
-                  Edit Profile
-                </q-tooltip>
-              </q-btn>
+              <div class="q-my-xs text-bold text-h5">
+                {{ userLoggedIn.fullname }}
+              </div>
             </div>
-            <div class="q-my-xs">{{ email }}</div>
+            <div class="q-my-xs">{{ userLoggedIn.email }}</div>
             <div class="q-my-xs">08012345678</div>
           </div>
 
@@ -69,9 +59,7 @@
               no-caps
             >
               <q-tab name="mails" label="Orders" />
-              <q-tab name="alarms" label="wishlists" />
-              <!-- <q-tab name="movies" label="lorem" /> -->
-              <!-- <q-tab name="billy" label="billy" /> -->
+              <!-- <q-tab name="alarms" label="wishlists" /> -->
             </q-tabs>
 
             <q-separator style="width: 50%" />
@@ -81,18 +69,9 @@
                 <Order />
               </q-tab-panel>
 
-              <q-tab-panel class="q-pa-none bg-grey-2" name="alarms">
+              <!-- <q-tab-panel class="q-pa-none bg-grey-2" name="alarms">
                 <Wishlist />
-              </q-tab-panel>
-
-              <!-- <q-tab-panel name="movies">
-                    <Reviews />
-                  </q-tab-panel> -->
-
-              <!-- <q-tab-panel name="billy">
-                    <div class="text-h6">Big Billy</div>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </q-tab-panel> -->
+              </q-tab-panel> -->
             </q-tab-panels>
           </div>
         </div>
@@ -121,16 +100,13 @@ export default {
       email: ref(""),
     };
   },
-  methods: {
-    getP() {
-      this.$store.dispatch("moduleExample/getProductsLocal");
+  computed: {
+    userLoggedIn() {
+      return this.$store.getters["moduleExample/user"];
     },
   },
-  mounted() {
-    this.username = localStorage.getItem("buyerFullname");
-    this.email = localStorage.getItem("buyerEmail");
-    this.getP();
-  },
+  methods: {},
+  mounted() {},
 };
 </script>
 

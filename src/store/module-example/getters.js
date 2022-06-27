@@ -21,6 +21,15 @@ export function getCartItems(state) {
   return state.cart;
 }
 
-export function getWishlist(state) {
-  return state.wishlist;
+// export function getWishlist(state) {
+//   return state.wishlist;
+// }
+
+export function user(state) {
+  return state.user;
+}
+
+
+export function seller(state) {
+  return state.seller;
 }

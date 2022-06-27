@@ -1,7 +1,7 @@
 <template>
   <q-page class="bg-grey-2">
     <div class="row">
-      <div
+      <!-- <div
         class="col-lg-2 col-md-2 col-sm-12 col-xs-12"
         style="border-right: 1px solid lightgrey"
       >
@@ -53,17 +53,44 @@
             </q-card>
           </q-expansion-item>
         </q-card>
-      </div>
+      </div> -->
 
-      <div class="bg-grey-2 col-lg-10 col-md-10 col-sm-12 col-xs-12">
+      <div class="bg-grey-2 col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="shop_img relative-position">
           <div
             class="text-primary text-h4 text-bold text-center shop_name bg-white absolute-top"
           >
-            <p class="q-my-auto absolute-center">Lorem Shop</p>
+            <p class="q-my-auto absolute-center">{{ shopName }}</p>
           </div>
         </div>
-        <div class="q-py-md card-container" style="margin: 0 auto">
+
+        <q-page
+          v-if="skeleton === false && noProduct === true"
+          style="margin: 0 auto"
+          class="column flex-center"
+        >
+          <div class="text-center text-primary text-h5 text-bold">
+            No Item in this Shop
+          </div>
+          <q-icon name="shopping_cart" size="3rem" color="primary" />
+        </q-page>
+
+        <div class="q-py-md card-container" style="margin: 0 5%">
+          <div
+            v-for="n in 5"
+            :key="n"
+            :class="skeleton === false ? 'hide-skeleton' : ''"
+          >
+            <q-card flat v-show="skeleton">
+              <q-skeleton height="150px" square />
+
+              <q-card-section>
+                <q-skeleton type="text" class="text-subtitle1" />
+                <q-skeleton type="text" width="50%" class="text-subtitle1" />
+                <q-skeleton type="text" class="text-caption" />
+              </q-card-section>
+            </q-card>
+          </div>
           <div
             class="bg-white col-lg-2 col-md-2 col-sm-3 col-xs-4 card text-left"
             v-for="product in products"
@@ -129,6 +156,7 @@ import axios from "axios";
 
 export default {
   name: "category.vue",
+  components: {},
   data() {
     return {
       value: window.innerWidth >= 1024 ? true : false,
@@ -136,6 +164,9 @@ export default {
       products: [],
       image: "",
       stars: ref(4),
+      skeleton: ref(true),
+      shopName: "",
+      noProduct: ref(false),
 
       class_val: "shadow-1 my-card",
       filters_list: [
@@ -195,14 +226,22 @@ export default {
       this.$store
         .dispatch("moduleExample/getSingleSeller", id)
         .then(async (response) => {
-          // console.log(response);
+          console.log(response);
+          this.shopName = response.store.name;
           let a;
-          a = await response.store.map((item) => this.getSingleProduct(item));
+          if (await !response.store.products[0]) {
+            this.skeleton = false;
+            this.noProduct = true;
+          }
+          a = await response.store.products.map((item) =>
+            this.getSingleProduct(item)
+          );
           // this.products = a;
           for await (let item of a) {
             this.product = item;
+            this.skeleton = false;
             this.products.push(this.product);
-            console.log(this.product);
+            // console.log(this.product);
             for (let image of item.img) {
               this.image = image.url;
             }
@@ -218,7 +257,7 @@ export default {
           .then((response) => {
             if (response) {
               // this.product = response.data.data;
-              // return response.data.data;
+              // console.log(response.data.data);
               resolve(response.data.data);
             }
           })
@@ -232,7 +271,6 @@ export default {
     let route = location.href.split("shop/");
     this.productId = route[1];
     console.log(this.productId);
-    // this.$store.dispatch("moduleExample/getProductsLocal");
     this.getSeller(this.productId);
   },
   components: { DetailedProductCard },
@@ -240,6 +278,9 @@ export default {
 </script>
 
 <style scoped>
+.hide-skeleton {
+  display: none;
+}
 .main {
   cursor: pointer;
 }

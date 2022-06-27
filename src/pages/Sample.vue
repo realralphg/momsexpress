@@ -157,8 +157,6 @@ export default {
       inception: ref(false),
       secondDialog: ref(false),
       group: ref("op1"),
-      customModel: ref("no"),
-      PUBLIC_KEY: "pk_test_285bb7525b2d3876efffce201f7a271d7c809839",
 
       options: [
         {

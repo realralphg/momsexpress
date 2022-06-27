@@ -27,7 +27,7 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import EssentialLink from "src/components/SellerEssentialLink.vue";
+import EssentialLink from "src/components/Seller/SellerEssentialLink.vue";
 import SellerDashboard from "components/Navbars/sellerDashboard.vue";
 
 export default defineComponent({
@@ -49,7 +49,22 @@ export default defineComponent({
 
       sellerToken: localStorage.getItem("sellerToken"),
       buyerToken: localStorage.getItem("buyerToken"),
+      username: ref(""),
     };
+  },
+  methods: {
+    getSeller() {
+      let id = localStorage.getItem("sellerId");
+      this.$store
+        .dispatch("moduleExample/getSingleSeller", id)
+        .then((response) => {
+          console.log(response);
+          this.$store.commit("moduleExample/seller", response);
+        });
+    },
+  },
+  mounted() {
+    this.getSeller();
   },
 });
 </script>

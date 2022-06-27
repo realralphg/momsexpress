@@ -135,6 +135,7 @@
 <script>
 import { defineComponent } from "vue";
 import { ref } from "vue";
+import axios from "axios";
 
 export default defineComponent({
   name: "PageIndex",
@@ -159,12 +160,15 @@ export default defineComponent({
           password: this.password,
         })
         .then((response) => {
-          // console.log(response);
           this.$router.push("/");
+          // this.getMe();
         })
         .catch((error) => {
           console.log(error);
         });
+    },
+    getMe() {
+      this.$store.dispatch("moduleExample/getMe");
     },
     userUsedOpenAuth() {
       localStorage.setItem("openAuth", "Open Auth was Used");

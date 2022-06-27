@@ -15,7 +15,10 @@
 
     <div class="story-container">
       <div class="story-item">
-        <!-- <Story  /> -->
+        <div v-show="(skeleton = true)" v-for="n in 8" :key="n" class="q-mr-md">
+          <q-skeleton type="circle" class="q-mx-auto" size="50px" />
+          <q-skeleton width="70px" class="q-my-xs q-mx-auto" height="12px" />
+        </div>
         <div
           class="story text-center"
           v-for="item in categories"
@@ -34,7 +37,7 @@
               </q-avatar>
             </q-btn>
           </div>
-          <div class="cat-name text-primary ellipsis q-mx-sm">
+          <div class="cat-name text-primary q-py-xs q-px-sm">
             {{ item.name }}
           </div>
         </div>
@@ -50,6 +53,7 @@ export default {
   data() {
     return {
       categories: [],
+      skeleton: false,
     };
   },
   methods: {
@@ -57,11 +61,12 @@ export default {
       this.$store.dispatch("moduleExample/getCategories").then((response) => {
         // console.log(response.categories);
         this.categories = response.categories;
+        // this.skeleton = false;
       });
     },
   },
   mounted() {
-    this.getCategories();
+    // this.getCategories();
   },
 };
 </script>
@@ -69,18 +74,19 @@ export default {
 <style scoped>
 .cat-name {
   /* display: inline; */
+  height: 55px;
+  align-items: center;
+  display: flex;
 }
 .story {
   width: 15% !important;
+  margin: 0 1%;
 }
-.avatar-container {
-  margin: 5px 10px;
-  padding: 2px;
-}
+
 .story-container {
   width: 100%;
-  height: 120px;
-  white-space: nowrap;
+  /* height: 120px; */
+  /* white-space: nowrap; */
   position: relative;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -114,16 +120,17 @@ export default {
 
 @media screen and (max-width: 600px) {
   .avatar {
-    font-size: 20px !important;
+    font-size: 25px !important;
   }
   .cat-name {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
   }
 }
 
-@media screen and (max-width: 501px) {
-  .story-container {
-    height: 80px;
+@media screen and (max-width: 500px) {
+  .story {
+    width: 50% !important;
+    margin: 0 3% 0 1% !important;
   }
 }
 </style>

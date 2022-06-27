@@ -31,7 +31,7 @@
   <q-list class="q-py-md q-px-md">
     <q-item
       clickable
-      class="q-mb-lg"
+      class="q-mb-md"
       v-ripple
       exact
       exact-active-class="item"
@@ -39,7 +39,7 @@
       style="border-radius: 15px"
     >
       <q-item-section avatar>
-        <q-icon name="home" size="2rem" />
+        <q-icon name="home" size="1.5rem" />
       </q-item-section>
       <q-item-section>
         <q-item-label>Overview</q-item-label>
@@ -48,7 +48,7 @@
 
     <q-item
       clickable
-      class="q-mb-lg"
+      class="q-mb-md"
       exact
       exact-active-class="item"
       v-ripple
@@ -56,7 +56,7 @@
       style="border-radius: 15px"
     >
       <q-item-section avatar>
-        <q-icon name="storefront" size="2rem" />
+        <q-icon name="storefront" size="1.5rem" />
       </q-item-section>
       <q-item-section>
         <q-item-label>Products</q-item-label>
@@ -65,7 +65,24 @@
 
     <q-item
       clickable
-      class="q-mb-lg"
+      class="q-mb-md"
+      exact
+      exact-active-class="item"
+      v-ripple
+      to="/seller/orders"
+      style="border-radius: 15px"
+    >
+      <q-item-section avatar>
+        <q-icon name="storefront" size="1.5rem" />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label>Orders</q-item-label>
+      </q-item-section>
+    </q-item>
+
+    <q-item
+      clickable
+      class="q-mb-md"
       exact
       exact-active-class="item"
       v-ripple
@@ -73,7 +90,7 @@
       style="border-radius: 15px"
     >
       <q-item-section avatar>
-        <q-icon name="settings" size="2rem" />
+        <q-icon name="settings" size="1.5rem" />
       </q-item-section>
       <q-item-section>
         <q-item-label>Profile</q-item-label>
@@ -82,7 +99,7 @@
 
     <q-item
       clickable
-      class="q-mb-lg"
+      class="q-mb-md"
       exact
       exact-active-class="item"
       v-ripple
@@ -90,7 +107,7 @@
       style="border-radius: 15px"
     >
       <q-item-section avatar>
-        <q-icon name="support_agent" size="2rem" />
+        <q-icon name="support_agent" size="1.5rem" />
       </q-item-section>
       <q-item-section>
         <q-item-label>Support</q-item-label>
@@ -105,7 +122,7 @@
       style="border-radius: 15px"
     >
       <q-item-section avatar>
-        <q-icon name="logout" size="2rem" />
+        <q-icon name="logout" size="1.5rem" />
       </q-item-section>
       <q-item-section>
         <q-item-label>Logout</q-item-label>

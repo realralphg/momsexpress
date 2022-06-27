@@ -2,6 +2,7 @@
   <q-img
     class="rounded-borders img"
     :src="product.img[0].url"
+    loading="eager"
     @click="this.$router.push(`/details/${product._id}`)"
   >
   </q-img>
@@ -24,14 +25,14 @@
         />
         <span class="q-my-auto q-ml-sm text-right text-caption">(4.8)</span>
       </div>
-      <q-checkbox
+      <!-- <q-checkbox
         v-model="val"
         checked-icon="favorite"
         keep-color
         unchecked-icon="favorite_border"
         class="favorite-btn"
         @click="addToWishlist(product), (val = true)"
-      />
+      /> -->
     </div>
     <div class="text-caption text-weight-bold text-grey ellipsis-2-lines">
       {{ product.desc.color }}
@@ -42,10 +43,17 @@
         class="q-ml-sm text-grey-6"
         style="text-decoration: line-through"
         v-if="discount !== 0"
-        >N{{ product.desc.size }}</span
+        >N{{ discount }}</span
       >
+      <q-chip
+        size="0.5rem"
+        color="primary"
+        class="text-white q-ml-xs q-my-auto"
+      >
+        {{ product.desc.size }}%
+      </q-chip>
     </div>
-    <div class="row justify-between">
+    <div class="row justify-between q-mt-md">
       <q-space />
       <q-btn
         outline
@@ -69,7 +77,9 @@ export default {
   props: ["product"],
   computed: {
     discount() {
-      let discount = this.product.price * (this.product.desc.size / 100);
+      let discount =
+        this.product.price * (this.product.desc.size / 100) +
+        this.product.price;
       return discount;
     },
   },
@@ -87,24 +97,22 @@ export default {
       });
       // console.log(this.$store);
     },
-    addToWishlist(product) {
-      console.log("added");
-      console.log(product);
-      this.$store.dispatch("moduleExample/addProductToWishlist", {
-        product: product,
-      });
-    },
-    deleteFromWishlist(id) {
-      console.log("delete");
-      console.log(id);
-      let products = this.$store.state.moduleExample.wishlist.filter(
-        (item) => item.product._id !== id
-      );
-      console.log(products);
-      this.$store.dispatch("moduleExample/setCart", this.products);
-      // this.products = products;
-      // this.setCart();
-    },
+    // addToWishlist(product) {
+    //   console.log("added");
+    //   console.log(product);
+    //   this.$store.dispatch("moduleExample/addProductToWishlist", {
+    //     product: product,
+    //   });
+    // },
+    // deleteFromWishlist(id) {
+    //   console.log("delete");
+    //   console.log(id);
+    //   let products = this.$store.state.moduleExample.wishlist.filter(
+    //     (item) => item.product._id !== id
+    //   );
+    //   console.log(products);
+    //   this.$store.dispatch("moduleExample/setCart", this.products);
+    // },
   },
 };
 </script>

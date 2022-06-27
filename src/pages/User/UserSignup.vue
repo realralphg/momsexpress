@@ -94,6 +94,31 @@
         ></div>
       </div>
     </q-card>
+
+    <q-dialog v-model="alert">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6 text-center text-primary text-bold">
+            Welcome to MOMS Express
+          </div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none text-center">
+          You have successfully created and logged in to your account. A mail
+          has been sent to your inbox which contains your password.
+        </q-card-section>
+
+        <q-card-actions align="center">
+          <q-btn
+            outline
+            label="Shop Now!"
+            color="primary"
+            v-close-popup
+            to="/"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -110,21 +135,15 @@ export default defineComponent({
       secondModel: ref("one"),
       tab: ref("Login"),
       email: "",
+      alert: ref(false),
     };
   },
   methods: {
     registerBuyer() {
-      this.$store
-        .dispatch("moduleExample/buyerRegister", {
-          email: this.email,
-        })
-        .then(({ status }) => {
-          console.log(status);
-          this.$router.replace("/auth");
-        })
-        .catch((error) => {
-          // console.log(error)
-        });
+      this.$store.dispatch("moduleExample/buyerRegister", {
+        email: this.email,
+      });
+      this.alert = true;
     },
   },
 });

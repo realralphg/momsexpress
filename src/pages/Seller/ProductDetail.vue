@@ -23,14 +23,13 @@
               :key="image._id"
             >
               <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-3 q-mr-lg">
-                <img :src="image.url" style="width: 100%; height: 64px" />
+                <img :src="image.url" style="width: 100%; height: 120px" />
                 <q-btn
                   label="Change"
                   @click="imageModal = !imageModal"
                   no-caps
-                  flat
-                  color="white"
-                  class="bg-blue"
+                  outline
+                  color="primary"
                 />
 
                 <!-- Dialog for changing Image  -->
@@ -103,11 +102,10 @@
                 <label for="">Category</label>
                 <q-input filled lazy-rules v-model="product.categories" />
               </div>
-
               <div class="q-mb-md" style="width: 100%">
                 <label for="">Description *</label>
                 <q-input
-                  v-model="product.desc"
+                  v-model="description"
                   dense="dense"
                   outlined
                   type="textarea"
@@ -253,18 +251,14 @@ export default {
       rating_point: 3.5,
       id: "",
       product: {},
-      productName: name,
-      // color: "red",
-      // size: 15,
-      // description: "haaa",
+
       // Has to be a nested object
       images: [],
+      description: null,
+      discount: null,
     };
   },
   computed: {
-    discount() {
-      this.product.desc.color, console.log(this.product.desc.color);
-    },
     win_width() {
       return this.$q.screen.width - 59;
     },
@@ -288,9 +282,9 @@ export default {
         productPrice: this.product.price,
         productQty: this.product.qtyInStore,
         productCategory: this.product.categories,
-        productSubcategory: this.product.subCategories,
-        productColor: this.color,
-        productSize: this.size,
+        productSubcategory: "nothing",
+        productColor: this.description,
+        productSize: this.discount,
       };
       this.$store.dispatch("moduleExample/updateSellerProductData", product);
       console.log(product);
@@ -300,10 +294,10 @@ export default {
         .dispatch("moduleExample/getSingleSellerProduct", this.id)
         .then((response) => {
           this.product = response;
-          // (this.product = detail),
-          // (this.images = detail.img),
-          // (this.description = detail.desc.color),
-          // (this.discount = detail.desc.size)
+          let detail = this.product;
+          this.images = response.img;
+          this.description = detail.desc.color;
+          this.discount = detail.desc.size;
         });
     },
   },

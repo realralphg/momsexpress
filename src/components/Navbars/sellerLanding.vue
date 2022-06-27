@@ -14,7 +14,7 @@
     <div>
       <nav class="primary-navigation">
         <ul>
-          <li><router-link to="/">Blog</router-link></li>
+          <!-- <li><router-link to="/">Blog</router-link></li> -->
           <li><router-link to="/">Faq</router-link></li>
           <li><router-link to="/">Contact Us</router-link></li>
         </ul>

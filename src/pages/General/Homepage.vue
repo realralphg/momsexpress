@@ -1,18 +1,13 @@
 <template>
-  <q-page class="relative-position bg-grey-2" style="padding-bottom: 22%">
+  <q-page class="relative-position bg-grey-2" style="padding-bottom: 5%">
     <Hero />
-    <!-- <Categories /> -->
     <Categories2 />
     <Recent />
-    <!-- <Doublestuff /> -->
-    <Trending />
     <FeaturedShops />
     <Trending />
     <EasyBudgetVue />
     <Seamless />
-    <Trending />
     <MoreProductsVue />
-    <!-- <Newlayout /> -->
   </q-page>
 </template>
 
@@ -53,7 +48,6 @@ export default defineComponent({
         .dispatch("moduleExample/getUser")
         .then((response) => {
           console.log("hello");
-          // this.$router.push("/");
           console.log(response);
         })
         .catch((error) => {
@@ -63,9 +57,7 @@ export default defineComponent({
   },
   mounted() {
     let user = localStorage.getItem("buyerName");
-    // if (user === null || user === "" || user === undefined) {
     this.getUserDetails();
-    // }
   },
 });
 </script>

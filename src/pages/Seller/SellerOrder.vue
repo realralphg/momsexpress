@@ -37,11 +37,35 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
       orders: [],
     };
+  },
+  methods: {
+    getOrders() {
+      axios({
+        method: "GET",
+        url: `https://moms-express.herokuapp.com/api/seller/order`,
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("sellerToken"),
+        },
+      })
+        .then((response) => {
+          if (response) {
+            console.log(response.data.data);
+            this.orders = response.data.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
+  mounted() {
+    this.getOrders();
   },
 };
 </script>

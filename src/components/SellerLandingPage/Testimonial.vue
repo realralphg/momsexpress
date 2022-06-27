@@ -2,7 +2,7 @@
   <h4 class="text-center text-bold q-px-sm">What Other Sellers are saying</h4>
   <div class="testimonial row justify-evenly">
     <q-card
-      class="col-lg-3 col-md-3 col-sm-12 col-xs-12 card q-my-md q-mx-xs q-px-md q-py-lg"
+      class="col-lg-3 col-md-3 col-sm-9 col-xs-11 card q-my-md q-mx-xs q-px-md q-py-lg"
     >
       <div class="row q-my-sm">
         <q-avatar square>
@@ -13,9 +13,6 @@
           <div class="text-primary">Occupation</div>
         </div>
       </div>
-      <!-- <q-avatar>
-        <q-icon name="chat_bubble_outline" size="2rem" color="secondary" />
-      </q-avatar> -->
 
       <p>
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate
@@ -24,7 +21,7 @@
     </q-card>
 
     <q-card
-      class="col-lg-3 col-md-3 col-sm-12 col-xs-12 card q-my-md q-mx-xs q-px-md q-py-lg"
+      class="col-lg-3 col-md-3 col-sm-9 col-xs-11 card q-my-md q-mx-xs q-px-md q-py-lg"
     >
       <div class="row q-my-sm">
         <q-avatar square>
@@ -35,9 +32,6 @@
           <div class="text-primary">Occupation</div>
         </div>
       </div>
-      <!-- <q-avatar>
-        <q-icon name="chat_bubble_outline" size="2rem" color="secondary" />
-      </q-avatar> -->
 
       <p>
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate
@@ -46,7 +40,7 @@
     </q-card>
 
     <q-card
-      class="col-lg-3 col-md-3 col-sm-12 col-xs-12 card q-my-md q-mx-xs q-px-md q-py-lg"
+      class="col-lg-3 col-md-3 col-sm-9 col-xs-11 card q-my-md q-mx-xs q-px-md q-py-lg"
     >
       <div class="row q-my-sm">
         <q-avatar square>
@@ -57,9 +51,6 @@
           <div class="text-primary">Occupation</div>
         </div>
       </div>
-      <!-- <q-avatar>
-        <q-icon name="chat_bubble_outline" size="2rem" color="secondary" />
-      </q-avatar> -->
 
       <p>
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate

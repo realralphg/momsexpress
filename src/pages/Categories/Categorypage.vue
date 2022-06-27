@@ -8,7 +8,7 @@
         <q-card class="q-mr-sm no-shadow">
           <q-expansion-item
             expand-separator
-            label="Filter By"
+            label="Filter "
             class="text-grey-8 q-pa-md"
             :default-opened="value"
           >
@@ -20,7 +20,7 @@
                 >
                   <q-list v-for="item in filters_list" :key="item.label">
                     <q-item-label
-                      class="text-weight-bolder text-grey-9 q-pt-md q-pb-sm"
+                      class="text-weight-bolder text-grey-9 q-px-none q-pt-md q-pb-sm"
                       header
                       >{{ item.label }}</q-item-label
                     >
@@ -32,18 +32,13 @@
                       v-ripple
                       dense
                     >
-                      <q-item-section side class="q-px-md text-caption">
+                      <q-item-section side class="text-caption">
                         <q-checkbox
-                          @input="
-                            (searched_results = []),
-                              (show_load_more = false),
-                              (log_offset = 0),
-                              do_search()
-                          "
+                          @input="filterProduct(it.label)"
                           dense
                           v-model="it[it.model]"
                         >
-                          {{ it.label }}({{ it.count }})
+                          {{ it.label }}
                         </q-checkbox>
                       </q-item-section>
                     </q-item>
@@ -57,9 +52,10 @@
 
       <div class="bg-grey-2 col-lg-10 col-md-10 col-sm-12 col-xs-12">
         <!-- <div class="text-h4 text-primary text-bold q-px-md q-pt-md">
-          {{ productName }}
+          {{ categoryName }}
         </div> -->
         <div class="q-py-md card-container" style="margin: 0 auto">
+          <Skeleton :skeleton="skeleton" />
           <div
             class="bg-white col-lg-2 col-md-2 col-sm-3 col-xs-4 card text-left"
             v-for="product in products"
@@ -76,48 +72,52 @@
 <script>
 import { ref } from "vue";
 import DetailedProductCard from "../../components/DetailedProductCard.vue";
+import Skeleton from "src/components/Skeleton.vue";
 
 export default {
   name: "category.vue",
+  components: { DetailedProductCard, Skeleton },
   data() {
     return {
       value: window.innerWidth >= 1024 ? true : false,
       products: [],
-      productName: "",
+      categoryName: "",
+      skeleton: ref(true),
+      filter: ref(""),
 
       class_val: "shadow-1 my-card",
       filters_list: [
         {
-          label: "Discount",
+          label: "Price Range",
           items: [
             {
               Product: false,
-              count: 51,
-              label: "50% or more",
+              // count: 51,
+              label: "50,000 - 100,000",
               model: "Product",
             },
             {
               Product: false,
-              count: 3,
-              label: "40% or more",
+              // count: 3,
+              label: "35,000 - 49,000",
               model: "Product",
             },
             {
               Product: false,
-              count: 41,
-              label: "30% or more",
+              // count: 41,
+              label: "20,000 - 34,000",
               model: "Product",
             },
             {
               Product: false,
-              count: 16,
-              label: "20% or more",
+              // count: 16,
+              label: "6,000 - 19,000",
               model: "Product",
             },
             {
               Product: false,
-              count: 16,
-              label: "10% or more",
+              // count: 16,
+              label: "< 5,000",
               model: "Product",
             },
           ],
@@ -134,27 +134,55 @@ export default {
     },
     getProducts() {
       this.$store
-        .dispatch("moduleExample/getSingleCategory", this.productName)
+        .dispatch("moduleExample/getSingleCategory", this.categoryName)
         .then((response) => {
           console.log(response);
+          this.skeleton = false;
           this.products = response;
         });
+    },
+    getEasyBudgetProducts() {
+      this.$store
+        .dispatch("moduleExample/getEasyBudgetCategory", 16000)
+        .then((response) => {
+          this.skeleton = false;
+          this.products = response;
+        });
+    },
+    getNewlyAdded() {
+      this.$store.dispatch("moduleExample/getProducts").then((response) => {
+        this.skeleton = false;
+        this.products = response.docs;
+        // console.log(this.products);
+      });
+    },
+    getTrending() {
+      this.$store
+        .dispatch("moduleExample/getTrendingCategory")
+        .then((response) => {
+          this.skeleton = false;
+          this.products = response;
+        });
+    },
+    filterProduct(range) {
+      console.log(range);
+      let a = this.products.filter((item) => {
+        if (item.price <= 25000) {
+          return item;
+        }
+      });
+      console.log(a);
     },
   },
   mounted() {
     let route = location.href.split("category/");
-    this.productName = route[1];
-    // let b = this.productName.split("%20");
-    // let c = "";
-    // for (let a of b) {
-    //   c = a;
-    //   console.log(c);
-    // }
-    // console.log(b);
-    // this.$store.dispatch("moduleExample/getProductsLocal");
-    this.getProducts();
+    this.categoryName = route[1];
+
+    if (this.categoryName === "easy_budget") this.getEasyBudgetProducts();
+    if (this.categoryName === "newly_added") this.getNewlyAdded();
+    if (this.categoryName === "trending") this.getTrending();
+    else this.getProducts();
   },
-  components: { DetailedProductCard },
 };
 </script>
 

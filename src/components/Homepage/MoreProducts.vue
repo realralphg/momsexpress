@@ -21,12 +21,59 @@
     </div>
 
     <div class="q-py-md card-container">
+      <Skeleton :skeleton="skeleton" />
       <div
         class="bg-white card text-left"
         v-for="product in products"
-        :key="product.id"
+        :key="product._id"
       >
-        <ProductCard :product="product" />
+        <div class="main" @click="this.$router.push(`/details/${product._id}`)">
+          <q-img style="" class="rounded-borders img" :src="product.img[0].url">
+          </q-img>
+          <div class="q-pa-sm">
+            <div class="justify-between">
+              <div class="text-subtitle1 ellipsis text-bold product-title">
+                {{ product.name }}
+              </div>
+              <div class="row">
+                <q-rating
+                  class=""
+                  v-model="stars"
+                  :max="5"
+                  size="0.7rem"
+                  color="orange-7"
+                />
+                <span class="q-my-auto text-right text-caption q-ml-xs"
+                  >(4.8)</span
+                >
+              </div>
+            </div>
+            <div
+              class="text-caption text-weight-bold text-grey ellipsis-2-lines"
+            >
+              {{ product.desc.color }}
+            </div>
+            <div class="q-my-xs price">
+              <span class="text-bold"
+                >N{{
+                  product.price - product.price * (product.desc.size / 100)
+                }}</span
+              ><span
+                class="q-ml-sm text-grey-6"
+                style="text-decoration: line-through"
+                v-if="product.desc.size !== 0"
+                >N{{ product.price }}</span
+              >
+              <q-chip
+                size="0.5rem"
+                color="primary"
+                class="text-white q-ml-xs q-my-auto"
+              >
+                {{ product.desc.size }}%
+              </q-chip>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -35,47 +82,48 @@
 <script>
 import { ref } from "vue";
 import ProductCard from "../../components/ProductCard.vue";
-
-const images = [
-  {
-    name: "Suit",
-    image: "/books.jpg",
-  },
-  {
-    name: "Female shoe",
-    image: "/camera.jpg",
-  },
-  {
-    name: "MacBook",
-    image: "/laptop.jpg",
-  },
-  {
-    name: "T-shirts",
-    image: "/shirts.jpg",
-  },
-  {
-    name: "Watch",
-    image: "/watch.jpg",
-  },
-
-  {
-    name: "Speaker",
-    image: "/speaker.jpg",
-  },
-];
+import Skeleton from "../Skeleton.vue";
 
 export default {
   name: "Trending",
-  components: { ProductCard },
+  components: { ProductCard, Skeleton },
   data() {
     return {
-      products: images,
+      products: [],
+      skeleton: ref(true),
     };
+  },
+  methods: {
+    getProducts() {
+      this.$store.dispatch("moduleExample/getProducts").then((response) => {
+        this.skeleton = false;
+        this.products = response.docs.reverse();
+        this.products.splice(6, response.docs.length - 1);
+      });
+    },
+  },
+  mounted() {
+    this.getProducts();
   },
 };
 </script>
 
 <style scoped>
+.main {
+  cursor: pointer;
+}
+.add-btn {
+  height: 15px;
+  margin: auto 0;
+}
+
+.card {
+  border-radius: 10px;
+}
+.img {
+  height: 150px;
+  width: 100%;
+}
 .master {
   padding: 0 4%;
 }
@@ -116,11 +164,23 @@ export default {
   .card-container {
     grid-template-columns: repeat(6, 40%);
   }
+  .product-title {
+    font-size: 0.9rem;
+  }
+  .price {
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 415px) {
+  .card-container {
+    grid-template-columns: repeat(6, 47%);
+  }
 }
 
 @media screen and (max-width: 330px) {
   .card-container {
-    grid-template-columns: repeat(6, 46%);
+    grid-template-columns: repeat(6, 47%);
   }
 }
 </style>

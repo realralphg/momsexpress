@@ -4,16 +4,18 @@ function getCartFromStorage() {
   return cart;
 }
 
-function getWishlistFromStorage() {
-  let wishlist = localStorage.getItem("wishlist");
-  wishlist = wishlist === null ? [] : JSON.parse(wishlist);
-  return wishlist;
-}
+// function getWishlistFromStorage() {
+//   let wishlist = localStorage.getItem("wishlist");
+//   wishlist = wishlist === null ? [] : JSON.parse(wishlist);
+//   return wishlist;
+// }
+const userDetails = localStorage.getItem("user");
 
 export default {
-  products: [],
+  user: userDetails,
+  seller: null,
   cart: getCartFromStorage(),
-  wishlist: getWishlistFromStorage(),
+  // wishlist: getWishlistFromStorage(),
   sellerToken: null,
   sellerProducts: [],
   singleSellerProduct: null,

@@ -9,7 +9,7 @@
     </div>
     <q-icon name="favorite_outline" size="3rem" color="primary" />
   </q-page>
-  <div class="master">
+  <!-- <div class="master">
     <div class="q-py-md card-container">
       <div
         class="bg-white card text-left"
@@ -19,7 +19,7 @@
         <div class="main" @click="this.$router.push(`/details/${product._id}`)">
           <q-img
             class="rounded-borders img"
-            :src="product.img[0].url"
+            :src="product.img"
             @click="this.$router.push(`/details/${product._id}`)"
           >
           </q-img>
@@ -86,19 +86,16 @@
             </div>
           </div>
         </div>
-        <!-- <ProductCard :product="product" /> -->
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
 import { ref } from "vue";
-import ProductCard from "../../components/ProductCard.vue";
 
 export default {
   name: "Recent",
-  components: { ProductCard },
   data() {
     return {
       products: [],
@@ -107,30 +104,31 @@ export default {
     };
   },
   methods: {
-    getWishlists() {
-      this.products = this.$store.getters["moduleExample/getWishlist"];
-      console.log(this.products);
-    },
-    addToCart(product) {
-      this.$store.dispatch("moduleExample/addProductToCart", {
-        product: product,
-        quantity: 1,
-      });
-    },
-    deleteFromWishlist(id) {
-      console.log("delete");
-      console.log(id);
-      // let products = this.$store.state.moduleExample.wishlist.filter(
-      //   (item) => item.product._id !== id
-      // );
-      // console.log(products);
-      // this.$store.dispatch("moduleExample/setCart", this.products);
-      // this.products = products;
-      // this.setCart();
-    },
+    // getWishlists() {
+    //   this.products = this.$store.getters["moduleExample/getWishlist"];
+    //   this.products = JSON.parse(JSON.stringify(this.products));
+    //   console.log(this.products);
+    // },
+    // addToCart(product) {
+    //   this.$store.dispatch("moduleExample/addProductToCart", {
+    //     product: product,
+    //     quantity: 1,
+    //   });
+    // },
+    // deleteFromWishlist(id) {
+    //   console.log("delete");
+    //   console.log(id);
+    //   let products = this.$store.state.moduleExample.wishlist.filter(
+    //     (item) => item.product._id !== id
+    //   );
+    //   console.log(products);
+    //   this.$store.dispatch("moduleExample/setCart", this.products);
+    //   this.products = products;
+    //   this.setCart();
+    // },
   },
   mounted() {
-    this.getWishlists();
+    // this.getWishlists();
   },
 };
 </script>

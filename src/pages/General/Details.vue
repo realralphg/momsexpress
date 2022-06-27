@@ -1,6 +1,19 @@
 <template>
   <div class="bg-grey-2 q-pt-lg">
-    <div class="row" style="padding: 0 4%">
+    <div class="row" style="padding: 0 4%" v-if="skeleton">
+      <q-skeleton
+        class="col-lg-5 col-md-5 col-sm-12 col-xs-12"
+        height="350px"
+      />
+      <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 q-px-lg">
+        <q-skeleton type="text" width="50%" height="50px" />
+        <q-skeleton type="text" width="30%" height="30px" />
+        <q-skeleton type="text" width="30%" height="30px" />
+        <q-skeleton type="text" width="70%" height="180px" />
+        <q-skeleton type="text" width="30%" height="30px" />
+      </div>
+    </div>
+    <div class="row" v-if="!skeleton" style="padding: 0 4%">
       <!-- Product Image Carousel  -->
       <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
         <q-carousel
@@ -107,8 +120,6 @@
             </div>
           </div>
         </div>
-
-        <!--</q-scroll-area>-->
       </div>
     </div>
 
@@ -129,10 +140,10 @@
                 </h5>
               </div>
 
-              <q-item v-ripple v-for="n in 5" :key="n" class="q-my-sm">
+              <q-item v-ripple v-for="n in 4" :key="n" class="q-my-sm">
                 <q-item-section avatar>
                   <q-avatar>
-                    <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
+                    <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
                   </q-avatar>
                 </q-item-section>
 
@@ -186,7 +197,6 @@
 
 <script>
 import Trending from "src/components/Homepage/Trending.vue";
-import axios from "axios";
 
 export default {
   name: "details.vue",
@@ -194,11 +204,13 @@ export default {
   components: { Trending },
   data() {
     return {
-      productId: "",
+      productId: this.$route.params.productId,
       product: {},
       description: "",
       discount: "",
       comment: "",
+      comments: [],
+      skeleton: true,
 
       slide: 1,
       tab: "Ratings",
@@ -225,30 +237,30 @@ export default {
     calDiscount() {
       return this.product.price * (this.discount / 100) + this.product.price;
     },
+    a() {
+      return this.$route.params.productId;
+    },
   },
   methods: {
-    getSingleProduct(id) {
-      return new Promise((resolve, reject) => {
-        axios({
-          method: "GET",
-          url: `https://moms-express.herokuapp.com/api/search/${id}`,
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("buyerToken"),
-          },
-        })
-          .then(async (response) => {
-            if (response) {
-              this.product = await response.data.data;
-              this.description = response.data.data.desc.color;
-              this.discount = response.data.data.desc.size;
-              // console.log(this.discount);
-              resolve();
-            }
-          })
-          .catch((error) => {
-            reject();
-          });
-      });
+    getSingleProduct() {
+      let id = this.$router.currentRoute.value.params.productId;
+      this.$store
+        .dispatch("moduleExample/getSingleProduct", id)
+        .then((response) => {
+          if (response) {
+            this.skeleton = false;
+            this.product = response;
+            this.description = response.desc.color;
+            this.discount = response.desc.size;
+            this.comments = response.reviews;
+            let a = this.comments.map((item) => item.user);
+            a.forEach((item) => {
+              // to be continued
+            });
+            console.log(a);
+            console.log(this.comments);
+          }
+        });
     },
     addToCart(product) {
       this.$store.dispatch("moduleExample/addProductToCart", {
@@ -259,25 +271,23 @@ export default {
     commentOnProduct() {
       console.log(this.productId);
       if (this.comment !== "") {
-        console.log(this.productId);
-        this.$store
-          .dispatch("moduleExample/commentOnProduct", {
-            comment: this.comment,
-            id: this.productId,
-          })
-          .then((response) => {
-            console.log(response);
-          });
+        this.$store.dispatch("moduleExample/commentOnProduct", {
+          comment: this.comment,
+          id: this.productId,
+        });
       } else {
         console.log("Input a comment please");
       }
     },
   },
-  mounted() {
-    let route = location.href.split("details/");
-    this.productId = route[1];
-    // console.log(this.productId);
-    this.getSingleProduct(this.productId);
+
+  watch: {
+    a: function () {
+      this.getSingleProduct();
+    },
+  },
+  created() {
+    this.getSingleProduct();
   },
 };
 </script>

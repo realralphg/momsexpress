@@ -11,7 +11,7 @@
       </h5>
       <q-btn
         color="primary"
-        to="/category"
+        to="/category/newly_added"
         class="q-pr-none"
         label="View all"
         icon-right="chevron_right"
@@ -21,20 +21,12 @@
     </div>
 
     <div class="q-py-md card-container">
+      <Skeleton :skeleton="skeleton" />
       <div
         class="bg-white card text-left"
         v-for="product in products"
         :key="product._id"
       >
-        <!-- <q-card flat style="max-width: 300px">
-          <q-skeleton height="150px" square />
-
-          <q-card-section>
-            <q-skeleton type="text" class="text-subtitle1" />
-            <q-skeleton type="text" width="50%" class="text-subtitle1" />
-            <q-skeleton type="text" class="text-caption" />
-          </q-card-section>
-        </q-card> -->
         <div class="main" @click="this.$router.push(`/details/${product._id}`)">
           <q-img style="" class="rounded-borders img" :src="product.img[0].url">
           </q-img>
@@ -61,15 +53,16 @@
             >
               {{ product.desc.color }}
             </div>
-            <div class="q-my-xs">
-              <span class="text-bold">{{ product.price }}</span
+            <div class="q-my-xs price">
+              <span class="text-bold"
+                >N{{
+                  product.price - product.price * (product.desc.size / 100)
+                }}</span
               ><span
                 class="q-ml-sm text-grey-6"
                 style="text-decoration: line-through"
                 v-if="product.desc.size !== 0"
-                >N{{
-                  product.price * (product.desc.size / 100) + product.price
-                }}</span
+                >N{{ product.price }}</span
               >
               <q-chip
                 size="0.5rem"
@@ -89,26 +82,25 @@
 <script>
 import { ref } from "vue";
 import ProductCard from "../../components/ProductCard.vue";
+import Skeleton from "../Skeleton.vue";
 
 export default {
   name: "Recent",
-  components: { ProductCard },
+  components: { ProductCard, Skeleton },
   data() {
     return {
       products: [],
       stars: 5,
+      skeleton: ref(true),
     };
   },
-  computed: {
-    discount(product) {
-      let discount = this.product.price * (this.product.desc.size / 100);
-      return discount;
-    },
-  },
+  computed: {},
   methods: {
     getProducts() {
       this.$store.dispatch("moduleExample/getProducts").then((response) => {
+        this.skeleton = false;
         this.products = response.docs;
+        this.products.splice(6, response.docs.length - 1);
       });
     },
   },
@@ -173,6 +165,18 @@ export default {
 @media screen and (max-width: 470px) {
   .card-container {
     grid-template-columns: repeat(6, 40%);
+  }
+  .product-title {
+    font-size: 0.9rem;
+  }
+  .price {
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 415px) {
+  .card-container {
+    grid-template-columns: repeat(6, 47%);
   }
 }
 

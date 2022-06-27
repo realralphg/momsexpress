@@ -1,5 +1,5 @@
 <template>
-  <q-page style="padding-bottom: 15%">
+  <q-page style="padding-bottom: 5%">
     <div style="height: 70vh" class="container">
       <div class="overlay flex flex-center text-white">
         <div class="text-center">

@@ -1,6 +1,13 @@
 <template>
   <div class="category bg-white border_radius">
     <nav @mouseleave="show = false" class="primary-navigation">
+      <div class="q-pl-sm" v-for="n in 13" :key="n">
+        <div class="row items-center" v-if="skeleton">
+          <q-skeleton type="QAvatar" size="1rem" animation="fade" />
+          <q-skeleton type="text" width="70%" class="text-subtitle1" />
+        </div>
+      </div>
+
       <ul v-for="item in categories" :key="item.id">
         <li class="q-pl-sm">
           <a
@@ -8,24 +15,9 @@
             @click="this.$router.push(`/category/${item.name}`)"
             class="text-primary text-bold text-subtitle2 row items-center ellipsis"
           >
-            <!-- <q-icon
-              name="fas fa-mobile-screen-button"
-              class="q-mx-md"
-              color="primary"
-            /> -->
             <img :src="item.icon" class="q-mr-xs" />
             {{ item.name }}
           </a>
-          <!-- <div v-if="show" @mouseleave="show = false" class="dropdown row">
-            <div v-for="n in 6" :key="n" class="category-group col-4">
-              <p class="text-bold">Category X</p>
-              <div class="category-group-list text-caption">
-                <li><a href=""></a> Sub-category Y</li>
-                <li><a href=""></a> Sub-category Y</li>
-                <li><a href=""></a> Sub-category Y</li>
-              </div>
-            </div>
-          </div> -->
         </li>
       </ul>
     </nav>
@@ -39,14 +31,15 @@ export default {
   name: "Categories",
   data() {
     return {
-      // show: ref(false),
+      skeleton: ref(true),
       categories: [],
     };
   },
   methods: {
     getCategories() {
       this.$store.dispatch("moduleExample/getCategories").then((response) => {
-        console.log(response.categories);
+        // console.log(response.categories);
+        this.skeleton = false;
         this.categories = response.categories;
       });
     },
@@ -58,10 +51,6 @@ export default {
 </script>
 
 <style scoped>
-h5 {
-  /* margin: 0 0 5%; */
-}
-
 ul {
   padding: 0;
 }
@@ -77,20 +66,9 @@ li {
   padding: 0;
 }
 
-/* .category-group {
-  padding: 0 2%;
-  margin: 0;
-  display: block;
-}
-
-.category-group-list li {
-  padding: 0;
-  margin: 0;
-} */
 nav.primary-navigation {
   margin: 0 auto;
   text-align: left;
-  /* padding: 0 10%; */
 }
 
 .primary-navigation ul {
