@@ -77,6 +77,7 @@
           <q-btn
             label="Checkout"
             :to="!userLoggedIn ? '/login' : '/checkout'"
+            @click="setTotalLocal(total)"
             push
             color="primary"
             text-color="secondary"
@@ -129,6 +130,9 @@ export default {
 
     deleteProduct(product) {
       this.$store.dispatch("moduleExample/deleteCartItem", { product });
+    },
+    setTotalLocal(total) {
+      localStorage.setItem("cartTotal", total);
     },
   },
   created() {

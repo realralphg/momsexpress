@@ -55,24 +55,11 @@ export default {
   data() {
     return {
       username: "",
+      sellerStore: null,
     };
   },
   components: { ShopDets, AdditionalInfo, Password },
-  methods: {
-    getSeller() {
-      let id = localStorage.getItem("sellerId");
-      this.$store
-        .dispatch("moduleExample/getSingleSeller", id)
-        .then((response) => {
-          console.log(response);
-          this.username = response.fullname;
-          this.$store.commit("moduleExample/seller", response);
-        });
-    },
-  },
-  mounted() {
-    this.getSeller();
-  },
+  methods: {},
 };
 </script>
 

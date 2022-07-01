@@ -11,7 +11,7 @@
       </h5>
       <q-btn
         color="primary"
-        to="/category"
+        to="/category/more_products"
         class="q-pr-none"
         label="View all"
         icon-right="chevron_right"

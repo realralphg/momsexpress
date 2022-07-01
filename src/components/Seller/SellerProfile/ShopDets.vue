@@ -1,14 +1,18 @@
 <template>
   <div class="text-bold text-h6 q-mb-lg">Shop Details</div>
   <q-form class="q-gutter-md">
-    <q-input filled v-model="name" label="Shop Name" />
-    <q-input filled v-model="phoneNumber" label="Shop Phone number" />
+    <q-input filled v-model="store.name" label="Shop Name" />
+    <q-input filled v-model="store.phoneNumber" label="Shop Phone number" />
 
-    <q-input filled v-model="bankAccountName" label="Bank Account Name" />
+    <q-input filled v-model="store.bankAccountName" label="Bank Account Name" />
 
-    <q-input filled v-model="bankAccountNumber" label="Bank Account Number" />
+    <q-input
+      filled
+      v-model="store.bankAccountNumber"
+      label="Bank Account Number"
+    />
 
-    <q-input filled v-model="bankName" label="Bank Name" />
+    <q-input filled v-model="store.bankName" label="Bank Name" />
 
     <div>
       <q-btn label="Update" @click="updateShopDetails()" color="primary" />
@@ -26,6 +30,7 @@ export default {
       bankName: "",
       bankAccountNumber: "",
       phoneNumber: null,
+      store: "",
     };
   },
   methods: {
@@ -38,16 +43,20 @@ export default {
         bankAccountNumber: this.bankAccountNumber,
         phoneNumber: this.phoneNumber,
       };
-      console.log(
-        this.name,
-        this.desc,
-        this.bankAccountNumber,
-        this.bankName,
-        this.bankAccountName,
-        this.phoneNumber
-      );
       this.$store.dispatch("moduleExample/updateShopDetails", data);
     },
+    getSeller() {
+      let id = localStorage.getItem("sellerId");
+      this.$store
+        .dispatch("moduleExample/getSingleSeller", id)
+        .then((response) => {
+          this.store = response.store;
+          console.log(this.store);
+        });
+    },
+  },
+  mounted() {
+    this.getSeller();
   },
 };
 </script>

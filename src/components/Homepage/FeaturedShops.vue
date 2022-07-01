@@ -10,15 +10,6 @@
       >
         Featured Shops
       </h5>
-      <!-- <q-btn
-        color="primary"
-        to="/shop"
-        class="q-pr-none"
-        label="View all"
-        icon-right="chevron_right"
-        flat
-        size="0.7rem"
-      /> -->
     </div>
 
     <div class="column q-col-gutter-sm shops">

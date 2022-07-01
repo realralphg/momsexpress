@@ -1,111 +1,52 @@
 <template>
-  <q-dialog v-model="inception">
-    <q-card style="width: 70%">
-      <q-card-section>
-        <div class="text-h6">Select Addreess</div>
-      </q-card-section>
-
-      <q-card-section class="q-pt-none">
-        <q-option-group v-model="group" :options="options" color="primary" />
-      </q-card-section>
-
-      <q-card-actions align="right" class="text-primary">
-        <!-- <q-space/> -->
-        <q-btn flat label="Create New Address" @click="secondDialog = true" />
-        <q-btn flat label="Save" v-close-popup />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
-
-  <!-- Create New Address  -->
-  <q-dialog
-    v-model="secondDialog"
-    persistent
-    transition-show="scale"
-    transition-hide="scale"
-  >
-    <q-card class="">
-      <q-card-section>
-        <div class="text-h6">New Address</div>
-      </q-card-section>
-
-      <q-card-section class="q-pt-none">
-        <div class="row">
-          <div class="col-6">
-            <label for="" class="text-caption"> Full Contact Name</label>
-            <q-input dense outlined class="col-6" />
-          </div>
-
-          <div class="col-6">
-            <label for="" class="text-caption"> Phone Number</label>
-            <q-input dense outlined class="col-6" />
-          </div>
-
-          <div class="col-12">
-            <label for="" class="text-caption"> Delivery Address</label>
-            <q-input dense outlined class="col-6" />
-          </div>
-
-          <div class="col-4">
-            <label for="" class="text-caption"> Region/City</label>
-            <q-input dense outlined class="col-6" />
-          </div>
-
-          <div class="col-4">
-            <label for="" class="text-caption"> State</label>
-            <q-input dense outlined class="col-6" />
-          </div>
-
-          <div class="col-4">
-            <label for="" class="text-caption"> Country</label>
-            <q-input dense outlined class="col-6" />
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-actions align="right" class="">
-        <q-btn label="Save" flat v-close-popup />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
-
-  <q-page class="bg-grey-2">
+  <q-page class="bg-grey-2 padding-footer">
     <div class="q-py-lg column flex-center q-pt-lg">
-      <div class="text-center text-bold text-h6 text-uppercase q-my-md">
+      <!-- <div class="text-center text-bold text-h6 text-uppercase q-my-md">
         Confirmation of Order
-      </div>
+      </div> -->
 
-      <q-card class="q-pa-lg">
+      <q-card class="q-pa-lg card">
         <div class="text-subtitle1">
-          <div class="row">
-            <div class="text-bold text-h6 text-primary">Address</div>
-            <q-space />
-            <q-btn
-              icon="edit"
-              flat
-              size="0.8rem"
-              color="secondary"
-              @click="inception = true"
-              round
-            >
-              <q-tooltip anchor="bottom middle" self="center middle">
-                Select Address
-              </q-tooltip>
-            </q-btn>
+          <div class="q-mb-md">
+            <div class="text-bold text-h6 text-primary text-center">
+              Delivery Details
+            </div>
           </div>
-          <div class="row text-bold text-subtitle1">
+          <div class="text-bold text-subtitle1 q-mb-md">
             <div>Tobi Ikupolati</div>
-            <div class="q-mx-md">(09012345678)</div>
+            <div class="">09012345678</div>
           </div>
 
-          <div>Sabon Tasha, Kaduna South. Kaduna state, Nigeria</div>
+          <q-input
+            filled
+            v-model="name"
+            placeholder="Please type in your address"
+          />
+
+          <!-- <div>Sabon Tasha, Kaduna South. Kaduna state, Nigeria</div> -->
         </div>
         <q-separator class="q-my-md" />
 
-        <div class="">
+        <div class="row justify-between">
           <div class="text-subtitle1 text-bold">Items</div>
-          <div v-for="item in itemsInCart" :key="item.id">
-            {{ item.quantity }} {{ item.product.name }}
+
+          <div class="text-subtitle1 text-bold">Quantity</div>
+        </div>
+
+        <div
+          class="row justify-between"
+          v-for="item in itemsInCart"
+          :key="item.id"
+        >
+          <div>
+            <div>
+              {{ item.product.name }}
+            </div>
+          </div>
+          <div>
+            <div class="text-center">
+              {{ item.quantity }}
+            </div>
           </div>
         </div>
 
@@ -113,14 +54,13 @@
 
         <div class="q-my-md text-bold text-h6 row items-center justify-between">
           <div>TOTAL:</div>
-          <div class="text-subtitle1 text-bold">N {{ amount }}</div>
+          <div class="text-subtitle1 text-bold">N {{ amount / 100 }}</div>
         </div>
 
         <div class="row">
           <q-space />
           <paystack
-            style="width: 40%; border-radius: 8px; border: 1px solid #d56c33"
-            class="q-pa-sm text-subtitle1 text-primary"
+            class="q-pa-sm text-subtitle1 text-primary paystack-btn"
             buttonClass="'button-class  btn btn-primary'"
             buttonText="Make Payment"
             :publicKey="publicKey"
@@ -146,12 +86,13 @@ export default {
   },
   data() {
     return {
+      name: "",
       itemsInCart: [],
       sellerId: "",
       discount: "0",
       //Paystack
       publicKey: "pk_test_285bb7525b2d3876efffce201f7a271d7c809839",
-      amount: 1000000, //Expressed in lowest demonitation, so 1000kobo is equivalent to 10Naira
+      amount: localStorage.getItem("cartTotal") * 100,
       email: "momsexpress@gmail.com",
       firstname: "MomS",
       lastname: "Express",
@@ -170,7 +111,7 @@ export default {
           {
             display_name: "Delivery Address",
             variable_name: "address",
-            value: "Sabon Tasha",
+            value: this.name,
           },
         ],
       },
@@ -201,13 +142,13 @@ export default {
       let data = {
         cart: JSON.stringify(this.itemsInCart),
         sellerId: this.sellerId,
-        totalPrice: "100000",
+        totalPrice: this.amount,
         txnId: response.trans,
         txnReference: response.trxref,
         txnMessage: response.message,
         txnStatus: response.status,
         discount: this.discount,
-        shippingAddress: this.metadata.custom_fields[1].value,
+        shippingAddress: this.name,
         trackingId: "1001111",
         trackingUrl: "https://www.google.com",
       };
@@ -246,3 +187,50 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.card {
+  width: 50%;
+}
+.paystack-btn {
+  width: 40%;
+  border-radius: 8px;
+  border: 1px solid #d56c33;
+}
+
+@media screen and (max-width: 830px) {
+  .padding-footer {
+    padding-bottom: 10%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .padding-footer {
+    padding-bottom: 15%;
+  }
+}
+
+@media screen and (max-width: 725px) {
+  .card {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .card {
+    width: 80%;
+  }
+  .paystack-btn {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .card {
+    width: 90%;
+  }
+  .paystack-btn {
+    width: 80%;
+  }
+}
+</style>

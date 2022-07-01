@@ -158,3 +158,7 @@ export function seller(state, seller) {
 
 //   wishlistLocalStorage(state.wishlist);
 // }
+
+export function overview(state, overview) {
+  state.overview = overview;
+}

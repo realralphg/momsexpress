@@ -69,9 +69,19 @@
         </q-btn>
         <div class="text-caption">Cart</div>
       </div>
-      <div class="col-3 text-center">
+      <div v-if="role !== 'seller'" class="col-3 text-center">
         <q-btn icon="perm_identity" to="/profile" flat :ripple="false" />
         <div class="text-caption">Profile</div>
+      </div>
+
+      <div v-if="role === 'seller' && seller" class="col-3 text-center">
+        <q-btn
+          icon="perm_identity"
+          to="/seller/dashboard"
+          flat
+          :ripple="false"
+        />
+        <div class="text-caption">Dashboard</div>
       </div>
     </q-footer>
 
@@ -117,8 +127,8 @@ export default defineComponent({
       leftDrawer() {
         drawerOpen.value = !drawerOpen.value;
       },
-      sellerToken: localStorage.getItem("sellerToken"),
-      buyerToken: localStorage.getItem("buyerToken"),
+      role: localStorage.getItem("role"),
+      seller: localStorage.getItem("sellerToken"),
     };
   },
   computed: {

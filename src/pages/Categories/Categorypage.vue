@@ -1,7 +1,7 @@
 <template>
-  <q-page class="bg-grey-2">
+  <q-page class="bg-grey-2 padding-footer">
     <div class="row" style="height: 100%">
-      <div
+      <!-- <div
         class="col-lg-2 col-md-2 col-sm-12 col-xs-12"
         style="border-right: 1px solid lightgrey"
       >
@@ -48,16 +48,26 @@
             </div>
           </q-expansion-item>
         </q-card>
-      </div>
+      </div> -->
 
       <div class="bg-grey-2 col-lg-10 col-md-10 col-sm-12 col-xs-12">
-        <!-- <div class="text-h4 text-primary text-bold q-px-md q-pt-md">
-          {{ categoryName }}
-        </div> -->
+        <div
+          class="text-h5 text-primary text-capitalize text-bold q-px-md q-py-md"
+        >
+          {{
+            categoryName[0] +
+            " " +
+            (categoryName[1] !== undefined ? categoryName[1] : "") +
+            " " +
+            (categoryName[2] !== undefined ? categoryName[2] : "") +
+            " " +
+            (categoryName[3] !== undefined ? categoryName[3] : "")
+          }}
+        </div>
         <div class="q-py-md card-container" style="margin: 0 auto">
           <Skeleton :skeleton="skeleton" />
           <div
-            class="bg-white col-lg-2 col-md-2 col-sm-3 col-xs-4 card text-left"
+            class="bg-white q-mb-md card text-left"
             v-for="product in products"
             :key="product.id"
           >
@@ -125,6 +135,7 @@ export default {
       ],
     };
   },
+
   methods: {
     addToCart(id) {
       this.$store.dispatch("moduleExample/addProductToCart", {
@@ -164,6 +175,12 @@ export default {
           this.products = response;
         });
     },
+    getMoreProducts() {
+      this.$store.dispatch("moduleExample/getProducts").then((response) => {
+        this.skeleton = false;
+        this.products = response.docs.reverse();
+      });
+    },
     filterProduct(range) {
       console.log(range);
       let a = this.products.filter((item) => {
@@ -181,12 +198,35 @@ export default {
     if (this.categoryName === "easy_budget") this.getEasyBudgetProducts();
     if (this.categoryName === "newly_added") this.getNewlyAdded();
     if (this.categoryName === "trending") this.getTrending();
+    if (this.categoryName === "more_products") this.getMoreProducts();
     else this.getProducts();
+    if (this.categoryName.includes("%20")) {
+      this.categoryName = this.categoryName.split("%20");
+    } else {
+      this.categoryName = this.categoryName.split("_");
+    }
   },
 };
 </script>
 
 <style scoped>
+@media screen and (max-width: 830px) {
+  .padding-footer {
+    padding-bottom: 12%;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .padding-footer {
+    padding-bottom: 15%;
+  }
+}
+
+@media screen and (max-width: 385px) {
+  .padding-footer {
+    padding-bottom: 20%;
+  }
+}
 .card-container {
   padding: 2%;
   display: grid;

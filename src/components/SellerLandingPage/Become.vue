@@ -8,6 +8,7 @@
       class="bg-secondary button q-mt-md"
       to="/seller/Signup"
       flat
+      rounded
       label="SIGN UP"
       size="1.2rem"
     />

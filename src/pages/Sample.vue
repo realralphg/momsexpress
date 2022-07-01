@@ -1,142 +1,126 @@
 <template>
-  <q-dialog v-model="inception">
-    <q-card style="width: 70%">
-      <q-card-section>
-        <div class="text-h6">Select Addreess</div>
-      </q-card-section>
-
-      <q-card-section class="q-pt-none">
-        <q-option-group v-model="group" :options="options" color="primary" />
-      </q-card-section>
-
-      <q-card-actions align="right" class="text-primary">
-        <!-- <q-space/> -->
-        <q-btn flat label="Create New Address" @click="secondDialog = true" />
-        <q-btn flat label="Save" v-close-popup />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
-
-  <!-- Create New Address  -->
-  <q-dialog
-    v-model="secondDialog"
-    persistent
-    transition-show="scale"
-    transition-hide="scale"
-  >
-    <q-card class="">
-      <q-card-section>
-        <div class="text-h6">New Address</div>
-      </q-card-section>
-
-      <q-card-section class="q-pt-none">
-        <div class="row">
-          <div class="col-6">
-            <label for="" class="text-caption"> Full Contact Name</label>
-            <q-input dense outlined class="col-6" />
-          </div>
-
-          <div class="col-6">
-            <label for="" class="text-caption"> Phone Number</label>
-            <q-input dense outlined class="col-6" />
-          </div>
-
-          <div class="col-12">
-            <label for="" class="text-caption"> Delivery Address</label>
-            <q-input dense outlined class="col-6" />
-          </div>
-
-          <div class="col-4">
-            <label for="" class="text-caption"> Region/City</label>
-            <q-input dense outlined class="col-6" />
-          </div>
-
-          <div class="col-4">
-            <label for="" class="text-caption"> State</label>
-            <q-input dense outlined class="col-6" />
-          </div>
-
-          <div class="col-4">
-            <label for="" class="text-caption"> Country</label>
-            <q-input dense outlined class="col-6" />
-          </div>
-        </div>
-      </q-card-section>
-
-      <q-card-actions align="right" class="">
-        <q-btn label="Save" flat v-close-popup />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
-
-  <q-page class="bg-grey-2">
-    <div class="q-py-lg column flex-center q-mt-lg">
-      <div class="text-center text-bold text-h5 text-uppercase q-my-md">
-        Checkout
-      </div>
-
-      <q-card class="q-pa-lg">
-        <div class="text-subtitle1">
-          <div class="row">
-            <div class="text-bold text-h6 text-primary">Address</div>
-            <q-space />
-            <q-btn
-              icon="edit"
-              flat
-              size="0.8rem"
-              color="secondary"
-              @click="inception = true"
-              round
-            >
-              <q-tooltip anchor="bottom middle" self="center middle">
-                Select Address
-              </q-tooltip>
-            </q-btn>
-          </div>
-          <div class="row text-bold text-subtitle1">
-            <div>Tobi Ikupolati</div>
-            <div class="q-mx-md">(09012345678)</div>
-          </div>
-
-          <div>
-            Lorem street, ipsium area, lorem and ipsium region. ipsium state,
-            Nigeria
-          </div>
-        </div>
-        <div class="text-bold text-h5 q-my-md">N {{ amount }}</div>
-
-        <div class="text-center">
-          <q-btn
-            color="primary"
-            class="text-center"
-            :amount="amount * 100"
-            :email="email"
-            :paystackkey="PUBLIC_KEY"
-            :reference="reference"
-            :callback="processPayment"
-            :close="close"
-            :embed="false"
-          >
-            <i class="fas fa-money-bill-alt q-mr-xl"></i>
-            Make Payment
-          </q-btn>
-        </div>
-
-        <!-- <paystack
-            :amount="amount * 100"
-            :email="email"
-            :paystackkey="PUBLIC_KEY"
-            :reference="reference"
-            :callback="processPayment"
-            :close="close"
-            :embed="false"
-          >
-            <i class="fas fa-money-bill-alt"></i>
-            Make Payment
-          </paystack> -->
-      </q-card>
+  <q-page v-if="!cartItems[0]" class="column flex-center">
+    <div class="text-center text-primary text-h5 text-bold">
+      No Item in cart
     </div>
+    <q-icon name="shopping_cart" size="3rem" color="primary" />
   </q-page>
+
+  <div
+    v-if="cartItems[0]"
+    class="row"
+    style="width: 90%; margin: 0 auto; position: relative"
+  >
+    <div
+      class="column q-col-gutter-sm col-lg-8 col-md-8 col-sm-12 col-xs-12"
+      style="margin: 0 auto"
+    >
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="column q-py-lg bg-grey-1">
+          <div v-for="item in cartItems[0]" :key="item._id"></div>
+          <div class="test row q-mt-sm q-py-xs q-px-sm">
+            <q-img
+              class="col-4 image"
+              :src="`Homepage/${item.product.image}`"
+            />
+
+            <div class="col-8 column q-pb-md justify-between">
+              <div>
+                <div
+                  class="q-pl-md text-bold text-subtitle1 row items-center align-items justify-between"
+                >
+                  <div>{{ item.product.title }}</div>
+                  <q-btn
+                    icon="close"
+                    flat
+                    round
+                    dense
+                    @click="deleteProduct()"
+                  />
+                </div>
+
+                <div class="q-pl-md reduce_text" style="width: 80%">
+                  {{ item.product.description }}
+                </div>
+              </div>
+
+              <div class="two row justify-between q-pl-md">
+                <div class="col-3 reduce_text">
+                  <div>Price</div>
+                  <div class="text-bold">
+                    {{ item.product.price * item.quantity }}
+                  </div>
+                  <!-- <p>{{ item.quantity }}</p> -->
+                </div>
+
+                <div class="row col-9 justify-end">
+                  <q-btn
+                    icon="remove"
+                    @click="decrement()"
+                    size="1rem"
+                    :disable="item.quantity <= 1"
+                    class="q-mr-sm button"
+                    round
+                    dense
+                    flat
+                    color="primary"
+                  />
+                  <input v-model="item.quantity" class="text-center" />
+                  <q-btn
+                    icon="add"
+                    @click="increment()"
+                    size="1rem"
+                    class="q-ml-sm button"
+                    round
+                    dense
+                    flat
+                    color="primary"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="column q-col-gutter-sm col-lg-4 col-md-4 col-sm-12 col-xs-12"
+      style="margin: 0 auto; position: sticky; top: 16%"
+    >
+      <div class="col-lg-8 col-md-6 col-sm-6 col-xs-12">
+        <div class="q-py-md q-px-xl shit bg-grey-1">
+          <div class="text-h6 text-center text-bold q-my-xs">
+            Total Price Details
+          </div>
+          <div class="row justify-between">
+            <span>No. of Items</span> <span> {{ numberOfItemsInCart }}</span>
+          </div>
+          <!-- <div class="row justify-between"> <span>Price</span> <span> N2000 </span> </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             -->
+          <div class="row justify-between">
+            <span>Shipping Fee</span> <span> N0 </span>
+          </div>
+          <q-separator spaced />
+          <div class="row justify-between">
+            <span>Total Amount</span> <span> {{ total }} </span>
+          </div>
+          <q-btn
+            label="Checkout"
+            to="/checkout"
+            @click="setTotalLocal(total)"
+            push
+            color="primary"
+            text-color="secondary"
+            style="width: 100%"
+            class="q-my-sm"
+          />
+          <div class="text-caption">
+            Lorem ipsium and estimated delivery date or period
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

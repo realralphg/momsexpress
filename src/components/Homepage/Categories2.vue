@@ -15,7 +15,13 @@
 
     <div class="story-container">
       <div class="story-item">
-        <div v-show="(skeleton = true)" v-for="n in 8" :key="n" class="q-mr-md">
+        <div
+          v-show="skeleton"
+          v-for="n in 8"
+          :key="n"
+          class="q-mr-md"
+          :class="skeleton === false ? 'hide-skeleton' : ''"
+        >
           <q-skeleton type="circle" class="q-mx-auto" size="50px" />
           <q-skeleton width="70px" class="q-my-xs q-mx-auto" height="12px" />
         </div>
@@ -53,25 +59,27 @@ export default {
   data() {
     return {
       categories: [],
-      skeleton: false,
+      skeleton: true,
     };
   },
   methods: {
     getCategories() {
       this.$store.dispatch("moduleExample/getCategories").then((response) => {
-        // console.log(response.categories);
+        this.skeleton = false;
         this.categories = response.categories;
-        // this.skeleton = false;
       });
     },
   },
   mounted() {
-    // this.getCategories();
+    this.getCategories();
   },
 };
 </script>
 
 <style scoped>
+.hide-skeleton {
+  display: none;
+}
 .cat-name {
   /* display: inline; */
   height: 55px;

@@ -10,6 +10,7 @@
             class="bg-white button"
             to="/seller/Signup"
             flat
+            rounded
             label="SIGN UP"
             size="1.2rem"
           />

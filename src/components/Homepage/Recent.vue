@@ -58,7 +58,8 @@
                 >N{{
                   product.price - product.price * (product.desc.size / 100)
                 }}</span
-              ><span
+              >
+              <span
                 class="q-ml-sm text-grey-6"
                 style="text-decoration: line-through"
                 v-if="product.desc.size !== 0"

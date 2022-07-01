@@ -28,6 +28,7 @@
         to="/seller/login"
         :ripple="false"
         flat
+        rounded
         label="LOGIN"
         class="q-ma-md button"
       />
@@ -36,6 +37,7 @@
         class="bg-secondary button"
         to="/seller/Signup"
         flat
+        rounded
         label="SIGN UP"
       />
       <!-- </q-tabs> -->

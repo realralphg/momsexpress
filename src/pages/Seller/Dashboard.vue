@@ -10,7 +10,9 @@
         />
         <p class="q-my-none writings text-bold">Sales</p>
       </div>
-      <p class="number text-right" style="font-size: 2.5rem">25</p>
+      <p class="number text-right">
+        {{ overview !== null ? overview.sales : 0 }}
+      </p>
     </div>
 
     <div class="col-lg-3 col-md-5 col-sm-8 col-xs-12 box">
@@ -18,7 +20,9 @@
         <q-icon name="show_chart" class="q-ml-lg" size="3rem" color="primary" />
         <p class="q-my-none writings q-ml-xs text-bold">This Month</p>
       </div>
-      <p class="number text-right" style="font-size: 2.5rem">N20,000</p>
+      <p class="number text-right">
+        N{{ overview !== null ? overview.totalRevenue : 0 }}
+      </p>
     </div>
 
     <div class="col-lg-3 col-md-10 col-sm-8 col-xs-12 box">
@@ -33,7 +37,9 @@
           Total Revenue
         </p>
       </div>
-      <p class="number text-right" style="font-size: 2.5rem">N250,000</p>
+      <p class="number text-right">
+        N{{ overview !== null ? overview.totalRevenue : 0 }}
+      </p>
     </div>
   </div>
 
@@ -50,6 +56,11 @@
 <script>
 export default {
   name: "Dashboard",
+  computed: {
+    overview() {
+      return this.$store.getters["moduleExample/overview"];
+    },
+  },
   data() {
     return {
       series: [
@@ -131,6 +142,7 @@ export default {
   top: 65%;
   left: 50%;
   transform: translate(-50%, -50%);
+  font-size: 2.5rem;
 }
 
 .first {

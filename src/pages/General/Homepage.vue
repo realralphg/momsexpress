@@ -1,5 +1,5 @@
 <template>
-  <q-page class="relative-position bg-grey-2" style="padding-bottom: 5%">
+  <q-page class="relative-position bg-grey-2 padding-footer">
     <Hero />
     <Categories2 />
     <Recent />
@@ -62,4 +62,22 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+@media screen and (max-width: 830px) {
+  .padding-footer {
+    padding-bottom: 12%;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .padding-footer {
+    padding-bottom: 18%;
+  }
+}
+
+@media screen and (max-width: 385px) {
+  .padding-footer {
+    padding-bottom: 23%;
+  }
+}
+</style>

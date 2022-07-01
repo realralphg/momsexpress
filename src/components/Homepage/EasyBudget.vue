@@ -53,15 +53,17 @@
             >
               {{ product.desc.color }}
             </div>
-            <div class="q-my-xs">
-              <span class="text-bold">{{ product.price }}</span
-              ><span
+            <div class="q-my-xs price">
+              <span class="text-bold"
+                >N{{
+                  product.price - product.price * (product.desc.size / 100)
+                }}</span
+              >
+              <span
                 class="q-ml-sm text-grey-6"
                 style="text-decoration: line-through"
                 v-if="product.desc.size !== 0"
-                >N{{
-                  product.price * (product.desc.size / 100) + product.price
-                }}</span
+                >N{{ product.price }}</span
               >
               <q-chip
                 size="0.5rem"

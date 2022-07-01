@@ -49,7 +49,7 @@ const routes = [
         path: "/cart",
         component: () => import("src/pages/General/Cart.vue"),
         beforeEnter: (to, from, next) => {
-          let token = localStorage.getItem("buyerEmail");
+          let token = localStorage.getItem("user");
           if (!token) {
             next("/login");
           } else {
@@ -78,7 +78,7 @@ const routes = [
         path: "/order",
         component: () => import("src/pages/User/Order.vue"),
         beforeEnter: (to, from, next) => {
-          let token = localStorage.getItem("buyerEmail");
+          let token = localStorage.getItem("user");
           if (!token) {
             next("/login");
           } else {
@@ -90,7 +90,7 @@ const routes = [
         path: "/wishlist",
         component: () => import("src/pages/User/Wishlist.vue"),
         beforeEnter: (to, from, next) => {
-          let token = localStorage.getItem("buyerEmail");
+          let token = localStorage.getItem("user");
           if (!token) {
             next("/login");
           } else {

@@ -60,6 +60,7 @@ export function sellerLogin({ commit }, { email, password }) {
           localStorage.setItem("sellerToken", token);
           localStorage.setItem("sellerId", seller._id);
           localStorage.setItem("sellerFullname", seller.fullname);
+          localStorage.removeItem("user");
           this.$router.push("/seller/dashboard");
           Notify.create({
             message: "Login Success.",
@@ -235,6 +236,67 @@ export function deleteProduct(context, id) {
   });
 }
 
+export function getSellerOrders({ commit }) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/seller/order`,
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("sellerToken"),
+      },
+    })
+      .then((response) => {
+        if (response) {
+          let sales;
+          let month;
+          let totalRevenue;
+          let total;
+          for (let a of response.data.data) {
+            total = a.totalPrice;
+            total += total;
+          }
+          let overview;
+          if (response.data.data.length === 0) {
+            overview = null;
+          } else {
+            overview = {
+              sales: response.data.data.length,
+              month: response.data.data.length,
+              totalRevenue: total,
+            };
+          }
+          commit("overview", overview);
+          resolve(response.data.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        reject();
+      });
+  });
+}
+
+export function getSingleSellerOrder({ commit }, id) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/seller/order/${id}`,
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("sellerToken"),
+      },
+    })
+      .then((response) => {
+        if (response) {
+          resolve(response.data.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        reject();
+      });
+  });
+}
+
 export function changePassword(context, data) {
   console.log(data);
   return new Promise((resolve, reject) => {
@@ -368,12 +430,51 @@ export function buyerLogin({ commit }, data) {
           let buyer = response.data.data.user;
           // console.log(buyer);
           localStorage.setItem("user", JSON.stringify(buyer));
+          localStorage.setItem("userName", user.fullname);
           commit("user", buyer);
 
           resolve(buyer);
         }
       })
       .catch((error) => {
+        reject();
+      });
+  });
+}
+
+export function getBuyerOrders() {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/me/order`,
+      withCredentials: true,
+    })
+      .then((response) => {
+        if (response) {
+          resolve(response.data.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        reject();
+      });
+  });
+}
+
+export function getSingleBuyerOrder(context, id) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "GET",
+      url: baseurl + `/me/order/${id}`,
+      withCredentials: true,
+    })
+      .then((response) => {
+        if (response) {
+          resolve(response.data.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
         reject();
       });
   });
@@ -399,9 +500,9 @@ export function getMe() {
 
 export function buyerLogout({ commit }) {
   localStorage.removeItem("buyerId");
-  localStorage.removeItem("buyerFullname");
+  localStorage.removeItem("userName");
   localStorage.removeItem("buyerEmail");
-  localStorage.removeItem("role");
+  localStorage.removeItem("user");
   let user = null;
   commit("user", user);
 
@@ -446,6 +547,7 @@ export function getUser(context) {
           console.log(user);
 
           localStorage.setItem("user", user);
+          localStorage.setItem("userName", user.fullname);
           context.commit("user", user);
           this.$router.replace("/");
           resolve();
@@ -619,11 +721,11 @@ export function getTrendingCategory(context) {
   return new Promise((resolve, reject) => {
     axios({
       method: "GET",
-      url: baseurl + `/search?trending=1`,
+      url: baseurl + `/search?trending=6`,
     })
       .then((response) => {
         if (response) {
-          console.log(response.data.data);
+          // console.log(response.data.data);
           resolve(response.data.data);
         }
       })

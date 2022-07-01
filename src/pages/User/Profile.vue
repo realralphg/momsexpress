@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Auth Buttons  -->
-    <div class="row justify-evenly q-my-md" v-if="!buyerId">
+    <div class="row justify-evenly q-my-md" v-if="!user">
       <q-btn
         color="primary"
         class="bg-secondary button q-mt-md"
@@ -20,11 +20,11 @@
       />
     </div>
 
-    <div class="column" v-if="buyerId">
+    <div class="column" v-if="user">
       <!-- Profile Image and Details -->
       <div class="column text-center items-center q-px-xl q-mt-md">
         <q-avatar
-          size="7rem"
+          size="6rem"
           font-size="4.5rem"
           color="teal"
           class="q-mr-md q-mb-md"
@@ -32,60 +32,28 @@
           icon="person"
         />
         <div class="row">
-          <div class="q-my-xs text-bold text-h5">{{ buyerName }}</div>
-          <q-btn
-            icon="edit"
-            size="0.8rem"
-            class="q-ml-md"
-            v-ripple="false"
-            flat
-            round
-          >
-            <q-tooltip anchor="bottom middle" self="center middle">
-              Edit Profile
-            </q-tooltip>
-          </q-btn>
+          <div class="q-my-xs text-bold text-h6">
+            {{ JSON.parse(user).fullname }}
+          </div>
         </div>
-        <div class="q-my-xs text-h6">{{ buyerEmail }}</div>
-        <!-- <div class="q-my-xs text-h6">08012345678</div> -->
+        <div class="q-my-xs text-subtitle1">{{ JSON.parse(user).email }}</div>
+        <div class="q-my-xs text-subtitle1">08012345678</div>
       </div>
-
-      <!-- <div class="q-px-xl">
-        <div class="row q-my-sm items-center justify-between">
-          <div class="text-bold text-h6">Delivery Address</div>
-          <q-btn
-            icon="edit"
-            class="q-ml-md"
-            size="0.8rem"
-            v-ripple="false"
-            flat
-            round
-          >
-            <q-tooltip anchor="bottom middle" self="center middle">
-              Change Address
-            </q-tooltip>
-          </q-btn>
-        </div>
-        <div>
-          Lorem address and place and location and timezone and region and
-          country haaaaaa.
-        </div>
-      </div> -->
     </div>
 
-    <q-separator size="1px" class="q-mt-xl q-mb-md" />
+    <q-separator size="1px" class="q-mt-xl q-mb-sm" />
 
     <q-list class="q-py-md q-px-md">
       <q-item
         clickable
-        class="q-mb-lg list_font text-h6"
+        class="q-mb-sm list_font text-h6"
         v-ripple
         to="/order"
         style="border-radius: 15px"
       >
-        <q-item-section avatar>
+        <!-- <q-item-section avatar>
           <q-icon name="auto_awesome_motion" size="2rem" />
-        </q-item-section>
+        </q-item-section> -->
         <q-item-section>
           <q-item-label>Orders</q-item-label>
         </q-item-section>
@@ -93,41 +61,21 @@
 
       <q-item
         clickable
-        class="q-mb-lg list_font text-h6"
+        class="q-mb-sm list_font text-h6"
         v-ripple
         to="/cart"
         style="border-radius: 15px"
       >
-        <q-item-section avatar>
+        <!-- <q-item-section avatar>
           <q-icon name="shopping_cart" size="2rem" />
-        </q-item-section>
+        </q-item-section> -->
         <q-item-section>
           <q-item-label>Cart</q-item-label>
         </q-item-section>
       </q-item>
-
       <q-item
         clickable
-        class="q-mb-lg list_font text-h6"
-        v-ripple
-        style="border-radius: 15px"
-        to="/wishlist"
-      >
-        <q-item-section avatar>
-          <q-icon name="favorite" color="red" size="2rem" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>Wishlists</q-item-label>
-        </q-item-section>
-      </q-item>
-    </q-list>
-
-    <q-separator size="1px" class="q-mt-sm q-mb-md" />
-
-    <q-list class="q-py-md q-px-md">
-      <q-item
-        clickable
-        class="q-mb-lg list_font text-h6"
+        class="q-mb-sm list_font text-h6"
         v-ripple
         to="/sell"
         style="border-radius: 15px"
@@ -139,9 +87,8 @@
 
       <q-item
         clickable
-        class="q-mb-lg list_font text-h6"
+        class="q-mb-sm list_font text-h6"
         v-ripple
-        to="/about"
         style="border-radius: 15px"
       >
         <q-item-section>
@@ -151,8 +98,7 @@
 
       <q-item
         clickable
-        class="q-mb-lg list_font text-h6"
-        to="/about"
+        class="q-mb-sm list_font text-h6"
         v-ripple
         style="border-radius: 15px"
       >
@@ -163,8 +109,8 @@
 
       <q-item
         clickable
-        class="q-mb-lg list_font text-h6"
-        to="/about"
+        class="list_font text-h6"
+        :class="user ? 'q-mb-sm' : 'q-mb-lg'"
         v-ripple
         style="border-radius: 15px"
       >
@@ -176,10 +122,9 @@
       <q-item
         clickable
         class="q-mb-lg list_font text-h6"
-        to="/about-us"
         v-ripple
         style="border-radius: 15px"
-        v-if="buyerId == ''"
+        v-if="user"
         @click="logout()"
       >
         <q-item-section>
@@ -209,19 +154,15 @@ export default {
     return {
       role: localStorage.getItem("userRole"),
       sellerToken: localStorage.getItem("sellerToken"),
-      buyerId: localStorage.getItem("buyerId"),
+      user: localStorage.getItem("user"),
       buyerName: localStorage.getItem("buyerFullname"),
       buyerEmail: localStorage.getItem("buyerEmail"),
     };
   },
   methods: {
     logout() {
-      this.$store
-        .dispatch("moduleExample/logout")
-        .then(() => {
-          // this.$router.replace('/')
-        })
-        .catch((error) => {});
+      this.$store.dispatch("moduleExample/buyerLogout");
+      this.$router.push("/");
     },
   },
 };

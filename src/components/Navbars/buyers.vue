@@ -76,11 +76,11 @@
         <q-list class="list">
           <div class="row">
             <q-avatar class="q-mr-sm" color="primary" size="3.2rem">
-              <q-icon name="person" />
+              <q-icon name="person" color="white" />
             </q-avatar>
             <div class="text-left text-subtitle1 q-my-auto">
               Hello, <br />
-              <span class="text-bold">{{ userLoggedIn.fullname }}</span>
+              <span class="text-bold">{{ userName }}</span>
             </div>
           </div>
           <q-item clickable v-close-popup to="/user">
@@ -153,6 +153,7 @@ export default {
       searchResults: [],
       text: ref(null),
       cartCounter: "",
+      userName: localStorage.getItem("userName"),
     };
   },
   computed: {

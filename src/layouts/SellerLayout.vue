@@ -62,9 +62,13 @@ export default defineComponent({
           this.$store.commit("moduleExample/seller", response);
         });
     },
+    getOrders() {
+      this.$store.dispatch("moduleExample/getSellerOrders");
+    },
   },
   mounted() {
     this.getSeller();
+    this.getOrders();
   },
 });
 </script>

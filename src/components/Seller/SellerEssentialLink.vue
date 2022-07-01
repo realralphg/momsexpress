@@ -73,7 +73,7 @@
       style="border-radius: 15px"
     >
       <q-item-section avatar>
-        <q-icon name="storefront" size="1.5rem" />
+        <q-icon name="bookmark" size="1.5rem" />
       </q-item-section>
       <q-item-section>
         <q-item-label>Orders</q-item-label>
@@ -152,8 +152,9 @@ export default defineComponent({
       localStorage.removeItem("sellerEmail");
       localStorage.removeItem("sellerFullname");
       localStorage.removeItem("sellerStore");
+      localStorage.removeItem("role");
 
-      this.$store.commit("logout");
+      this.$store.commit("moduleExample/logout");
       this.$router.replace("/");
     },
   },

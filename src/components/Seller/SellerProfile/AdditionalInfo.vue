@@ -42,7 +42,8 @@
     </q-file>
 
     <div>
-      <q-btn label="Update" @click="verifyShop()" color="primary" />
+      <!-- <q-btn label="Update" @click="verifyShop()" color="primary" /> -->
+      <q-btn label="Update" color="primary" />
     </div>
   </q-form>
 </template>

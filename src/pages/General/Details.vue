@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-grey-2 q-pt-lg">
+  <q-page class="bg-grey-2 q-pt-lg padding-footer">
     <div class="row" style="padding: 0 4%" v-if="skeleton">
       <q-skeleton
         class="col-lg-5 col-md-5 col-sm-12 col-xs-12"
@@ -13,8 +13,8 @@
         <q-skeleton type="text" width="30%" height="30px" />
       </div>
     </div>
+
     <div class="row" v-if="!skeleton" style="padding: 0 4%">
-      <!-- Product Image Carousel  -->
       <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
         <q-carousel
           swipeable
@@ -65,7 +65,7 @@
             </div>
 
             <div
-              class="text-subtitle1 q-mb-md q-pr-md text-justify description"
+              class="text-subtitle2 q-mb-md q-pr-md text-justify description"
             >
               {{ description }}
             </div>
@@ -77,9 +77,9 @@
                 Price
               </div>
               <div class="row items-center">
-                <span class="text-h6">N{{ product.price }}</span
+                <span class="text-subtitle1">N{{ product.price }}</span
                 ><span
-                  class="q-ml-sm text-grey-6 text-h6"
+                  class="q-ml-sm text-grey-6 text-subtitle1"
                   style="text-decoration: line-through"
                   v-if="discount !== 0"
                   >N{{ calDiscount }}</span
@@ -87,7 +87,7 @@
                 <q-chip
                   v-if="discount !== 0"
                   color="primary"
-                  size="0.7rem"
+                  size="0.6rem"
                   class="text-bold text-white q-my-auto"
                 >
                   {{ discount }}%
@@ -108,7 +108,7 @@
               <q-btn
                 rounded
                 outline
-                size="1.1rem"
+                size="1rem"
                 class="q-my-md cart-btn"
                 color="primary"
                 no-caps=""
@@ -139,8 +139,13 @@
                   Reviews
                 </h5>
               </div>
-
-              <q-item v-ripple v-for="n in 4" :key="n" class="q-my-sm">
+              {{ comments }}
+              <q-item
+                v-ripple
+                v-for="item in comments"
+                :key="item"
+                class="q-my-sm"
+              >
                 <q-item-section avatar>
                   <q-avatar>
                     <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
@@ -148,10 +153,15 @@
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label lines="1">Lorem Heading</q-item-label>
+                  <q-item-label lines="1">
+                    <div>
+                      {{ item.person }}
+                    </div>
+                  </q-item-label>
                   <q-item-label caption lines="2">
-                    <span class="text-weight-bold">Lorem Lady</span>
-                    This item is very good and I recommend for you to purchase
+                    <div>
+                      {{ item.comment }}
+                    </div>
                   </q-item-label>
                 </q-item-section>
 
@@ -191,17 +201,18 @@
     </div>
 
     <Trending />
-    <Trending />
-  </div>
+    <!-- <MoreProducts /> -->
+  </q-page>
 </template>
 
 <script>
 import Trending from "src/components/Homepage/Trending.vue";
+import MoreProducts from "src/components/Homepage/MoreProducts.vue";
 
 export default {
   name: "details.vue",
   props: ["id"],
-  components: { Trending },
+  components: { Trending, MoreProducts },
   data() {
     return {
       productId: this.$route.params.productId,
@@ -248,19 +259,34 @@ export default {
         .dispatch("moduleExample/getSingleProduct", id)
         .then((response) => {
           if (response) {
+            // console.log(response);
             this.skeleton = false;
             this.product = response;
             this.description = response.desc.color;
             this.discount = response.desc.size;
-            this.comments = response.reviews;
-            let a = this.comments.map((item) => item.user);
-            a.forEach((item) => {
-              // to be continued
+            // let a = response.reviews.map((item) => item.user);
+            let b;
+            let c;
+            let d = [];
+            let f;
+            let people;
+            response.reviews.forEach(async (item) => {
+              b = item.comments;
+              c = await this.getSinglePerson(item.user);
+              people = {
+                person: c,
+                comment: b,
+              };
+              return d.push(people);
             });
-            console.log(a);
+            this.comments = d;
             console.log(this.comments);
+            console.log(d);
           }
         });
+    },
+    async getSinglePerson(id) {
+      return await this.$store.dispatch("moduleExample/getSingleSeller", id);
     },
     addToCart(product) {
       this.$store.dispatch("moduleExample/addProductToCart", {
@@ -293,6 +319,29 @@ export default {
 </script>
 
 <style scoped>
+@media screen and (max-width: 830px) {
+  .padding-footer {
+    padding-bottom: 12%;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .padding-footer {
+    padding-bottom: 15%;
+  }
+}
+
+@media screen and (max-width: 410px) {
+  .padding-footer {
+    padding-bottom: 19%;
+  }
+}
+
+@media screen and (max-width: 345px) {
+  .padding-footer {
+    padding-bottom: 23%;
+  }
+}
 .description {
   overflow: hidden;
   display: -webkit-box;

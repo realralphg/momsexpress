@@ -20,4 +20,5 @@ export default {
   sellerProducts: [],
   singleSellerProduct: null,
   buyerToken: null,
+  overview: null,
 };

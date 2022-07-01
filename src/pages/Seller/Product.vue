@@ -187,7 +187,7 @@ p {
 
 .container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 15px;
 }
 .product-title {
@@ -208,7 +208,7 @@ p {
   }
 }
 
-@media screen and (max-width: 870px) {
+@media screen and (max-width: 900px) {
   .container {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -220,7 +220,7 @@ p {
   }
 }
 
-@media screen and (max-width: 620px) {
+@media screen and (max-width: 660px) {
   .container {
     grid-template-columns: repeat(2, 1fr);
   }
