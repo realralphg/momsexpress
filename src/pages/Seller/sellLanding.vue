@@ -1,5 +1,5 @@
 <template>
-  <q-page style="padding-bottom: 5%">
+  <q-page class="padding-footer">
     <div style="height: 70vh" class="container">
       <div class="overlay flex flex-center text-white">
         <div class="text-center">
@@ -97,6 +97,17 @@ export default {
 
   h4 {
     font-size: 1.5rem;
+  }
+}
+@media screen and (max-width: 830px) {
+  .padding-footer {
+    padding-bottom: 10%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .padding-footer {
+    padding-bottom: 15%;
   }
 }
 </style>

@@ -80,7 +80,7 @@
             </q-avatar>
             <div class="text-left text-subtitle1 q-my-auto">
               Hello, <br />
-              <span class="text-bold">{{ userName }}</span>
+              <span class="text-bold">{{ user.fullname }}</span>
             </div>
           </div>
           <q-item clickable v-close-popup to="/user">
@@ -153,7 +153,7 @@ export default {
       searchResults: [],
       text: ref(null),
       cartCounter: "",
-      userName: localStorage.getItem("userName"),
+      user: this.$store.getters["moduleExample/user"],
     };
   },
   computed: {

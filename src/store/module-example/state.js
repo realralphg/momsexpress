@@ -12,7 +12,7 @@ function getCartFromStorage() {
 const userDetails = localStorage.getItem("user");
 
 export default {
-  user: userDetails,
+  user: JSON.parse(userDetails),
   seller: null,
   cart: getCartFromStorage(),
   // wishlist: getWishlistFromStorage(),

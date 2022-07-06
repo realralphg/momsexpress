@@ -38,7 +38,6 @@ export default {
   methods: {
     getCategories() {
       this.$store.dispatch("moduleExample/getCategories").then((response) => {
-        // console.log(response.categories);
         this.skeleton = false;
         this.categories = response.categories;
       });

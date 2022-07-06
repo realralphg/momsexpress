@@ -101,6 +101,7 @@
               @click="this.$router.push(`/details/${product._id}`)"
             >
               <q-img
+                loading="eager"
                 style=""
                 class="rounded-borders img"
                 :src="product.img[0].url"

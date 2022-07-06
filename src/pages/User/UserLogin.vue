@@ -24,20 +24,21 @@
                   v-ripple="true"
                   size="2rem"
                 >
-                  <q-img src="Seller/facebooklogo.png" />
+                  <q-img loading="eager" src="Seller/facebooklogo.png" />
                 </q-avatar>
               </a>
               <a
-                :href="`https://moms-express.herokuapp.com/api/google?host=${location}`"
+                :href="`https://moms-express.herokuapp.com/api/google?host=https://moms-express.netlify.app`"
                 @click="userUsedOpenAuth()"
               >
+                <!-- <a @click="userUsedOpenAuth()"> -->
                 <q-avatar
                   style="cursor: pointer"
                   class="q-mx-md"
                   v-ripple="true"
                   size="2rem"
                 >
-                  <q-img src="Seller/google.png" />
+                  <q-img loading="eager" src="Seller/google.png" />
                 </q-avatar>
               </a>
             </div>
@@ -154,24 +155,18 @@ export default defineComponent({
   },
   methods: {
     buyerLogin() {
-      this.$store
-        .dispatch("moduleExample/buyerLogin", {
-          email: this.email,
-          password: this.password,
-        })
-        .then((response) => {
-          this.$router.push("/");
-          // this.getMe();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      this.$store.dispatch("moduleExample/buyerLogin", {
+        email: this.email,
+        password: this.password,
+      });
     },
     getMe() {
       this.$store.dispatch("moduleExample/getMe");
     },
     userUsedOpenAuth() {
-      localStorage.setItem("openAuth", "Open Auth was Used");
+      let x = location.href;
+      // console.log(x);
+      // localStorage.setItem("openAuth", "Open Auth was Used");
     },
   },
 });

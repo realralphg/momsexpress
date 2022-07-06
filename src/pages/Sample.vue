@@ -1,198 +1,237 @@
-<template>
-  <q-page v-if="!cartItems[0]" class="column flex-center">
-    <div class="text-center text-primary text-h5 text-bold">
-      No Item in cart
-    </div>
-    <q-icon name="shopping_cart" size="3rem" color="primary" />
-  </q-page>
-
-  <div
-    v-if="cartItems[0]"
-    class="row"
-    style="width: 90%; margin: 0 auto; position: relative"
-  >
-    <div
-      class="column q-col-gutter-sm col-lg-8 col-md-8 col-sm-12 col-xs-12"
-      style="margin: 0 auto"
-    >
+ <div>
+    <!-- Specification and Reviews  -->
+    <div class="row q-mt-sm">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="column q-py-lg bg-grey-1">
-          <div v-for="item in cartItems[0]" :key="item._id"></div>
-          <div class="test row q-mt-sm q-py-xs q-px-sm">
-            <q-img
-              class="col-4 image"
-              :src="`Homepage/${item.product.image}`"
-            />
+        <q-tabs
+          v-model="tab"
+          dense
+          align="left"
+          class="bg-primary text-white shadow-2"
+          :breakpoint="0"
+        >
+          <q-tab name="Specifications" label="Specifications" />
+          <q-tab name="Ratings & Reviews" label="Ratings & Reviews" />
+        </q-tabs>
+        <q-tab-panels style="border: 1px solid lightgrey" v-model="tab">
+          <q-tab-panel name="Specifications">
+            <!-- Product Image Carousel  -->
+            <div
+              style="margin-left: 5%"
+              class="row"
+              v-for="image in images"
+              :key="image._id"
+            >
+              <div class="column col-lg-2 col-md-2 col-sm-3 col-xs-3 q-mr-lg">
+                <img :src="image.url" style="width: 100%; height: 120px" />
+                <q-btn
+                  label="Change"
+                  @click="imageModal = !imageModal"
+                  no-caps
+                  outline
+                  color="primary"
+                />
 
-            <div class="col-8 column q-pb-md justify-between">
-              <div>
-                <div
-                  class="q-pl-md text-bold text-subtitle1 row items-center align-items justify-between"
-                >
-                  <div>{{ item.product.title }}</div>
-                  <q-btn
-                    icon="close"
-                    flat
-                    round
-                    dense
-                    @click="deleteProduct()"
-                  />
-                </div>
+                <!-- Dialog for changing Image  -->
+                <q-dialog v-model="imageModal">
+                  <q-card>
+                    <q-card-section>
+                      <div class="text-h6">Upload new Image</div>
+                    </q-card-section>
 
-                <div class="q-pl-md reduce_text" style="width: 80%">
-                  {{ item.product.description }}
-                </div>
-              </div>
+                    <q-card-section class="q-pt-none">
+                      <!-- Pick images  -->
+                      <q-file
+                        v-model="newImage"
+                        label="Attach File"
+                        square
+                        flat
+                        use-chips
+                        clearable
+                        accept=".jpeg,.jpg,.png"
+                        max-files="1"
+                        max-file-size="5120000"
+                      >
+                        <template v-slot:prepend>
+                          <q-icon name="attach_file" />
+                        </template>
+                      </q-file>
+                    </q-card-section>
 
-              <div class="two row justify-between q-pl-md">
-                <div class="col-3 reduce_text">
-                  <div>Price</div>
-                  <div class="text-bold">
-                    {{ item.product.price * item.quantity }}
-                  </div>
-                  <!-- <p>{{ item.quantity }}</p> -->
-                </div>
-
-                <div class="row col-9 justify-end">
-                  <q-btn
-                    icon="remove"
-                    @click="decrement()"
-                    size="1rem"
-                    :disable="item.quantity <= 1"
-                    class="q-mr-sm button"
-                    round
-                    dense
-                    flat
-                    color="primary"
-                  />
-                  <input v-model="item.quantity" class="text-center" />
-                  <q-btn
-                    icon="add"
-                    @click="increment()"
-                    size="1rem"
-                    class="q-ml-sm button"
-                    round
-                    dense
-                    flat
-                    color="primary"
-                  />
-                </div>
+                    <q-card-actions align="right">
+                      <q-btn
+                        flat
+                        label="Upload"
+                        @click="changeImage(product._id, image.key)"
+                        color="primary"
+                        v-close-popup
+                      />
+                    </q-card-actions>
+                  </q-card>
+                </q-dialog>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div
-      class="column q-col-gutter-sm col-lg-4 col-md-4 col-sm-12 col-xs-12"
-      style="margin: 0 auto; position: sticky; top: 16%"
-    >
-      <div class="col-lg-8 col-md-6 col-sm-6 col-xs-12">
-        <div class="q-py-md q-px-xl shit bg-grey-1">
-          <div class="text-h6 text-center text-bold q-my-xs">
-            Total Price Details
-          </div>
-          <div class="row justify-between">
-            <span>No. of Items</span> <span> {{ numberOfItemsInCart }}</span>
-          </div>
-          <!-- <div class="row justify-between"> <span>Price</span> <span> N2000 </span> </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             -->
-          <div class="row justify-between">
-            <span>Shipping Fee</span> <span> N0 </span>
-          </div>
-          <q-separator spaced />
-          <div class="row justify-between">
-            <span>Total Amount</span> <span> {{ total }} </span>
-          </div>
-          <q-btn
-            label="Checkout"
-            to="/checkout"
-            @click="setTotalLocal(total)"
-            push
-            color="primary"
-            text-color="secondary"
-            style="width: 100%"
-            class="q-my-sm"
-          />
-          <div class="text-caption">
-            Lorem ipsium and estimated delivery date or period
-          </div>
-        </div>
+            <!-- Specification  Section  -->
+            <q-form
+              style="width: 90%"
+              class="q-gutter-md q-mx-auto q-my-lg"
+              @submit.prevent="updateProductData()"
+            >
+              <div>
+                <label for="">Product Name</label>
+                <q-input filled lazy-rules v-model="product.name" />
+              </div>
+
+              <div>
+                <label for="">Price</label>
+                <q-input filled lazy-rules v-model="product.price" />
+              </div>
+
+              <div>
+                <label for="">Discount</label>
+                <q-input filled lazy-rules v-model="discount" />
+              </div>
+
+              <div>
+                <label for="">Quantity</label>
+                <q-input filled lazy-rules v-model="product.qtyInStore" />
+              </div>
+
+              <div>
+                <label for="">Category</label>
+                <q-input filled lazy-rules v-model="product.categories" />
+              </div>
+              <div class="q-mb-md" style="width: 100%">
+                <label for="">Description *</label>
+                <q-input
+                  v-model="description"
+                  dense="dense"
+                  outlined
+                  type="textarea"
+                />
+              </div>
+
+              <div class="row">
+                <q-space />
+                <q-btn
+                  label="Update"
+                  outline
+                  type="submit"
+                  style="width: 30%"
+                  color="primary"
+                />
+              </div>
+            </q-form>
+          </q-tab-panel>
+
+          <q-tab-panel name="Ratings & Reviews">
+            <div
+              class="col-lg-5 col-md-5 col-sm-12 col-xs-12 q-mt-md q-pt-xs q-pl-lg"
+            >
+              <div class="text-subtitle2">Customer rating</div>
+              <div class="text-h3">{{ rating_point }}</div>
+              <div>
+                <q-rating
+                  v-model="rating_point"
+                  max="5"
+                  size="2em"
+                  color="orange"
+                  icon="star_border"
+                  icon-selected="star"
+                  icon-half="star_half"
+                  no-dimming
+                  readonly
+                />
+              </div>
+              <div class="text-subtitle2 text-grey-8">(300 reviews)</div>
+              <div class="text-subtitle2 text-grey-10 q-mt-sm">
+                93% of lorem customers would recommend
+              </div>
+
+              <q-list dense bordered padding class="no-border q-mt-lg q-pr-xl">
+                <q-item style="padding-left: 0 !important" v-ripple>
+                  <span class="text-subtitle2 q-mr-xs">5</span>
+                  <q-icon name="star" size="1.5em" color="orange"></q-icon>
+                  <q-linear-progress
+                    class="q-ml-sm q-mr-sm"
+                    style="margin-top: 5px"
+                    size="13px"
+                    :value="0.9"
+                  />
+                  <span
+                    style="margin-top: 2px"
+                    class="text-caption text-weight-bold text-grey-8"
+                    >216</span
+                  >
+                </q-item>
+
+                <q-item style="padding-left: 0 !important" v-ripple>
+                  <span class="text-subtitle2 q-mr-xs">4</span>
+                  <q-icon name="star" size="1.5em" color="orange"></q-icon>
+                  <q-linear-progress
+                    class="q-ml-sm q-mr-sm"
+                    style="margin-top: 5px"
+                    size="13px"
+                    :value="0.6"
+                  />
+                  <span
+                    style="margin-top: 2px"
+                    class="text-caption text-weight-bold text-grey-8"
+                    >&nbsp;&nbsp;69</span
+                  >
+                </q-item>
+
+                <q-item style="padding-left: 0 !important" v-ripple>
+                  <span class="text-subtitle2 q-mr-xs">3</span>
+                  <q-icon name="star" size="1.5em" color="orange"></q-icon>
+                  <q-linear-progress
+                    class="q-ml-sm q-mr-sm"
+                    style="margin-top: 5px"
+                    size="13px"
+                    :value="0.1"
+                  />
+                  <span
+                    style="margin-top: 2px"
+                    class="text-caption text-weight-bold text-grey-8"
+                    >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6</span
+                  >
+                </q-item>
+
+                <q-item style="padding-left: 0 !important" v-ripple>
+                  <span class="text-subtitle2 q-mr-xs">2</span>
+                  <q-icon name="star" size="1.5em" color="orange"></q-icon>
+                  <q-linear-progress
+                    class="q-ml-sm q-mr-sm"
+                    style="margin-top: 5px"
+                    size="13px"
+                    :value="0.1"
+                  />
+                  <span
+                    style="margin-top: 2px"
+                    class="text-caption text-weight-bold text-grey-8"
+                    >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3</span
+                  >
+                </q-item>
+
+                <q-item style="padding-left: 0 !important" v-ripple>
+                  <span class="text-subtitle2 q-mr-xs">1</span>
+                  <q-icon name="star" size="1.5em" color="orange"></q-icon>
+                  <q-linear-progress
+                    class="q-ml-sm q-mr-sm"
+                    style="margin-top: 5px"
+                    size="13px"
+                    :value="0.1"
+                  />
+                  <span
+                    style="margin-top: 2px"
+                    class="text-caption text-weight-bold text-grey-8"
+                    >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6</span
+                  >
+                </q-item>
+              </q-list>
+            </div>
+          </q-tab-panel>
+        </q-tab-panels>
       </div>
     </div>
   </div>
-</template>
-
-<script>
-import { ref } from "vue";
-import paystack from "vue-paystack";
-
-export default {
-  name: "Cart",
-  components: {
-    paystack,
-  },
-  data() {
-    return {
-      amount: ref(null),
-      fullname: ref(""),
-      email: ref(""),
-      step: ref(1),
-      inception: ref(false),
-      secondDialog: ref(false),
-      group: ref("op1"),
-
-      options: [
-        {
-          label: "Address 1",
-          value: "op1",
-        },
-        {
-          label: "Address 2",
-          value: "op2",
-        },
-        {
-          label: "Address 3",
-          value: "op3",
-        },
-      ],
-    };
-  },
-  computed: {
-    reference() {
-      let text = "";
-      let possible =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      for (let i = 0; i < 10; i++)
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-      return text;
-    },
-  },
-  methods: {
-    paystackPayment() {
-      console.log("For paystack");
-    },
-    processPayment: () => {
-      window.alert("Payment recieved");
-    },
-    close: () => {
-      console.log("You closed checkout page");
-    },
-  },
-  mounted() {
-    this.amount = localStorage.getItem("total");
-    this.email = localStorage.getItem("buyerEmail");
-    console.log(this.amount);
-  },
-};
-</script>
-
-<style scoped>
-.row > div {
-  padding: 0.5%;
-}
-
-.row + .row {
-  margin-top: 1rem;
-}
-</style>

@@ -28,7 +28,12 @@
         :key="product._id"
       >
         <div class="main" @click="this.$router.push(`/details/${product._id}`)">
-          <q-img style="" class="rounded-borders img" :src="product.img[0].url">
+          <q-img
+            loading="eager"
+            style=""
+            class="rounded-borders img"
+            :src="product.img[0].url"
+          >
           </q-img>
           <div class="q-pa-sm">
             <div class="justify-between">

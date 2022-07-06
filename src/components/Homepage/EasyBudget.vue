@@ -28,7 +28,12 @@
         :key="product._id"
       >
         <div class="main" @click="this.$router.push(`/details/${product._id}`)">
-          <q-img style="" class="rounded-borders img" :src="product.img[0].url">
+          <q-img
+            loading="eager"
+            style=""
+            class="rounded-borders img"
+            :src="product.img[0].url"
+          >
           </q-img>
           <div class="q-pa-sm">
             <div class="justify-between">
@@ -173,6 +178,18 @@ export default {
 @media screen and (max-width: 470px) {
   .card-container {
     grid-template-columns: repeat(6, 40%);
+  }
+  .product-title {
+    font-size: 0.9rem;
+  }
+  .price {
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 415px) {
+  .card-container {
+    grid-template-columns: repeat(6, 47%);
   }
 }
 

@@ -114,8 +114,12 @@ const routes = [
         component: () => import("src/pages/Seller/Product.vue"),
       },
       {
-        path: "/seller/productDetail/:id",
+        path: "/seller/product_detail",
         component: () => import("src/pages/Seller/ProductDetail.vue"),
+      },
+      {
+        path: "/seller/product/new",
+        component: () => import("src/pages/Seller/AddNewProduct.vue"),
       },
       {
         path: "/seller/orders",

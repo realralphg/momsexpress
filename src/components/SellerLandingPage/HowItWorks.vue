@@ -6,7 +6,7 @@
       <div
         class="col-lg-4 col-md-4 col-sm-12 col-xs-12 q-my-md text-bold text-center"
       >
-        <q-img class="img" src="Seller/digital-signature.png" />
+        <q-img loading="eager" class="img" src="Seller/digital-signature.png" />
         <h4>Sign Up on MOMS EXPRESS</h4>
         <p class="text-h6">
           Lorem ipsum dolor sit amet consectetur nditiis nobis eum nulla impedit
@@ -16,7 +16,7 @@
       <div
         class="col-lg-4 col-md-4 col-sm-12 col-xs-12 q-my-md text-bold text-center"
       >
-        <q-img class="img" src="Seller/notifications.png" />
+        <q-img loading="eager" class="img" src="Seller/notifications.png" />
         <h4>Automatically get an online Shop</h4>
         <p class="text-h6">
           Lorem ipsum dolor sit amet consectetur nditiis nobis eum nulla impedit
@@ -26,7 +26,7 @@
       <div
         class="col-lg-4 col-md-4 col-sm-12 col-xs-12 q-my-md text-bold text-center"
       >
-        <q-img class="img" src="Seller/profits.png" />
+        <q-img loading="eager" class="img" src="Seller/profits.png" />
         <h4>Complete Your KYC & sell Your Products</h4>
         <p class="text-h6">
           Lorem ipsum dolor sit amet consectetur nditiis nobis eum nulla impedit

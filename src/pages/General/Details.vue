@@ -139,11 +139,11 @@
                   Reviews
                 </h5>
               </div>
-              {{ comments }}
+
               <q-item
                 v-ripple
                 v-for="item in comments"
-                :key="item"
+                :key="item._id"
                 class="q-my-sm"
               >
                 <q-item-section avatar>
@@ -155,7 +155,7 @@
                 <q-item-section>
                   <q-item-label lines="1">
                     <div>
-                      {{ item.person }}
+                      {{ item.person.fullname }}
                     </div>
                   </q-item-label>
                   <q-item-label caption lines="2">
@@ -165,7 +165,9 @@
                   </q-item-label>
                 </q-item-section>
 
-                <q-item-section side top> 1 min ago </q-item-section>
+                <q-item-section side top class="text-caption">
+                  {{ item.time }}
+                </q-item-section>
               </q-item>
 
               <div class="column q-mt-sm q-mb-xl">
@@ -201,7 +203,7 @@
     </div>
 
     <Trending />
-    <!-- <MoreProducts /> -->
+    <MoreProducts />
   </q-page>
 </template>
 
@@ -257,31 +259,25 @@ export default {
       let id = this.$router.currentRoute.value.params.productId;
       this.$store
         .dispatch("moduleExample/getSingleProduct", id)
-        .then((response) => {
+        .then(async (response) => {
           if (response) {
-            // console.log(response);
             this.skeleton = false;
             this.product = response;
             this.description = response.desc.color;
             this.discount = response.desc.size;
-            // let a = response.reviews.map((item) => item.user);
-            let b;
-            let c;
-            let d = [];
-            let f;
-            let people;
-            response.reviews.forEach(async (item) => {
-              b = item.comments;
-              c = await this.getSinglePerson(item.user);
-              people = {
-                person: c,
-                comment: b,
+            let userObject = await Promise.all(
+              response.reviews.map(async (item) => {
+                return await this.getSinglePerson(item.user);
+              })
+            );
+            let commentArr = response.reviews.map((val, idx) => {
+              return {
+                comment: val.comments,
+                time: val.createdAt.split("T")[0],
+                person: userObject[idx],
               };
-              return d.push(people);
             });
-            this.comments = d;
-            console.log(this.comments);
-            console.log(d);
+            this.comments = commentArr;
           }
         });
     },
@@ -295,15 +291,13 @@ export default {
       });
     },
     commentOnProduct() {
-      console.log(this.productId);
       if (this.comment !== "") {
         this.$store.dispatch("moduleExample/commentOnProduct", {
           comment: this.comment,
           id: this.productId,
         });
-      } else {
-        console.log("Input a comment please");
       }
+      this.comment = "";
     },
   },
 

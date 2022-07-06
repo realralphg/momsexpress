@@ -1,49 +1,8 @@
 <template>
-  <q-page>
-    <div class="row q-col-gutter-sm q-ma-xs">
-      <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <q-card class="my-card" flat bordered>
-          <q-card-section horizontal>
-            <q-card-section class="q-pt-xs">
-              <div class="text-h5 q-mt-sm q-mb-xs">{{ username }}</div>
-            </q-card-section>
+  <q-page class="q-px-xl">
+    <div class="secondary text-h4 text-bold q-my-sm">General Settings</div>
 
-            <q-card-section class="col-5 flex flex-center">
-              <q-img
-                class="rounded-borders"
-                src="https://cdn.quasar.dev/img/boy-avatar.png"
-              />
-            </q-card-section>
-          </q-card-section>
-
-          <q-separator />
-        </q-card>
-      </div> -->
-
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <q-card>
-          <q-card-section>
-            <ShopDets />
-          </q-card-section>
-        </q-card>
-      </div>
-
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <q-card>
-          <q-card-section>
-            <AdditionalInfo />
-          </q-card-section>
-        </q-card>
-      </div>
-
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <q-card>
-          <q-card-section>
-            <Password />
-          </q-card-section>
-        </q-card>
-      </div>
-    </div>
+    <!-- <ProductItem v-for="n in 5" :key="n" /> -->
   </q-page>
 </template>
 

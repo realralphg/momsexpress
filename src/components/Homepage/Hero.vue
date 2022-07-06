@@ -79,7 +79,11 @@
 
     <!-- Advertisement  -->
     <div class="q-pa-none border_radius hide_me height">
-      <q-img src="/Homepage/watch4.jpg" class="border_radius height" />
+      <q-img
+        loading="eager"
+        src="/Homepage/watch4.jpg"
+        class="border_radius height"
+      />
     </div>
   </div>
 </template>

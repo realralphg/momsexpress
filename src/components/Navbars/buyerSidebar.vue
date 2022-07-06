@@ -13,7 +13,11 @@
           v-for="item in cartItems"
           :key="item._id"
         >
-          <q-img :src="item.product.img[0].url" class="col-5 cart_item_image" />
+          <q-img
+            loading="eager"
+            :src="item.product.img[0].url"
+            class="col-5 cart_item_image"
+          />
           <div class="col-7 q-px-xs text-black relative-position">
             <div class="text-bold">{{ item.product.name }}</div>
             <div class="text-caption">

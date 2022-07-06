@@ -1,6 +1,6 @@
 <template>
-  <q-toolbar class="q-py-md q-pr-xl padding_right bg-grey-2">
-    <q-btn
+  <q-toolbar class="q-py-md q-px-xl text-subtitle2">
+    <!-- <q-btn
       flat
       dense
       icon="menu"
@@ -9,36 +9,46 @@
       aria-label="Menu"
       @click="$emit('toggleLeftDrawer')"
       class="button"
+    /> -->
+
+    <q-btn
+      v-show="
+        this.$router.currentRoute.value.path == '/seller/product/new' ||
+        this.$router.currentRoute.value.path == '/seller/product_detail'
+      "
+      label="back"
+      icon="chevron_left"
+      flat
+      color="primary q-pl-none"
+      to="/seller/product"
     />
-
-    <q-space class="button" />
-
-    <q-input
-      outlined
-      dense
-      bg-color="white"
-      class="input"
-      placeholder="Search for your Products"
-    >
-      <template v-slot:append>
-        <q-icon
-          name="search"
-          class="q-pr-xs search_icon"
-          color="primary"
-          style="cursor: pointer"
-        />
-      </template>
-    </q-input>
 
     <q-space class="hide_me" />
 
-    <p class="user text-black text-center q-my-auto q-mx-md hide_me">
-      Hi, <span class="text-bold">{{ username }}</span>
-    </p>
+    <router-link to="/" class="items-center row link text-secondary"
+      >View Store <q-icon name="link" size="1.5rem" class="q-ml-sm" />
+    </router-link>
 
-    <q-avatar class="hide_me">
-      <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-    </q-avatar>
+    <q-btn
+      label="Upgrade"
+      no-caps
+      icon=" star_rate"
+      flat
+      text-color="white"
+      class="q-px-sm bg-secondary q-ml-md bordered-btn"
+      dense
+    />
+
+    <q-btn flat round class="q-ml-md bg-none">
+      <q-avatar class="bg-primary">
+        <div>TI</div>
+      </q-avatar>
+    </q-btn>
+
+    <router-link to="/" class="items-center q-ml-md row link text-secondary">
+      <q-icon name="chat_bubble_outline" size="1.5rem" class="q-mr-sm" />
+      Get Help
+    </router-link>
   </q-toolbar>
 </template>
 
@@ -59,33 +69,11 @@ export default {
 </script>
 
 <style scoped>
-.button {
-  display: none;
+.link {
+  text-decoration: none;
 }
 
-.input {
-  width: 50%;
-}
-
-.bord {
-  border-bottom: 1px solid #d56c33;
-}
-
-@media screen and (max-width: 830px) {
-  .button {
-    display: block;
-  }
-
-  .hide_me {
-    display: none;
-  }
-
-  .padding_right {
-    padding-right: 4% !important;
-  }
-
-  .input {
-    width: 60%;
-  }
+.link:hover {
+  color: #d56c33 !important;
 }
 </style>

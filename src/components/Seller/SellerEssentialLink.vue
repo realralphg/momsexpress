@@ -11,32 +11,14 @@
     </q-toolbar-title>
   </div>
 
-  <!-- Profile Image and Details -->
-  <div class="q-px-md items-center text-center q-my-md hide_me">
-    <q-avatar
-      size="4rem"
-      font-size="2.5rem"
-      color="primary"
-      class="q-mr-md"
-      text-color="white"
-      icon="person"
-    />
-    <div class="q-mt-sm">
-      <div class="q-my-xs text-bold text-h5">{{ username }}</div>
-      <div class="q-my-xs">{{ userMail }}</div>
-      <div class="q-my-xs">08012345678</div>
-    </div>
-  </div>
-
-  <q-list class="q-py-md q-px-md">
+  <q-list class="q-py-md text-subtitle2">
     <q-item
       clickable
-      class="q-mb-md"
+      class="q-mb-xs"
       v-ripple
       exact
       exact-active-class="item"
       to="/seller/dashboard"
-      style="border-radius: 15px"
     >
       <q-item-section avatar>
         <q-icon name="home" size="1.5rem" />
@@ -48,12 +30,11 @@
 
     <q-item
       clickable
-      class="q-mb-md"
+      class="q-mb-xs"
       exact
       exact-active-class="item"
       v-ripple
       to="/seller/product"
-      style="border-radius: 15px"
     >
       <q-item-section avatar>
         <q-icon name="storefront" size="1.5rem" />
@@ -65,12 +46,11 @@
 
     <q-item
       clickable
-      class="q-mb-md"
+      class="q-mb-xs"
       exact
       exact-active-class="item"
       v-ripple
       to="/seller/orders"
-      style="border-radius: 15px"
     >
       <q-item-section avatar>
         <q-icon name="bookmark" size="1.5rem" />
@@ -82,29 +62,27 @@
 
     <q-item
       clickable
-      class="q-mb-md"
+      class="q-mb-xs"
       exact
       exact-active-class="item"
       v-ripple
       to="/seller/profile"
-      style="border-radius: 15px"
     >
       <q-item-section avatar>
         <q-icon name="settings" size="1.5rem" />
       </q-item-section>
       <q-item-section>
-        <q-item-label>Profile</q-item-label>
+        <q-item-label>Settings</q-item-label>
       </q-item-section>
     </q-item>
 
     <q-item
       clickable
-      class="q-mb-md"
+      class="q-mb-xs"
       exact
       exact-active-class="item"
       v-ripple
       to="/seller/support"
-      style="border-radius: 15px"
     >
       <q-item-section avatar>
         <q-icon name="support_agent" size="1.5rem" />
@@ -118,8 +96,6 @@
       clickable
       class="q-mb-xl q-mx-md text-white absolute-bottom"
       v-ripple
-      @click="logout()"
-      style="border-radius: 15px"
     >
       <q-item-section avatar>
         <q-icon name="logout" size="1.5rem" />
@@ -143,25 +119,25 @@ export default defineComponent({
       userMail: ref(""),
     };
   },
-  methods: {
-    logout() {
-      console.log("LOGOUT");
-      localStorage.removeItem("userRole");
-      localStorage.removeItem("sellerToken");
-      localStorage.removeItem("sellerId");
-      localStorage.removeItem("sellerEmail");
-      localStorage.removeItem("sellerFullname");
-      localStorage.removeItem("sellerStore");
-      localStorage.removeItem("role");
+  // methods: {
+  //   logout() {
+  //     console.log("LOGOUT");
+  //     localStorage.removeItem("userRole");
+  //     localStorage.removeItem("sellerToken");
+  //     localStorage.removeItem("sellerId");
+  //     localStorage.removeItem("sellerEmail");
+  //     localStorage.removeItem("sellerFullname");
+  //     localStorage.removeItem("sellerStore");
+  //     localStorage.removeItem("role");
 
-      this.$store.commit("moduleExample/logout");
-      this.$router.replace("/");
-    },
-  },
-  mounted() {
-    this.username = localStorage.getItem("sellerFullname");
-    this.userMail = localStorage.getItem("sellerEmail");
-  },
+  //     this.$store.commit("moduleExample/logout");
+  //     this.$router.replace("/");
+  //   },
+  // },
+  // mounted() {
+  //   this.username = localStorage.getItem("sellerFullname");
+  //   this.userMail = localStorage.getItem("sellerEmail");
+  // },
 });
 </script>
 

@@ -12,8 +12,8 @@
               Delivery Details
             </div>
           </div>
-          <div class="text-bold text-subtitle1 q-mb-md">
-            <div>Tobi Ikupolati</div>
+          <div class="text-subtitle1 text-capitalize q-mb-md">
+            <div class="text-bold">{{ user.fullname }}</div>
             <div class="">09012345678</div>
           </div>
 
@@ -90,6 +90,7 @@ export default {
       itemsInCart: [],
       sellerId: "",
       discount: "0",
+      user: this.$store.getters["moduleExample/user"],
       //Paystack
       publicKey: "pk_test_285bb7525b2d3876efffce201f7a271d7c809839",
       amount: localStorage.getItem("cartTotal") * 100,

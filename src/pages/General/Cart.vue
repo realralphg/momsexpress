@@ -12,7 +12,11 @@
         v-for="item in cartItems"
         :key="item._id"
       >
-        <q-img :src="item.product.img[0].url" class="cart_item_image" />
+        <q-img
+          loading="eager"
+          :src="item.product.img[0].url"
+          class="cart_item_image"
+        />
         <div class="cart-detail bg-white q-px-xs text-black relative-position">
           <div
             class="q-pl-sm text-bold text-subtitle1 row items-center align-items justify-between"
@@ -176,7 +180,7 @@ export default {
 
 .item-name {
   font-size: 1.4rem;
-  max-width: 80%;
+  max-width: 70%;
   line-height: 1.1;
 }
 .item-price {

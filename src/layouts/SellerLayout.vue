@@ -1,6 +1,6 @@
 <template>
-  <q-layout view="lHh LpR lFf">
-    <q-header class="" style="background-color: white">
+  <q-layout view="lhh LpR lFf">
+    <q-header style="background-color: white">
       <div class="row">
         <SellerDashboard @toggleLeftDrawer="toggleLeftDrawer" />
       </div>
@@ -10,7 +10,7 @@
       side="left"
       v-model="leftDrawerOpen"
       show-if-above
-      :width="280"
+      :width="230"
       class="drawer text-white bg-secondary"
       :breakpoint="830"
     >
@@ -18,6 +18,17 @@
         <EssentialLink />
       </q-list>
     </q-drawer>
+
+    <q-footer class="absolute-bottom">
+      <div class="bg-primary q-py-sm">
+        <div
+          class="q-mr-md text-center q-py-xs text-weight-bold text-white"
+          style=""
+        >
+          ©MomsExpress
+        </div>
+      </div>
+    </q-footer>
 
     <q-page-container>
       <router-view />
@@ -52,24 +63,24 @@ export default defineComponent({
       username: ref(""),
     };
   },
-  methods: {
-    getSeller() {
-      let id = localStorage.getItem("sellerId");
-      this.$store
-        .dispatch("moduleExample/getSingleSeller", id)
-        .then((response) => {
-          console.log(response);
-          this.$store.commit("moduleExample/seller", response);
-        });
-    },
-    getOrders() {
-      this.$store.dispatch("moduleExample/getSellerOrders");
-    },
-  },
-  mounted() {
-    this.getSeller();
-    this.getOrders();
-  },
+  // methods: {
+  //   getSeller() {
+  //     let id = localStorage.getItem("sellerId");
+  //     this.$store
+  //       .dispatch("moduleExample/getSingleSeller", id)
+  //       .then((response) => {
+  //         console.log(response);
+  //         this.$store.commit("moduleExample/seller", response);
+  //       });
+  //   },
+  //   getOrders() {
+  //     this.$store.dispatch("moduleExample/getSellerOrders");
+  //   },
+  // },
+  // mounted() {
+  //   this.getSeller();
+  //   this.getOrders();
+  // },
 });
 </script>
 

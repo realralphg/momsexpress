@@ -11,7 +11,7 @@
         <p class="q-my-none writings text-bold">Sales</p>
       </div>
       <p class="number text-right">
-        {{ overview !== null ? overview.sales : 0 }}
+        <!-- {{ overview !== null ? overview.sales : 0 }} -->
       </p>
     </div>
 
@@ -21,7 +21,7 @@
         <p class="q-my-none writings q-ml-xs text-bold">This Month</p>
       </div>
       <p class="number text-right">
-        N{{ overview !== null ? overview.totalRevenue : 0 }}
+        <!-- N{{ overview !== null ? overview.totalRevenue : 0 }} -->
       </p>
     </div>
 
@@ -38,7 +38,7 @@
         </p>
       </div>
       <p class="number text-right">
-        N{{ overview !== null ? overview.totalRevenue : 0 }}
+        <!-- N{{ overview !== null ? overview.totalRevenue : 0 }} -->
       </p>
     </div>
   </div>
@@ -56,11 +56,11 @@
 <script>
 export default {
   name: "Dashboard",
-  computed: {
-    overview() {
-      return this.$store.getters["moduleExample/overview"];
-    },
-  },
+  // computed: {
+  //   overview() {
+  //     return this.$store.getters["moduleExample/overview"];
+  //   },
+  // },
   data() {
     return {
       series: [
@@ -143,6 +143,12 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 2.5rem;
+}
+
+@media screen and (max-width: 500px) {
+  .number {
+    font-size: 1.5rem;
+  }
 }
 
 .first {

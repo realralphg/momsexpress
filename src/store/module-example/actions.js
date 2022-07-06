@@ -415,7 +415,7 @@ export function buyerRegister(context, { email }) {
   });
 }
 
-export function buyerLogin({ commit }, data) {
+export function buyerLogin(commit, data) {
   return new Promise((resolve, reject) => {
     axios({
       method: "POST",
@@ -425,16 +425,20 @@ export function buyerLogin({ commit }, data) {
         password: data.password,
       },
     })
-      .then((response) => {
-        if (response.status === 200 || response.status === 201) {
-          let buyer = response.data.data.user;
-          // console.log(buyer);
+      .then(({ data, status }) => {
+        if (status === 200 || status === 201) {
+          this.$router.push("/");
+          Notify.create({
+            message: "Login Success",
+            color: "blue",
+          });
+          console.log(data);
+          let buyer = data.data.user;
           localStorage.setItem("user", JSON.stringify(buyer));
           localStorage.setItem("userName", user.fullname);
-          commit("user", buyer);
-
-          resolve(buyer);
+          commit("user", JSON.stringify(buyer));
         }
+        resolve(buyer);
       })
       .catch((error) => {
         reject();
@@ -546,9 +550,9 @@ export function getUser(context) {
           let user = response.data.data.user;
           console.log(user);
 
-          localStorage.setItem("user", user);
+          localStorage.setItem("user", JSON.stringify(user));
           localStorage.setItem("userName", user.fullname);
-          context.commit("user", user);
+          context.commit("user", JSON.stringify(user));
           this.$router.replace("/");
           resolve();
         })
@@ -561,26 +565,31 @@ export function getUser(context) {
 }
 
 export function commentOnProduct(context, { comment, id }) {
-  console.log(comment);
-  console.log(id);
-  return new Promise((resolve, reject) => {
-    axios({
-      withCredentials: true,
-      method: "POST",
-      url: baseurl + `/search/${id}/comment`,
+  let user = localStorage.getItem("user");
+  if (user) {
+    return new Promise((resolve, reject) => {
+      axios({
+        withCredentials: true,
+        method: "POST",
+        url: baseurl + `/search/${id}/comment`,
 
-      data: { comment: comment },
-    })
-      .then((response) => {
-        if (response) {
-          console.log(response);
-          resolve(response.data.data);
-        }
+        data: { comment: comment },
       })
-      .catch((error) => {
-        reject();
-      });
-  });
+        .then((response) => {
+          if (response) {
+            resolve(response.data.data);
+          }
+        })
+        .catch((error) => {
+          reject();
+        });
+    });
+  } else {
+    Notify.create({
+      message: "You have to be logged in to comment",
+      color: "primary",
+    });
+  }
 }
 
 export function createOrder(context, data) {

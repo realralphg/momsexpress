@@ -54,6 +54,7 @@
                   style=""
                   class="rounded-borders"
                   src="/Homepage/shirts.jpg"
+                  loading="eager"
                 >
                 </q-img>
                 <div>Lorem Item</div>
@@ -122,6 +123,7 @@
                   style=""
                   class="rounded-borders"
                   src="/Homepage/laptop.jpg"
+                  loading="eager"
                 >
                 </q-img>
                 <div>Lorem Item</div>

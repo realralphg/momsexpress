@@ -16,7 +16,7 @@
                 v-ripple="true"
                 size="2rem"
               >
-                <q-img src="Seller/facebooklogo.png" />
+                <q-img loading="eager" src="Seller/facebooklogo.png" />
               </q-avatar>
               <q-avatar
                 style="cursor: pointer"
@@ -24,7 +24,7 @@
                 v-ripple="true"
                 size="2rem"
               >
-                <q-img src="Seller/google.png" />
+                <q-img loading="eager" src="Seller/google.png" />
               </q-avatar>
             </div>
 

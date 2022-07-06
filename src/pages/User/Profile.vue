@@ -33,10 +33,10 @@
         />
         <div class="row">
           <div class="q-my-xs text-bold text-h6">
-            {{ JSON.parse(user).fullname }}
+            {{ user.fullname }}
           </div>
         </div>
-        <div class="q-my-xs text-subtitle1">{{ JSON.parse(user).email }}</div>
+        <div class="q-my-xs text-subtitle1">{{ user.email }}</div>
         <div class="q-my-xs text-subtitle1">08012345678</div>
       </div>
     </div>
@@ -154,7 +154,7 @@ export default {
     return {
       role: localStorage.getItem("userRole"),
       sellerToken: localStorage.getItem("sellerToken"),
-      user: localStorage.getItem("user"),
+      user: this.$store.getters["moduleExample/user"],
       buyerName: localStorage.getItem("buyerFullname"),
       buyerEmail: localStorage.getItem("buyerEmail"),
     };

@@ -1,118 +1,96 @@
 <template>
-  <!-- Add New Product  -->
-  <q-dialog v-model="icon">
-    <q-card class="addProduct">
-      <q-card-section class="row items-center q-pb-none">
-        <q-space />
-        <q-btn icon="close" flat round dense v-close-popup />
-      </q-card-section>
-
-      <q-card-section>
-        <Addproduct @addProduct="addProduct" />
-      </q-card-section>
-    </q-card>
-  </q-dialog>
-
-  <q-page-sticky position="bottom-right" style="z-index: 1" :offset="[18, 18]">
-    <q-btn fab icon="add" @click="icon = true" color="primary" />
-  </q-page-sticky>
-
-  <q-page
-    v-if="skeleton === false && noProduct === true && !products[0]"
-    class="column flex-center"
-  >
-    <div class="text-center text-primary text-h5 text-bold">
-      No Products in Store
-    </div>
-  </q-page>
-
-  <div class="q-pa-lg row q-gutter-sm">
-    <q-card
-      v-for="n in 6"
-      :key="n"
-      v-show="skeleton"
-      flat
-      bordered
-      :class="skeleton === false ? 'hide-skeleton' : ''"
-      style="max-width: 260px; width: 250px; margin: 2% auto 0"
-    >
-      <q-skeleton height="200px" square animation="fade" />
-
-      <q-card-section class="text-subtitle2">
-        <q-skeleton type="text" width="50%" animation="fade" />
-        <q-skeleton type="text" animation="fade" />
-        <q-skeleton type="text" animation="fade" />
-        <q-skeleton type="text" width="50%" animation="fade" />
-      </q-card-section>
-    </q-card>
-  </div>
-
-  <!-- Products Cards  -->
-  <div class="q-mx-auto" v-if="products[0]" style="max-width: 90%">
-    <div>
-      <div class="container q-mb-xl margin q-mx-auto">
-        <div
-          class="card q-mt-sm q-mx-auto"
-          v-for="product in products"
-          :key="product.id"
-        >
-          <q-card flat bordered class="bg-grey-1 q-mx-auto product-card">
-            <q-card-section>
-              <q-img style="height: 220px" :src="product.img[0].url"></q-img>
-              <div class="row items-center no-wrap q-my-md">
-                <div class="col">
-                  <div class="text-subtitle1 text-bold product-title">
-                    {{ product.name }}
-                  </div>
-                  <div class="text-subtitle2 text-primary">
-                    Sales:
-                    <span class="text-black q-ml-sm">
-                      0/{{ product.qtyInStore }}
-                    </span>
-                  </div>
-                </div>
-
-                <!-- Option Button  -->
-                <div class="col-auto">
-                  <q-btn color="grey-7" round flat icon="more_vert">
-                    <q-menu cover auto-close>
-                      <q-list>
-                        <q-item clickable>
-                          <q-item-section
-                            @click="
-                              this.$router.push(
-                                `/seller/productDetail/${product._id}`
-                              )
-                            "
-                            >Edit Item</q-item-section
-                          >
-                        </q-item>
-                        <q-item clickable>
-                          <q-item-section @click="deleteProduct(product._id)">
-                            Delete Item</q-item-section
-                          >
-                        </q-item>
-                      </q-list>
-                    </q-menu>
-                  </q-btn>
-                </div>
-              </div>
-            </q-card-section>
-          </q-card>
-        </div>
+  <q-page class="q-pa-xl">
+    <div class="secondary text-h4 text-bold q-my-sm">Products</div>
+    <div class="row justify-between q-mb-md">
+      <div class="row q-gutter-x-md">
+        <q-btn
+          flat
+          label="Add New Product"
+          class="bg-primary bordered-btn"
+          icon="add"
+          text-color="white"
+          no-caps
+          to="/seller/product/new"
+        />
+        <q-btn
+          outline
+          color="secondary"
+          class="bordered-btn"
+          label="Bulk Edit All"
+          no-caps
+        />
+        <q-btn
+          outline
+          label="Import or Export Products"
+          class="bordered-btn"
+          no-caps
+        />
       </div>
+
+      <q-btn
+        flat
+        icon="delete_forever"
+        label="Delete All Products"
+        no-caps
+        class="bg-secondary bordered-btn"
+        text-color="white"
+      />
     </div>
-  </div>
+
+    <div class="row justify-between q-mb-md">
+      <q-btn-dropdown
+        color="secondary"
+        outline
+        label="Filter"
+        class="bordered-btn"
+      >
+        <q-list>
+          <q-item clickable v-close-popup @click="onItemClick">
+            <q-item-section>
+              <q-item-label>Photos</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable v-close-popup @click="onItemClick">
+            <q-item-section>
+              <q-item-label>Videos</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable v-close-popup @click="onItemClick">
+            <q-item-section>
+              <q-item-label>Articles</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-btn-dropdown>
+
+      <q-input
+        placeholder="Search Your Product Name"
+        class="search"
+        dense
+        outlined
+      >
+        <template v-slot:prepend>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+    </div>
+
+    <ProductItem v-for="n in 5" :key="n" />
+  </q-page>
 </template>
 
 <script>
 import { ref } from "vue";
 import Addproduct from "components/Seller/Addproduct.vue";
+import ProductItem from "src/components/Seller/Product/ProductItem.vue";
 
 export default {
   name: "Products",
   components: {
     Addproduct,
+    ProductItem,
   },
   data() {
     return {
@@ -123,40 +101,43 @@ export default {
       noProduct: ref(false),
     };
   },
-  methods: {
-    addProduct(product) {
-      if (product !== undefined) {
-        this.$store.dispatch("moduleExample/addProduct", product).then(() => {
-          this.icon = false;
-          this.getProducts();
-        });
-      }
-    },
-    getProducts() {
-      this.$store
-        .dispatch("moduleExample/getSellerProducts")
-        .then((response) => {
-          this.products =
-            this.$store.getters["moduleExample/getSellerProducts"];
-          this.skeleton = false;
+  // methods: {
+  //   addProduct(product) {
+  //     if (product !== undefined) {
+  //       this.$store.dispatch("moduleExample/addProduct", product).then(() => {
+  //         this.icon = false;
+  //         this.getProducts();
+  //       });
+  //     }
+  //   },
+  //   getProducts() {
+  //     this.$store
+  //       .dispatch("moduleExample/getSellerProducts")
+  //       .then((response) => {
+  //         this.products =
+  //           this.$store.getters["moduleExample/getSellerProducts"];
+  //         this.skeleton = false;
 
-          if (!response[0]) {
-            this.skeleton = false;
-            this.noProduct = true;
-          }
-        });
-    },
-    deleteProduct(id) {
-      this.$store.dispatch("moduleExample/deleteProduct", id);
-    },
-  },
-  mounted() {
-    this.getProducts();
-  },
+  //         if (!response[0]) {
+  //           this.skeleton = false;
+  //           this.noProduct = true;
+  //         }
+  //       });
+  //   },
+  //   deleteProduct(id) {
+  //     this.$store.dispatch("moduleExample/deleteProduct", id);
+  //   },
+  // },
+  // mounted() {
+  //   this.getProducts();
+  // },
 };
 </script>
 
 <style>
+.search {
+  width: 90% !important;
+}
 .hide-skeleton {
   display: none;
 }

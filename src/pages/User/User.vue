@@ -17,11 +17,11 @@
               icon="person"
             />
             <div class="row justify-center">
-              <div class="q-my-xs text-bold text-h5">
-                {{ JSON.parse(user).email }}
+              <div class="q-my-xs text-bold text-h6">
+                {{ user.email }}
               </div>
             </div>
-            <div class="q-my-xs">{{ JSON.parse(user).email }}</div>
+            <div class="q-my-xs">{{ user.email }}</div>
             <div class="q-my-xs">08012345678</div>
           </div>
 
@@ -132,7 +132,7 @@ export default {
       username: ref(""),
       email: ref(""),
       trending: [],
-      user: localStorage.getItem("user"),
+      user: this.$store.getters["moduleExample/user"],
     };
   },
   computed: {

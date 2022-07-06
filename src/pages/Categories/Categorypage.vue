@@ -1,56 +1,47 @@
 <template>
   <q-page class="bg-grey-2 padding-footer">
     <div class="row" style="height: 100%">
-      <!-- <div
-        class="col-lg-2 col-md-2 col-sm-12 col-xs-12"
-        style="border-right: 1px solid lightgrey"
-      >
-        <q-card class="q-mr-sm no-shadow">
-          <q-expansion-item
-            expand-separator
-            label="Filter "
-            class="text-grey-8 q-pa-md"
-            :default-opened="value"
-          >
-            <div>
-              <q-card-section>
-                <transition-group
-                  appear
-                  enter-active-class="animated fadeInLeft"
-                >
-                  <q-list v-for="item in filters_list" :key="item.label">
-                    <q-item-label
-                      class="text-weight-bolder text-grey-9 q-px-none q-pt-md q-pb-sm"
-                      header
-                      >{{ item.label }}</q-item-label
-                    >
-                    <q-item
-                      class="q-pa-none"
-                      v-for="it in item.items"
-                      :key="it.model"
-                      tag="label"
-                      v-ripple
-                      dense
-                    >
-                      <q-item-section side class="text-caption">
-                        <q-checkbox
-                          @input="filterProduct(it.label)"
-                          dense
-                          v-model="it[it.model]"
-                        >
-                          {{ it.label }}
-                        </q-checkbox>
-                      </q-item-section>
-                    </q-item>
-                  </q-list>
-                </transition-group>
-              </q-card-section>
+      <div class="hide-cat" style="border-right: 1px solid lightgrey">
+        <div class="category bg-white border_radius q-pt-md q-pb-none q-px-md">
+          <div class="q-mb-md text-h6 text-primary text-bold">Categories</div>
+          <nav @mouseleave="show = false" class="primary-navigation">
+            <div class="q-pl-sm" v-for="n in 13" :key="n">
+              <div class="row items-center q-my-sm" v-if="skeleton">
+                <q-skeleton type="QAvatar" size="1rem" animation="fade" />
+                <q-skeleton type="text" width="70%" class="text-subtitle1" />
+              </div>
             </div>
-          </q-expansion-item>
-        </q-card>
-      </div> -->
 
-      <div class="bg-grey-2 col-lg-10 col-md-10 col-sm-12 col-xs-12">
+            <ul v-for="item in categories" :key="item.id">
+              <li class="q-pl-sm">
+                <a
+                  @mouseenter="show = true"
+                  @click="this.$router.push(`/category/${item.name}`)"
+                  class="text-primary text-bold text-caption row items-center ellipsis"
+                >
+                  <img :src="item.icon" class="q-mr-xs image" />
+                  {{ item.name }}
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <div class="bg-grey-3 q-mt-lg border-rad">
+            <div class="text-center">
+              <div class="text-bold text-h6 q-my-sm">Want to own a Shop?</div>
+              <q-btn
+                to="/seller/Signup"
+                label="Register Now!"
+                color="primary"
+                outline
+                rounded
+                class="reg-btn"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-grey-2 products">
         <div
           class="text-h5 text-primary text-capitalize text-bold q-px-md q-py-md"
         >
@@ -190,8 +181,15 @@ export default {
       });
       console.log(a);
     },
+    getCategories() {
+      this.$store.dispatch("moduleExample/getCategories").then((response) => {
+        this.skeleton = false;
+        this.categories = response.categories;
+      });
+    },
   },
   mounted() {
+    this.getCategories();
     let route = location.href.split("category/");
     this.categoryName = route[1];
 
@@ -210,10 +208,37 @@ export default {
 </script>
 
 <style scoped>
-@media screen and (max-width: 830px) {
-  .padding-footer {
-    padding-bottom: 12%;
+.border-rad {
+  border-radius: 15px;
+  padding: 5%;
+}
+
+.hide-cat {
+  width: 24%;
+}
+
+.products {
+  width: 75%;
+}
+
+.reg-btn {
+  animation: beat 1.4s infinite alternate;
+  transform-origin: center;
+}
+.reg-btn:hover {
+  background-color: #d56c33 !important;
+  color: white !important;
+}
+
+@keyframes beat {
+  to {
+    transform: scale(1.2);
   }
+}
+.image {
+  font-size: 20px !important;
+}
+@media screen and (max-width: 830px) {
 }
 
 @media screen and (max-width: 530px) {
@@ -232,12 +257,40 @@ export default {
   display: grid;
   gap: 8px;
   grid-auto-flow: row;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media screen and (max-width: 975px) {
+  .hide-cat {
+    width: 30%;
+  }
+  .products {
+    width: 70%;
+  }
+  .card-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 930px) {
+  .card-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media screen and (max-width: 830px) {
   .card-container {
     grid-template-columns: repeat(4, 1fr);
+  }
+  .hide-cat {
+    display: none;
+  }
+
+  .products {
+    width: 100%;
+  }
+  .padding-footer {
+    padding-bottom: 12%;
   }
 }
 
@@ -264,5 +317,78 @@ export default {
 
 .scroll {
   height: 60vh;
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  margin: auto 0;
+}
+
+.category {
+  height: 100%;
+  position: relative;
+  margin: 0;
+}
+
+nav.primary-navigation {
+  margin: 0 auto;
+  text-align: left;
+}
+
+.primary-navigation ul {
+  padding: 0;
+  margin: auto 0;
+}
+nav.primary-navigation ul li {
+  margin: 3% 0;
+  display: inline-block;
+  text-decoration: none;
+}
+nav.primary-navigation li a {
+  color: black;
+}
+
+nav.primary-navigation li:hover {
+  cursor: pointer;
+}
+
+.dropdown {
+  visibility: visible;
+  opacity: 0.9;
+  display: flex;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 285%;
+  text-align: left;
+  padding-top: 20px;
+  box-shadow: 0px 1px 2px -1px #ccc;
+  background-color: white;
+  z-index: 1;
+}
+.dropdown li {
+  clear: both;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 20px;
+  border-style: none;
+}
+.dropdown li a:hover {
+  padding-left: 10px;
+  border-left: 2px solid #3ca0e7;
+  transition: all 0.3s ease;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  color: #3ca0e7;
+}
+.dropdown li a {
+  transition: all 0.5s ease;
 }
 </style>

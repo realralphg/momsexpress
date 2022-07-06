@@ -136,9 +136,6 @@ export default defineComponent({
       return this.$store.state.moduleExample.cart.length;
     },
   },
-  mounted() {
-    console.log(this.$router.currentRoute.value.path);
-  },
 });
 </script>
 

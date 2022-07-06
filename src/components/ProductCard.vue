@@ -1,6 +1,12 @@
 <template>
   <div class="main" @click="this.$router.push('/details')">
-    <q-img style="" class="rounded-borders img" :src="product.img"> </q-img>
+    <q-img
+      loading="eager"
+      style=""
+      class="rounded-borders img"
+      :src="product.img"
+    >
+    </q-img>
     <div class="q-pa-sm">
       <div class="justify-between">
         <div class="text-subtitle1 text-bold product-title">

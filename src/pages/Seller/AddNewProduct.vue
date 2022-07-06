@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-px-xl q-py-sm bg-grey-2">
-    <div class="secondary text-h4 text-bold q-my-sm">Name of Product</div>
+    <div class="secondary text-h4 text-bold q-my-sm">Add New Product</div>
 
     <div class="main">
       <div class="column q-gutter-y-md">
@@ -30,7 +30,7 @@
           </div>
         </div>
 
-        <div class="border-radius bg-white q-pa-lg">
+        <div class="border-radius bg-white q-pa-md">
           <div class="product-input">
             <div>
               <label class="text-grey-9">Name</label>
@@ -46,12 +46,10 @@
             </div>
           </div>
 
-          <div class="q-mt-lg textarea">
+          <div class="q-mt-lg">
             <label for="">Description</label>
             <q-input
               type="textarea"
-              autogrow
-              class="description"
               placeholder="Please describe the product with details information..."
               outlined
             />
@@ -97,73 +95,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
-export default {
-  name: "details.vue",
-  data() {
-    return {
-      imageModal: ref(false),
-      newImage: null,
-      slide: 1,
-      tab: "Specifications",
-      rating_point: 3.5,
-      id: "",
-      product: {},
-
-      // Has to be a nested object
-      images: [],
-      description: null,
-      discount: null,
-    };
-  },
-  // computed: {
-  //   win_width() {
-  //     return this.$q.screen.width - 59;
-  //   },
-  //   win_height() {
-  //     return this.$q.screen.height - 0;
-  //   },
-  // },
-  // methods: {
-  //   changeImage(id, imageKey) {
-  //     console.log(imageKey);
-  //     let newImg = this.newImage;
-  //     let formData = new FormData();
-  //     formData.append("oldImgKey", imageKey);
-  //     formData.append("img", newImg);
-  //     this.$store.dispatch("moduleExample/updateImage", { id, formData });
-  //   },
-  //   updateProductData() {
-  //     let product = {
-  //       _id: this.id,
-  //       productName: this.product.name,
-  //       productPrice: this.product.price,
-  //       productQty: this.product.qtyInStore,
-  //       productCategory: this.product.categories,
-  //       productSubcategory: "nothing",
-  //       productColor: this.description,
-  //       productSize: this.discount,
-  //     };
-  //     this.$store.dispatch("moduleExample/updateSellerProductData", product);
-  //     console.log(product);
-  //   },
-  //   getProduct() {
-  //     this.$store
-  //       .dispatch("moduleExample/getSingleSellerProduct", this.id)
-  //       .then((response) => {
-  //         this.product = response;
-  //         let detail = this.product;
-  //         this.images = response.img;
-  //         this.description = detail.desc.color;
-  //         this.discount = detail.desc.size;
-  //       });
-  //   },
-  // },
-  // mounted() {
-  //   this.id = location.href.split("productDetail/")[1];
-  //   this.getProduct();
-  // },
-};
+export default {};
 </script>
 
 <style scoped>
@@ -206,8 +138,5 @@ export default {
 .image {
   border: 2px solid rgb(128, 128, 128, 0.5);
   color: rgb(128, 128, 128, 0.5);
-}
-.description {
-  height: 150px !important;
 }
 </style>
